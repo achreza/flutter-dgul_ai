@@ -21,6 +21,9 @@ class ChatController extends GetxController {
   var selectedFileName = ''.obs;
   var selectedLanguage = 'Indonesia'.obs;
 
+  // --- STATE BARU UNTUK DROPDOWN ---
+  var selectedWorkType = 'Maritime Worker'.obs;
+
   var isListening = false.obs;
   final SpeechToText _speechToText = SpeechToText();
 
@@ -29,6 +32,25 @@ class ChatController extends GetxController {
   final ImagePicker _picker = ImagePicker();
   final GetStorage _storage = GetStorage();
   final _historyKey = 'chatMessages';
+  final _workTypeKey = 'selectedWorkType';
+
+  // --- DAFTAR OPSI BARU UNTUK DROPDOWN ---
+  final List<String> maritimeWorkTypes = [
+    "Maritime Worker",
+    "Perusahaan Pelayaran",
+    "Perusahaan Fasilitas Pelabuhan & Terminal",
+    "Perusahaan Keagenan Kapal",
+    "Perusahaan Galangan Kapal",
+    "Perusahaan Pemilik Muatan",
+    "Pemerintah dan Regulator",
+    "Diklat Kepelautan",
+    "Diklat Kelautan & Perikanan",
+    "Biro Klasifikasi",
+    "Perusahaan Shipchandler",
+    "Perusahaan Perbaikan dan Perawatan kapal",
+    "Asosiasi / Organisasi Industri Maritim",
+    "Masyarakat Maritim",
+  ];
 
   final List<String> suggestionPrompts = [
     "Information and Communication",
@@ -65,7 +87,6 @@ class ChatController extends GetxController {
           onResult: (result) {
             textController.text = result.recognizedWords;
           },
-          // onDone: () => isListening.value = false,
         );
       }
     }
@@ -80,10 +101,12 @@ class ChatController extends GetxController {
     } else {
       _addWelcomeMessage();
     }
+    selectedWorkType.value = _storage.read(_workTypeKey) ?? 'Maritime Worker';
   }
 
   void _saveChatHistory() {
     _storage.write(_historyKey, messages.map((e) => e.toJson()).toList());
+    _storage.write(_workTypeKey, selectedWorkType.value);
   }
 
   void _addWelcomeMessage() {
@@ -108,6 +131,14 @@ class ChatController extends GetxController {
           _addWelcomeMessage();
           Get.back();
         });
+  }
+
+  // --- FUNGSI BARU UNTUK MENGUBAH TIPE PEKERJAAN ---
+  void selectWorkType(String workType) {
+    selectedWorkType.value = workType;
+    _saveChatHistory(); // Simpan pilihan baru
+    // Anda bisa menambahkan pesan konfirmasi di chat jika mau
+    // messages.add(ChatMessage(text: "Konteks diubah menjadi: $workType", sender: Sender.ai));
   }
 
   void sendSuggestion(String suggestionText) {
@@ -212,15 +243,14 @@ class ChatController extends GetxController {
             msg.text.contains("Terjadi kesalahan")) continue;
         final role = msg.sender == Sender.user ? 'user' : 'model';
         List<Map<String, dynamic>> parts = [];
-        String promptText =
-            "Anda adalah D'Gul AI, seorang ahli maritim. Jawab pertanyaan berikut: '${msg.text}'";
-
-        if (role == 'user') {
+        String promptText = msg.text;
+        if (role == 'user' && msg.text.isNotEmpty) {
+          promptText =
+              "Anda adalah D'Gul AI, seorang ahli maritim. Dalam konteks sebagai '${selectedWorkType.value}', jawab pertanyaan berikut: '${msg.text}'";
           parts.add({'text': promptText});
-        } else {
+        } else if (msg.text.isNotEmpty) {
           parts.add({'text': msg.text});
         }
-
         if (msg == messages.last) {
           if (imagePath.isNotEmpty) {
             final bytes = await File(imagePath).readAsBytes();

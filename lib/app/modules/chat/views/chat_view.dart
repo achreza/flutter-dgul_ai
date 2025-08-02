@@ -10,6 +10,7 @@ import 'package:dgul_ai/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:simple_ripple_animation/simple_ripple_animation.dart';
 
@@ -114,6 +115,67 @@ class ChatView extends GetView<ChatController> {
               ],
             ),
           ],
+          bottom: PreferredSize(
+            preferredSize: Size.fromHeight(50.h),
+            child: Center(
+              child: Container(
+                // Container ini hanya untuk dekorasi, bukan untuk sizing
+                margin: EdgeInsets.only(bottom: 10.h),
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                decoration: BoxDecoration(
+                  color: RColor().primaryBlueColor.withOpacity(0.7),
+                  borderRadius: BorderRadius.circular(30.r),
+                  border: Border.all(
+                      color: Colors.white.withOpacity(0.5), width: 1),
+                ),
+                child: Obx(
+                  () => DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: controller.selectedWorkType.value,
+                      onChanged: (String? newValue) {
+                        if (newValue != null) {
+                          controller.selectWorkType(newValue);
+                        }
+                      },
+                      // Item untuk menu dropdown (bisa lebar)
+                      items: controller.maritimeWorkTypes
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      // Builder untuk tampilan tombol (lebar tetap)
+                      selectedItemBuilder: (BuildContext context) {
+                        return controller.maritimeWorkTypes
+                            .map<Widget>((String item) {
+                          return Container(
+                            width: 200.w, // Lebar tetap untuk tombol
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              item,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          );
+                        }).toList();
+                      },
+                      icon: const Icon(Icons.keyboard_arrow_down,
+                          color: Colors.white),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14.sp,
+                      ),
+                      dropdownColor: RColor().primaryBlueColor.withOpacity(0.7),
+                      isDense: true,
+                      // isExpanded: false (default), agar menu bisa lebih lebar
+                      isExpanded: false, // Agar dropdown bisa lebih lebar
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
       body: Stack(
@@ -210,10 +272,19 @@ class ChatView extends GetView<ChatController> {
       child: Text(
         "Ahooy, D'Gul",
         textAlign: TextAlign.center,
-        style: TextStyle(
-          fontSize: 32.sp,
-          fontWeight: FontWeight.bold,
-          color: const Color(0xFF0D47A1),
+        style: headlineTextStyle.copyWith(
+          //use gradient color
+          foreground: Paint()
+            ..shader = LinearGradient(
+              colors: [
+                RColor().primaryGradientStartColor,
+                RColor().primaryGradientEndColor,
+              ],
+            ).createShader(
+              Rect.fromLTWH(0, 0, 200, 50),
+            ),
+          fontWeight: FontWeight.w600,
+          height: 1.2,
         ),
       ),
     );
