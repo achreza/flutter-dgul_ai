@@ -16,15 +16,10 @@ class ChatController extends GetxController {
   var messages = <ChatMessage>[].obs;
   var isLoading = false.obs;
 
-  // State untuk pratinjau gambar dan file
   var selectedImagePath = ''.obs;
   var selectedFilePath = ''.obs;
   var selectedFileName = ''.obs;
-
-  var pilihanJurusan = ''.obs;
-
-  final _historyKey = 'chatMessages';
-  final _jurusanKey = 'pilihanJurusan';
+  var selectedLanguage = 'Indonesia'.obs;
 
   var isListening = false.obs;
   final SpeechToText _speechToText = SpeechToText();
@@ -33,11 +28,15 @@ class ChatController extends GetxController {
   final scrollController = ScrollController();
   final ImagePicker _picker = ImagePicker();
   final GetStorage _storage = GetStorage();
+  final _historyKey = 'chatMessages';
 
-  final List<String> jurusan = ["Nautika", "Teknika", "Industri Pelayaran"];
+  final List<String> suggestionPrompts = [
+    "Information and Communication",
+    "Education and Career Development",
+    "Inspiration and Motivation",
+  ];
 
   final String _apiKey = dotenv.env['GEMINI_API_KEY'] ?? 'NO_API_KEY';
-
   final String _fileApiUploadUrl =
       'https://generativelanguage.googleapis.com/upload/v1beta/files';
   final String _generateContentUrl =
@@ -46,7 +45,6 @@ class ChatController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    _loadChatHistory();
     _loadChatHistory();
     _initSpeech();
   }
@@ -57,11 +55,9 @@ class ChatController extends GetxController {
 
   void toggleListening() async {
     if (isListening.value) {
-      // Hentikan mendengarkan
       await _speechToText.stop();
       isListening.value = false;
     } else {
-      // Mulai mendengarkan
       bool available = await _speechToText.initialize();
       if (available) {
         isListening.value = true;
@@ -69,13 +65,38 @@ class ChatController extends GetxController {
           onResult: (result) {
             textController.text = result.recognizedWords;
           },
+          // onDone: () => isListening.value = false,
         );
       }
     }
   }
 
+  void _loadChatHistory() {
+    List? storedMessages = _storage.read<List>(_historyKey);
+    if (storedMessages != null && storedMessages.isNotEmpty) {
+      messages.value = storedMessages
+          .map((e) => ChatMessage.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
+    } else {
+      _addWelcomeMessage();
+    }
+  }
+
+  void _saveChatHistory() {
+    _storage.write(_historyKey, messages.map((e) => e.toJson()).toList());
+  }
+
+  void _addWelcomeMessage() {
+    messages.clear();
+    messages.add(
+      ChatMessage(
+        text: "Ahooy, D'Gul!",
+        sender: Sender.ai,
+      ),
+    );
+  }
+
   void clearChatHistory() {
-    // Tampilkan dialog konfirmasi
     Get.defaultDialog(
         title: "Hapus Riwayat Chat",
         middleText: "Apakah Anda yakin ingin menghapus seluruh percakapan?",
@@ -83,54 +104,17 @@ class ChatController extends GetxController {
         textCancel: "Batal",
         confirmTextColor: Colors.white,
         onConfirm: () {
-          // Hapus dari state
-          messages.clear();
-          pilihanJurusan.value = '';
-
-          // Hapus dari local storage
           _storage.remove(_historyKey);
-          _storage.remove(_jurusanKey);
-
-          // Tambahkan kembali pesan selamat datang
           _addWelcomeMessage();
-
-          // Tutup dialog
           Get.back();
         });
   }
 
-  void _loadChatHistory() {
-    List? storedMessages = _storage.read<List>('chatMessages');
-    if (storedMessages != null) {
-      messages.value = storedMessages
-          .map((e) => ChatMessage.fromJson(Map<String, dynamic>.from(e)))
-          .toList();
-      // Jika riwayat kosong setelah dimuat, tambahkan pesan selamat datang
-      if (messages.isEmpty) _addWelcomeMessage();
-    } else {
-      // Jika tidak ada riwayat sama sekali
-      _addWelcomeMessage();
-    }
-
-    pilihanJurusan.value = _storage.read('pilihanJurusan') ?? '';
+  void sendSuggestion(String suggestionText) {
+    textController.text = suggestionText;
+    sendMessage();
   }
 
-  void _saveChatHistory() {
-    _storage.write('chatMessages', messages.map((e) => e.toJson()).toList());
-    _storage.write('pilihanJurusan', pilihanJurusan.value);
-  }
-
-  void _addWelcomeMessage() {
-    messages.add(
-      ChatMessage(
-        text:
-            "Halo! Saya adalah D'Gul AI, asisten maritim Anda. Silakan pilih bidang keahlian Anda untuk memulai.",
-        sender: Sender.ai,
-      ),
-    );
-  }
-
-  // --- FUNGSI BARU UNTUK MEMILIH FILE ---
   void pickFile() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
@@ -139,7 +123,6 @@ class ChatController extends GetxController {
     if (result != null && result.files.single.path != null) {
       selectedFilePath.value = result.files.single.path!;
       selectedFileName.value = result.files.single.name;
-      // Batalkan pilihan gambar jika ada
       selectedImagePath.value = '';
     }
   }
@@ -149,13 +132,11 @@ class ChatController extends GetxController {
     selectedFileName.value = '';
   }
 
-  // ... (fungsi pickImage dan cancelImageSelection tetap sama) ...
   void pickImage(ImageSource source) async {
     final XFile? image =
         await _picker.pickImage(source: source, imageQuality: 85);
     if (image != null) {
       selectedImagePath.value = image.path;
-      // Batalkan pilihan file jika ada
       cancelFileSelection();
     }
   }
@@ -164,44 +145,10 @@ class ChatController extends GetxController {
     selectedImagePath.value = '';
   }
 
-  // ... (fungsi selectJurusan tetap sama) ...
-  void selectJurusan(String jurusanPilihan) async {
-    pilihanJurusan.value = jurusanPilihan;
-    messages.add(ChatMessage(text: jurusanPilihan, sender: Sender.user));
-    _scrollToBottom();
-    isLoading.value = true;
-    _saveChatHistory(); // Simpan pilihan jurusan
-
-    try {
-      final promptKonfirmasi =
-          "Anda adalah D'Gul AI. Pengguna memilih bidang keahlian '$jurusanPilihan'. Beri respons singkat & ramah untuk mengkonfirmasi pilihan ini dan persilakan mereka bertanya.";
-      final aiResponseData = await _callGeminiApi(history: [
-        {
-          'role': 'user',
-          'parts': [
-            {'text': promptKonfirmasi}
-          ]
-        }
-      ], saveHistory: false);
-      messages.add(ChatMessage(
-          text: aiResponseData['text']!,
-          sender: Sender.ai,
-          tokenCount: aiResponseData['tokenCount']));
-    } catch (e) {
-      _showError(e.toString());
-    } finally {
-      isLoading.value = false;
-      _scrollToBottom();
-      _saveChatHistory();
-    }
-  }
-
-  // --- FUNGSI BARU UNTUK UPLOAD FILE KE GOOGLE ---
   Future<Map<String, dynamic>> _uploadFileToGemini(String filePath) async {
     final file = File(filePath);
     final fileBytes = await file.readAsBytes();
     final mimeType = lookupMimeType(filePath) ?? 'application/octet-stream';
-
     final request =
         http.Request('POST', Uri.parse('$_fileApiUploadUrl?key=$_apiKey'));
     request.headers.addAll({
@@ -209,10 +156,8 @@ class ChatController extends GetxController {
       'X-Goog-Upload-Protocol': 'raw',
     });
     request.bodyBytes = fileBytes;
-
     final response = await request.send();
     final responseBody = await response.stream.bytesToString();
-
     if (response.statusCode == 200) {
       final decodedResponse = jsonDecode(responseBody);
       return {
@@ -228,8 +173,8 @@ class ChatController extends GetxController {
   Future<void> sendMessage() async {
     final text = textController.text.trim();
     final imagePath = selectedImagePath.value;
-    final filePath = selectedFilePath.value; // Dapatkan path file
-    final fileName = selectedFileName.value; // Dapatkan nama file
+    final filePath = selectedFilePath.value;
+    final fileName = selectedFileName.value;
 
     if (text.isEmpty && imagePath.isEmpty && filePath.isEmpty) return;
     if (_apiKey == 'NO_API_KEY') {
@@ -238,7 +183,6 @@ class ChatController extends GetxController {
     }
 
     isLoading.value = true;
-
     Map<String, dynamic>? fileData;
     if (filePath.isNotEmpty) {
       try {
@@ -249,44 +193,35 @@ class ChatController extends GetxController {
         return;
       }
     }
-
     messages.add(ChatMessage(
       text: text,
       sender: Sender.user,
       imagePath: imagePath,
-      fileName: fileName, // Simpan nama file ke pesan
+      fileName: fileName,
     ));
-
     textController.clear();
     selectedImagePath.value = '';
-    cancelFileSelection(); // Bersihkan pilihan file
+    cancelFileSelection();
     _scrollToBottom();
     _saveChatHistory();
 
     try {
       List<Map<String, dynamic>> history = [];
-      // Loop untuk membangun riwayat
       for (var msg in messages) {
-        if (msg.text.contains("Halo! Saya adalah D'Gul AI") ||
+        if (msg.text.contains("Ahooy, D'Gul!") ||
             msg.text.contains("Terjadi kesalahan")) continue;
-
         final role = msg.sender == Sender.user ? 'user' : 'model';
         List<Map<String, dynamic>> parts = [];
+        String promptText =
+            "Anda adalah D'Gul AI, seorang ahli maritim. Jawab pertanyaan berikut: '${msg.text}'";
 
-        // --- Logika Prompt Kontekstual ---
-        String promptText = msg.text;
-        if (role == 'user' &&
-            msg.text.isNotEmpty &&
-            pilihanJurusan.isNotEmpty) {
-          promptText =
-              "Anda adalah D'Gul AI, ahli maritim. Konteks: ${pilihanJurusan.value}. Jawab: '${msg.text}'";
+        if (role == 'user') {
+          parts.add({'text': promptText});
+        } else {
+          parts.add({'text': msg.text});
         }
 
-        // --- LOGIKA UNTUK MENYERTAKAN FILE DATA ATAU GAMBAR ---
         if (msg == messages.last) {
-          // Hanya untuk pesan terakhir yang dikirim
-          if (promptText.isNotEmpty) parts.add({'text': promptText});
-
           if (imagePath.isNotEmpty) {
             final bytes = await File(imagePath).readAsBytes();
             parts.add({
@@ -296,7 +231,6 @@ class ChatController extends GetxController {
               }
             });
           } else if (fileData != null) {
-            // Sertakan file URI yang didapat dari upload
             parts.add({
               'file_data': {
                 'mime_type': fileData['mimeType'],
@@ -304,17 +238,12 @@ class ChatController extends GetxController {
               }
             });
           }
-        } else {
-          if (msg.text.isNotEmpty) parts.add({'text': msg.text});
         }
-
         if (parts.isNotEmpty) {
           history.add({'role': role, 'parts': parts});
         }
       }
-
       final aiResponseData = await _callGeminiApi(history: history);
-
       messages.add(ChatMessage(
         text: aiResponseData['text']!,
         sender: Sender.ai,
@@ -330,15 +259,13 @@ class ChatController extends GetxController {
   }
 
   Future<Map<String, dynamic>> _callGeminiApi(
-      {required List<Map<String, dynamic>> history,
-      bool saveHistory = true}) async {
+      {required List<Map<String, dynamic>> history}) async {
     final headers = {'Content-Type': 'application/json'};
     final body = jsonEncode({'contents': history});
     final response = await http.post(
         Uri.parse('$_generateContentUrl?key=$_apiKey'),
         headers: headers,
         body: body);
-
     if (response.statusCode == 200) {
       final decodedResponse = jsonDecode(response.body);
       String responseText = "Maaf, saya tidak bisa memberikan respons.";
@@ -365,7 +292,15 @@ class ChatController extends GetxController {
   }
 
   void _scrollToBottom() {
-    // ... (Fungsi ini tetap sama)
+    Future.delayed(const Duration(milliseconds: 100), () {
+      if (scrollController.hasClients) {
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      }
+    });
   }
 
   @override
