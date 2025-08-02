@@ -43,9 +43,14 @@ class AuthView extends GetView<AuthController> {
                     children: [
                       // Beri sedikit ruang dari status bar
                       SizedBox(height: 60.h),
-                      Image.asset(
-                        RAsset().logoDgulAi,
-                        width: 250.w,
+                      GestureDetector(
+                        onTap: () {
+                          Get.toNamed('/chat');
+                        },
+                        child: Image.asset(
+                          RAsset().logoDgulAi,
+                          width: 250.w,
+                        ),
                       ),
                     ],
                   ),

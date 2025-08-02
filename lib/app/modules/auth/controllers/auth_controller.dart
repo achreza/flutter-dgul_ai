@@ -28,7 +28,6 @@ class AuthController extends GetxController {
     isLoading.value = false;
 
     if (response.isOk) {
-      // Handle successful login
       final loginResponse = LoginResponse.fromJson(response.body);
       UserController().bearerToken = loginResponse.accessToken!;
 
