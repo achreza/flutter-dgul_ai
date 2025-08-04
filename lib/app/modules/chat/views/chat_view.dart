@@ -90,16 +90,16 @@ class ChatView extends GetView<ChatController> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        buildLanguageButton(
-                            "Indonesia", "id_ID", controller.selectedLanguage),
-                        buildLanguageButton(
-                            "English", "en_US", controller.selectedLanguage),
+                        buildLanguageButton(context, "Indonesia", "id_ID",
+                            controller.selectedLanguage),
+                        buildLanguageButton(context, "English", "en_US",
+                            controller.selectedLanguage),
                       ],
                     )),
                 const PopupMenuDivider(),
                 _buildPopupMenuItem(
                     icon: Icons.delete_outline,
-                    text: 'Clear Chat',
+                    text: 'clear_chat'.tr,
                     value: 'clear_chat'),
                 _buildPopupMenuItem(
                     icon: Icons.subscriptions_outlined,

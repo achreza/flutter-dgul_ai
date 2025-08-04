@@ -7,12 +7,19 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 
-Widget buildLanguageButton(
-    String language, String langCode, RxString selectedLanguage) {
+Widget buildLanguageButton(BuildContext context, String language,
+    String langCode, RxString selectedLanguage) {
   final ChatController controller = Get.find<ChatController>();
   bool isSelected = selectedLanguage.value == langCode;
   return OutlinedButton.icon(
-    onPressed: () => controller.changeLanguage(langCode),
+    onPressed: () {
+      // 1. Tutup menu popup terlebih dahulu
+      Navigator.pop(context);
+      // 2. Tunda perubahan bahasa ke frame berikutnya
+      Future.delayed(Duration.zero, () {
+        controller.changeLanguage(langCode);
+      });
+    },
     icon: Image.asset(
       language == "Indonesia" ? RAsset().flagIndonesia : RAsset().flagUK,
       width: 14.w,

@@ -83,7 +83,11 @@ class ChatController extends GetxController {
     var locale = langCode == 'id_ID'
         ? const Locale('id', 'ID')
         : const Locale('en', 'US');
-    Get.updateLocale(locale);
+
+    // Tunda pembaruan locale ke frame berikutnya untuk menghindari error build
+    Future.delayed(Duration.zero, () {
+      Get.updateLocale(locale);
+    });
   }
 
   void changeLanguage(String langCode) {
@@ -93,7 +97,6 @@ class ChatController extends GetxController {
         : const Locale('en', 'US');
     Get.updateLocale(locale);
     _storage.write(_langKey, langCode);
-    Get.back();
   }
 
   void toggleListening() async {
