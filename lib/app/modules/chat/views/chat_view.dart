@@ -91,9 +91,9 @@ class ChatView extends GetView<ChatController> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         buildLanguageButton(
-                            "Indonesia", controller.selectedLanguage),
+                            "Indonesia", "id_ID", controller.selectedLanguage),
                         buildLanguageButton(
-                            "English", controller.selectedLanguage),
+                            "English", "en_US", controller.selectedLanguage),
                       ],
                     )),
                 const PopupMenuDivider(),
@@ -168,7 +168,7 @@ class ChatView extends GetView<ChatController> {
                       ),
                       dropdownColor: RColor().primaryBlueColor.withOpacity(0.7),
                       isDense: true,
-                      // isExpanded: false (default), agar menu bisa lebih lebar
+
                       isExpanded: false, // Agar dropdown bisa lebih lebar
                     ),
                   ),

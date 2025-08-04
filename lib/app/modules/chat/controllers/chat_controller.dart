@@ -19,7 +19,7 @@ class ChatController extends GetxController {
   var selectedImagePath = ''.obs;
   var selectedFilePath = ''.obs;
   var selectedFileName = ''.obs;
-  var selectedLanguage = 'Indonesia'.obs;
+  var selectedLanguage = 'id_ID'.obs; // Menyimpan kode locale
 
   // --- STATE BARU UNTUK DROPDOWN ---
   var selectedWorkType = 'Maritime Worker'.obs;
@@ -33,6 +33,7 @@ class ChatController extends GetxController {
   final GetStorage _storage = GetStorage();
   final _historyKey = 'chatMessages';
   final _workTypeKey = 'selectedWorkType';
+  final _langKey = 'selectedLanguage'; // Key baru untuk bahasa
 
   // --- DAFTAR OPSI BARU UNTUK DROPDOWN ---
   final List<String> maritimeWorkTypes = [
@@ -69,10 +70,30 @@ class ChatController extends GetxController {
     super.onInit();
     _loadChatHistory();
     _initSpeech();
+    _loadLanguage(); // Memuat preferensi bahasa
   }
 
   void _initSpeech() async {
     await _speechToText.initialize();
+  }
+
+  void _loadLanguage() {
+    String langCode = _storage.read(_langKey) ?? 'id_ID';
+    selectedLanguage.value = langCode;
+    var locale = langCode == 'id_ID'
+        ? const Locale('id', 'ID')
+        : const Locale('en', 'US');
+    Get.updateLocale(locale);
+  }
+
+  void changeLanguage(String langCode) {
+    selectedLanguage.value = langCode;
+    var locale = langCode == 'id_ID'
+        ? const Locale('id', 'ID')
+        : const Locale('en', 'US');
+    Get.updateLocale(locale);
+    _storage.write(_langKey, langCode);
+    Get.back();
   }
 
   void toggleListening() async {

@@ -1,5 +1,6 @@
 import 'package:dgul_ai/app/modules/auth/controllers/user_controller.dart';
 import 'package:dgul_ai/app/modules/home/controllers/theme_controller.dart';
+import 'package:dgul_ai/app/utitls/localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -34,6 +35,9 @@ class MyApp extends StatelessWidget {
       builder: (context, child) {
         return GetMaterialApp(
           title: "D'Gul AI Chat",
+          translations: AppTranslations(),
+          locale: const Locale('id', 'ID'),
+          fallbackLocale: const Locale('en', 'US'),
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
             fontFamily: GoogleFonts.jaldi().fontFamily,
