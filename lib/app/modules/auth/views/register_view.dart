@@ -72,15 +72,15 @@ class RegisterView extends GetView<AuthController> {
                           ),
                         ),
                         SizedBox(height: 20.h),
-                        buildTextField(
+                        BuildTextField(
                             label: "Full Name",
                             controller: controller.nameController),
                         SizedBox(height: 15.h),
-                        buildTextField(
+                        BuildTextField(
                             label: "Email Address",
                             controller: controller.emailController),
                         SizedBox(height: 15.h),
-                        buildTextField(
+                        BuildTextField(
                             label: "Password",
                             isObscure: true,
                             controller: controller.passwordController),

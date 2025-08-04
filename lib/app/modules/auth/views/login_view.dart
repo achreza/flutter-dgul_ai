@@ -73,11 +73,11 @@ class LoginView extends GetView<AuthController> {
                           ),
                         ),
                         SizedBox(height: 15.h),
-                        buildTextField(
+                        BuildTextField(
                             label: "Email Address",
                             controller: controller.emailController),
                         SizedBox(height: 15.h),
-                        buildTextField(
+                        BuildTextField(
                             label: "Password",
                             isObscure: true,
                             controller: controller.passwordController),
