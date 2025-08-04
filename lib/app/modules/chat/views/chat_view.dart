@@ -63,8 +63,8 @@ class ChatView extends GetView<ChatController> {
                   child: Obx(() => SwitchListTile(
                         title: Text(
                           themeController.isDarkMode.value
-                              ? 'Dark Mode'
-                              : 'Light Mode',
+                              ? 'dark_mode'.tr
+                              : 'light_mode'.tr,
                           style: TextStyle(
                               fontSize: 14.sp,
                               color: themeController.isDarkMode.value
@@ -103,15 +103,15 @@ class ChatView extends GetView<ChatController> {
                     value: 'clear_chat'),
                 _buildPopupMenuItem(
                     icon: Icons.subscriptions_outlined,
-                    text: 'Subscription',
+                    text: 'subscription'.tr,
                     value: 'subscription'),
                 _buildPopupMenuItem(
                     icon: Icons.help_outline,
-                    text: 'Help and Support',
+                    text: 'help_and_support'.tr,
                     value: 'help'),
                 const PopupMenuDivider(),
                 _buildPopupMenuItem(
-                    icon: Icons.logout, text: 'Logout', value: 'logout'),
+                    icon: Icons.logout, text: 'logout'.tr, value: 'logout'),
               ],
             ),
           ],

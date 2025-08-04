@@ -10,6 +10,7 @@ class AppTranslations extends Translations {
           'light_mode': 'Mode Terang',
           'clear_chat': 'Hapus Chat',
           'subscription': 'Langganan',
+          'help_and_support': 'Bantuan dan Dukungan',
           'logout': 'Keluar',
 
           // Tampilan Awal
@@ -37,6 +38,7 @@ class AppTranslations extends Translations {
           'clear_chat': 'Clear Chat',
           'subscription': 'Subscription',
           'logout': 'Logout',
+          'help_and_support': 'Help and Support',
 
           // Initial View
           'welcome_greeting': "Ahooy, D'Gul",
