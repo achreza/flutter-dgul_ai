@@ -54,9 +54,9 @@ class ChatController extends GetxController {
   ];
 
   final List<String> suggestionPrompts = [
-    "Information and Communication",
-    "Education and Career Development",
-    "Inspiration and Motivation",
+    "suggestion_1".tr,
+    "suggestion_2".tr,
+    "suggestion_3".tr,
   ];
 
   final String _apiKey = dotenv.env['GEMINI_API_KEY'] ?? 'NO_API_KEY';
@@ -64,6 +64,9 @@ class ChatController extends GetxController {
       'https://generativelanguage.googleapis.com/upload/v1beta/files';
   final String _generateContentUrl =
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
+
+  var selectedPlan = '1-Year'.obs;
+  var isEditMode = false.obs;
 
   @override
   void onInit() {
@@ -75,6 +78,14 @@ class ChatController extends GetxController {
 
   void _initSpeech() async {
     await _speechToText.initialize();
+  }
+
+  void selectPlan(String plan) {
+    selectedPlan.value = plan;
+  }
+
+  void toggleEditMode() {
+    isEditMode.value = !isEditMode.value;
   }
 
   void _loadLanguage() {

@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:dgul_ai/app/modules/chat/controllers/chat_controller.dart';
+import 'package:dgul_ai/app/modules/chat/views/account_setting_view.dart';
+import 'package:dgul_ai/app/modules/chat/views/subscription_view.dart';
 import 'package:dgul_ai/app/modules/home/controllers/theme_controller.dart';
 import 'package:dgul_ai/app/utitls/rasset.dart';
 import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:dgul_ai/app/widgets/language_button.dart';
 import 'package:dgul_ai/app/widgets/message_bubble.dart';
+import 'package:dgul_ai/app/widgets/tnc_dialog.dart';
 import 'package:dgul_ai/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,6 +50,12 @@ class ChatView extends GetView<ChatController> {
                   // Tambahkan logika logout
                 } else if (value == 'clear_chat') {
                   controller.clearChatHistory();
+                } else if (value == 'subscription') {
+                  Get.to(() => SubscriptionView());
+                } else if (value == 'help') {
+                  TncDialogHelper.showTncDialog(context);
+                } else if (value == 'account_setting') {
+                  Get.to(() => AccountSettingView());
                 }
               },
               color: themeController.isDarkMode.value
@@ -97,6 +106,10 @@ class ChatView extends GetView<ChatController> {
                       ],
                     )),
                 const PopupMenuDivider(),
+                _buildPopupMenuItem(
+                    icon: Icons.person_outline,
+                    text: 'account_setting'.tr,
+                    value: 'account_setting'),
                 _buildPopupMenuItem(
                     icon: Icons.delete_outline,
                     text: 'clear_chat'.tr,

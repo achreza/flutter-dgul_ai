@@ -29,6 +29,13 @@ class AppTranslations extends Translations {
               'Apakah Anda yakin ingin menghapus seluruh percakapan?',
           'delete_button': 'Hapus',
           'cancel_button': 'Batal',
+
+          //List of Suggestions
+          'suggestion_1': 'Informasi dan Komunikasi',
+          'suggestion_2': 'Edukasi dan Pengembangan Karir',
+          'suggestion_3': 'Inspirasi dan Motivasi',
+
+          'account_setting': 'Pengaturan Akun',
         },
         // --- BAHASA INGGRIS ---
         'en_US': {
@@ -56,6 +63,13 @@ class AppTranslations extends Translations {
               'Are you sure you want to delete the entire conversation?',
           'delete_button': 'Delete',
           'cancel_button': 'Cancel',
+
+          // List of Suggestions
+          'suggestion_1': 'Information and Communication',
+          'suggestion_2': 'Education and Career Development',
+          'suggestion_3': 'Inspiration and Motivation',
+
+          'account_setting': 'Account Setting',
         }
       };
 }
