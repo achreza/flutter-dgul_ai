@@ -1,4 +1,5 @@
 import 'package:dgul_ai/app/modules/chat/controllers/chat_controller.dart';
+import 'package:dgul_ai/app/modules/chat/views/subscription_detail_view.dart';
 import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:dgul_ai/app/utitls/rasset.dart';
 import 'package:dgul_ai/constants.dart';
@@ -29,129 +30,133 @@ class SubscriptionView extends GetView<ChatController> {
           ),
 
           // Layer 2: Konten utama
-          Column(
-            children: [
-              // Header melengkung dengan tombol kembali
-              SizedBox(
-                height: 120.h,
-                child: Stack(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(50.r),
-                          bottomRight: Radius.circular(50.r),
-                        ),
-                        image: DecorationImage(
-                          image: AssetImage(RAsset().bgSirkuitLight),
-                          fit: BoxFit.cover,
-                          opacity: 0.1,
-                        ),
-                      ),
-                    ),
-                    // Tombol Kembali
-                    Positioned(
-                      top: 40.h,
-                      left: 10.w,
-                      child: IconButton(
-                        icon: Icon(Icons.arrow_back_ios_new,
-                            color: RColor().primaryYellowColor),
-                        onPressed: () => Get.back(),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Bagian konten utama
-              Expanded(
-                child: SingleChildScrollView(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 24.w, vertical: 100.h),
-                  child: Column(
+          SafeArea(
+            child: Column(
+              children: [
+                // Header melengkung dengan tombol kembali
+                SizedBox(
+                  height: 160.h,
+                  child: Stack(
                     children: [
-                      Text(
-                        "Choose Subscription",
-                        style: subHeadline1TextStyle.copyWith(
-                            color: RColor().primaryBlueColor, fontSize: 32.sp),
-                      ),
-                      SizedBox(height: 12.h),
-                      Text(
-                        "Unlock full access to smart features that help you prepare for your maritime career. Choose the plan that fits you best and level up with D'Gul AI — your Seafarer Smart Assistant.",
-                        textAlign: TextAlign.center,
-                        style: body2TextStyle.copyWith(
-                            color: Colors.black.withOpacity(0.8)),
-                      ),
-                      SizedBox(height: 30.h),
-
-                      // Pilihan Paket dibungkus dengan Obx agar reaktif
-                      Obx(() => Column(
-                            children: [
-                              _buildSubscriptionCard(
-                                title: "1-Year",
-                                details:
-                                    "Save 50% | Full Access | 8.000.000 Token",
-                                price: "Rp. 500.000,-",
-                                isSelected:
-                                    controller.selectedPlan.value == "1-Year",
-                                onTap: () => controller.selectPlan("1-Year"),
-                              ),
-                              SizedBox(height: 20.h),
-                              _buildSubscriptionCard(
-                                title: "6-Month",
-                                details:
-                                    "Save 40% | Full Access | 3.000.000 Token",
-                                price: "Rp. 300.000,-",
-                                isSelected:
-                                    controller.selectedPlan.value == "6-Month",
-                                onTap: () => controller.selectPlan("6-Month"),
-                              ),
-                              SizedBox(height: 20.h),
-                              _buildSubscriptionCard(
-                                title: "Monthly",
-                                details: "Full Access | 1.000.000 Token",
-                                price: "Rp. 100.000,-",
-                                isSelected:
-                                    controller.selectedPlan.value == "Monthly",
-                                onTap: () => controller.selectPlan("Monthly"),
-                              ),
-                            ],
-                          )),
-                      SizedBox(height: 40.h),
-
-                      // Tombol Lanjutkan
-                      SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            // Logika untuk melanjutkan ke pembayaran
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: RColor().primaryBlueColor,
-                            padding: EdgeInsets.symmetric(vertical: 16.h),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30.r),
-                            ),
-                            side:
-                                const BorderSide(color: Colors.white, width: 2),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(50.r),
+                            bottomRight: Radius.circular(50.r),
                           ),
-                          child: Text("Continue to Purchase",
-                              style: buttonTextStyle.copyWith(
-                                  color: Colors.white)),
+                          image: DecorationImage(
+                            image: AssetImage(RAsset().bgSirkuitLight),
+                            fit: BoxFit.cover,
+                            opacity: 0.1,
+                          ),
                         ),
                       ),
-                      SizedBox(height: 20.h),
-                      Text(
-                        "Terms and Conditions / Privacy Policy",
-                        style: body2TextStyle.copyWith(
-                            fontSize: 12.sp,
-                            color: Colors.white.withOpacity(0.7)),
+                      // Tombol Kembali
+                      Positioned(
+                        top: 40.h,
+                        left: 10.w,
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_back_ios_new,
+                              color: RColor().primaryYellowColor),
+                          onPressed: () => Get.back(),
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
+
+                // Bagian konten utama
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 24.w, vertical: 100.h),
+                    child: Column(
+                      children: [
+                        Text(
+                          "Choose Subscription",
+                          style: subHeadline1TextStyle.copyWith(
+                              color: RColor().primaryBlueColor,
+                              fontSize: 32.sp),
+                        ),
+                        SizedBox(height: 12.h),
+                        Text(
+                          "Unlock full access to smart features that help you prepare for your maritime career. Choose the plan that fits you best and level up with D'Gul AI — your Seafarer Smart Assistant.",
+                          textAlign: TextAlign.center,
+                          style: body2TextStyle.copyWith(
+                              color: Colors.black.withOpacity(0.8)),
+                        ),
+                        SizedBox(height: 30.h),
+
+                        // Pilihan Paket dibungkus dengan Obx agar reaktif
+                        Obx(() => Column(
+                              children: [
+                                _buildSubscriptionCard(
+                                  title: "1-Year",
+                                  details:
+                                      "Save 50% | Full Access | 8.000.000 Token",
+                                  price: "Rp. 500.000,-",
+                                  isSelected:
+                                      controller.selectedPlan.value == "1-Year",
+                                  onTap: () => controller.selectPlan("1-Year"),
+                                ),
+                                SizedBox(height: 20.h),
+                                _buildSubscriptionCard(
+                                  title: "6-Month",
+                                  details:
+                                      "Save 40% | Full Access | 3.000.000 Token",
+                                  price: "Rp. 300.000,-",
+                                  isSelected: controller.selectedPlan.value ==
+                                      "6-Month",
+                                  onTap: () => controller.selectPlan("6-Month"),
+                                ),
+                                SizedBox(height: 20.h),
+                                _buildSubscriptionCard(
+                                  title: "Monthly",
+                                  details: "Full Access | 1.000.000 Token",
+                                  price: "Rp. 100.000,-",
+                                  isSelected: controller.selectedPlan.value ==
+                                      "Monthly",
+                                  onTap: () => controller.selectPlan("Monthly"),
+                                ),
+                              ],
+                            )),
+                        SizedBox(height: 40.h),
+
+                        // Tombol Lanjutkan
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              // Logika untuk melanjutkan ke pembayaran
+                              Get.to(() => SubscriptionDetailView());
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: RColor().primaryBlueColor,
+                              padding: EdgeInsets.symmetric(vertical: 16.h),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30.r),
+                              ),
+                              side: const BorderSide(
+                                  color: Colors.white, width: 2),
+                            ),
+                            child: Text("Continue to Purchase",
+                                style: buttonTextStyle.copyWith(
+                                    color: Colors.white)),
+                          ),
+                        ),
+                        SizedBox(height: 20.h),
+                        Text(
+                          "Terms and Conditions / Privacy Policy",
+                          style: body2TextStyle.copyWith(
+                              fontSize: 12.sp,
+                              color: Colors.white.withOpacity(0.7)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
