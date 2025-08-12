@@ -220,11 +220,11 @@ class AccountSettingView extends GetView<ChatController> {
               color: RColor().primaryYellowColor,
             ),
             child: CircleAvatar(
-              radius: 60.r,
+              radius: 100.r,
               backgroundImage:
                   AssetImage(RAsset().bgSirkuitLight), // Placeholder
               child: CircleAvatar(
-                radius: 55.r,
+                radius: 95.r,
                 backgroundImage: NetworkImage(
                     "https://i.pravatar.cc/150?u=fahmi"), // Ganti dengan URL foto profil
               ),
