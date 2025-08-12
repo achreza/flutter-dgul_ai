@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dgul_ai/app/data/models/chat_message_model.dart';
+import 'package:dgul_ai/app/widgets/subscription_promo_sheet.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -74,6 +75,12 @@ class ChatController extends GetxController {
     _loadChatHistory();
     _initSpeech();
     _loadLanguage(); // Memuat preferensi bahasa
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    SubscriptionPromoSheet.show();
   }
 
   void _initSpeech() async {
