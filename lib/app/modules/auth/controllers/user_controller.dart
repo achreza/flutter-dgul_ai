@@ -5,11 +5,38 @@ class UserController extends GetxController {
   // Define your variables and methods here
 
   String bearerToken = '';
-  final String userId = '';
-  final String userName = '';
-  final String userEmail = '';
-  final String userProfilePicture = '';
+  String userId = '';
+  String userName = '';
+  String userEmail = '';
+  String userProfilePicture = '';
   final RxBool isAuthenticated = false.obs;
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
+
+  void assignLoginData(
+    String token,
+    String id,
+    String name,
+    String email,
+  ) {
+    bearerToken = token;
+    userId = id;
+    userName = name;
+    userEmail = email;
+
+    isAuthenticated.value = true;
+  }
+
+  String getName() {
+    return userName;
+  }
+
+  void clearUserData() {
+    bearerToken = '';
+    userId = '';
+    userName = '';
+    userEmail = '';
+    userProfilePicture = '';
+    isAuthenticated.value = false;
+  }
 }

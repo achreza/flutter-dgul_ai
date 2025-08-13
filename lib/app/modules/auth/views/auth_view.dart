@@ -11,7 +11,8 @@ import 'package:get/get.dart';
 import '../controllers/auth_controller.dart';
 
 class AuthView extends GetView<AuthController> {
-  const AuthView({Key? key}) : super(key: key);
+  AuthView({Key? key}) : super(key: key);
+  var controller = Get.find<AuthController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,9 +45,7 @@ class AuthView extends GetView<AuthController> {
                       // Beri sedikit ruang dari status bar
                       SizedBox(height: 60.h),
                       GestureDetector(
-                        onTap: () {
-                          Get.toNamed('/chat');
-                        },
+                        onTap: () {},
                         child: Image.asset(
                           RAsset().logoDgulAi,
                           width: 250.w,

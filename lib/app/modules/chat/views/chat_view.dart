@@ -283,7 +283,7 @@ class ChatView extends GetView<ChatController> {
       BuildContext context, ChatController controller) {
     return Center(
       child: Text(
-        "Ahooy, D'Gul",
+        "Ahooy, ${controller.userController.getName()}!",
         textAlign: TextAlign.center,
         style: headlineTextStyle.copyWith(
           //use gradient color
