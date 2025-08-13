@@ -6,39 +6,68 @@ import 'package:logger/logger.dart';
 class AuthService extends GetConnect {
   // Method to login a user
   Future<Response> login(String email, String password) async {
-    Logger().i('Logging in with email: $email'
-        ' and password: $password');
+    try {
+      Logger().i('Logging in with email: $email'
+          ' and password: $password');
 
-    final response = await post(
-      '$apiBaseUrl/login',
-      {
-        'email': email,
-        'password': password,
-      },
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    );
-    return response;
+      final response = await post(
+        '$apiBaseUrl/login',
+        {
+          'email': email,
+          'password': password,
+        },
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+      );
+      return response;
+    } catch (e) {
+      Logger().e('Error logging in: $e');
+      return Response(
+        statusCode: 500,
+        statusText: 'Error logging in',
+      );
+    }
   }
 
   // Method to register a new user
   Future<Response> register(String name, String email, String password) async {
-    final response = await post('$apiBaseUrl/register', {
-      'name': name,
-      'email': email,
-      'password': password,
-    }, headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    });
-    return response;
+    try {
+      final response = await post('$apiBaseUrl/register', {
+        'name': name,
+        'email': email,
+        'password': password,
+      }, headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      });
+      return response;
+    } catch (e) {
+      Logger().e('Error registering user: $e');
+      return Response(
+        statusCode: 500,
+        statusText: 'Error registering user',
+      );
+    }
   }
 
   // Method to logout a user
   Future<Response> logout() async {
-    final response = await get('$apiBaseUrl/logout');
-    return response;
+    try {
+      final response = await post('$apiBaseUrl/logout', {}, headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization':
+            'Bearer ${Get.find<UserController>().getBearerToken()}',
+      });
+      return response;
+    } catch (e) {
+      Logger().e('Error logging out: $e');
+      return Response(
+        statusCode: 500,
+        statusText: 'Error logging out',
+      );
+    }
   }
 }

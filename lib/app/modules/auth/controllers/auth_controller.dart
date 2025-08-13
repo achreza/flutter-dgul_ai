@@ -134,7 +134,7 @@ class AuthController extends GetxController {
       Get.find<UserController>().clearUserData();
 
       // Arahkan ke halaman login
-      Get.offAllNamed('/login');
+      Get.offAllNamed('/auth');
     } else {
       Get.snackbar('Logout Failed', response.statusText ?? 'Unknown error');
     }

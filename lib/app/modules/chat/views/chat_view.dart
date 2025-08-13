@@ -48,6 +48,7 @@ class ChatView extends GetView<ChatController> {
               onSelected: (value) {
                 if (value == 'logout') {
                   // Tambahkan logika logout
+                  controller.logout();
                 } else if (value == 'clear_chat') {
                   controller.clearChatHistory();
                 } else if (value == 'subscription') {

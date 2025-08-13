@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dgul_ai/app/data/models/chat_message_model.dart';
+import 'package:dgul_ai/app/modules/auth/controllers/auth_controller.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/user_controller.dart';
 import 'package:dgul_ai/app/widgets/subscription_promo_sheet.dart';
 import 'package:file_picker/file_picker.dart';
@@ -108,6 +109,14 @@ class ChatController extends GetxController {
     Future.delayed(Duration.zero, () {
       Get.updateLocale(locale);
     });
+  }
+
+  void logout() {
+    try {
+      Get.put(AuthController()).logout();
+    } catch (e) {
+      print("Error logging out: $e");
+    }
   }
 
   void changeLanguage(String langCode) {

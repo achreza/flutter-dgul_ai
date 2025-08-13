@@ -31,6 +31,22 @@ class UserController extends GetxController {
     return userName;
   }
 
+  String getEmail() {
+    return userEmail;
+  }
+
+  String getProfilePicture() {
+    return userProfilePicture;
+  }
+
+  String getUserId() {
+    return userId;
+  }
+
+  String getBearerToken() {
+    return bearerToken;
+  }
+
   void clearUserData() {
     bearerToken = '';
     userId = '';

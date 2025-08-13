@@ -109,11 +109,11 @@ class AccountSettingView extends GetView<ChatController> {
       children: [
         _buildProfilePicture(),
         SizedBox(height: 10.h),
-        Text("Fahmi Zaki",
+        Text("${controller.userController.getName()}",
             style: subHeadline1TextStyle.copyWith(
                 color: RColor().primaryBlueColor)),
         SizedBox(height: 25.h),
-        _buildInfoRow("Email", "fahmizaki@ruangpelaut.co.id"),
+        _buildInfoRow("Email", "${controller.userController.getEmail()}"),
         _buildInfoRow("Telephone", "+628 1112 3333 4444"),
         _buildInfoRow("Type of Department", "Engine Department"),
         _buildInfoRow("Position", "Chief Engineer"),
@@ -158,11 +158,12 @@ class AccountSettingView extends GetView<ChatController> {
       children: [
         _buildProfilePicture(isEdit: true),
         SizedBox(height: 10.h),
-        Text("Fahmi Zaki",
+        Text("${controller.userController.getName()}",
             style: subHeadline1TextStyle.copyWith(
                 color: RColor().primaryBlueColor)),
         SizedBox(height: 25.h),
-        _buildEditableInfoRow("Email", "fahmizaki@ruangpelaut.co.id",
+        _buildEditableInfoRow(
+            "Email", "${controller.userController.getEmail()}",
             isEditable: false),
         _buildEditableInfoRow("Telephone", "+628 1112 3333 4444"),
         _buildEditableInfoRow("Type of Department", "Engine Department"),
