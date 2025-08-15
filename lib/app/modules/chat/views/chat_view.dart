@@ -248,7 +248,9 @@ class ChatView extends GetView<ChatController> {
               }),
               // Tampilkan saran prompt hanya di awal
               Obx(() {
-                if (controller.messages.length <= 1) {
+                if (controller.messages.length <= 1 ||
+                    !controller.selectedImagePath.isNotEmpty ||
+                    !controller.selectedFilePath.isNotEmpty) {
                   return _buildSuggestionPrompts(context, controller);
                 }
                 return const SizedBox.shrink();
@@ -344,6 +346,86 @@ class ChatView extends GetView<ChatController> {
     );
   }
 
+  Widget _buildSuggestionPhotoPrompts(
+      BuildContext context, ChatController controller) {
+    return Container(
+      height: 60.h, // Memberi tinggi tetap untuk area scroll
+      padding: EdgeInsets.symmetric(vertical: 4.h),
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        itemCount: controller.fotoSuggestionPrompts.length,
+        separatorBuilder: (context, index) => SizedBox(width: 8.w),
+        itemBuilder: (context, index) {
+          final prompt = controller.fotoSuggestionPrompts[index];
+          return OutlinedButton(
+            onPressed: () => controller.sendSuggestion(prompt),
+            style: OutlinedButton.styleFrom(
+              // add shadow
+              elevation: 2,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              foregroundColor: RColor().primaryBlueColor,
+
+              backgroundColor: Colors.white.withOpacity(0.8),
+              side: BorderSide(color: Colors.grey.shade300),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+            ),
+            child: Text(
+              prompt,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.grey.shade700,
+                fontSize: 12.sp,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSuggestionDocumentPrompts(
+      BuildContext context, ChatController controller) {
+    return Container(
+      height: 60.h, // Memberi tinggi tetap untuk area scroll
+      padding: EdgeInsets.symmetric(vertical: 4.h),
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        itemCount: controller.documentSuggestionPrompts.length,
+        separatorBuilder: (context, index) => SizedBox(width: 8.w),
+        itemBuilder: (context, index) {
+          final prompt = controller.documentSuggestionPrompts[index];
+          return OutlinedButton(
+            onPressed: () => controller.sendSuggestion(prompt),
+            style: OutlinedButton.styleFrom(
+              // add shadow
+              elevation: 2,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              foregroundColor: RColor().primaryBlueColor,
+
+              backgroundColor: Colors.white.withOpacity(0.8),
+              side: BorderSide(color: Colors.grey.shade300),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+            ),
+            child: Text(
+              prompt,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.grey.shade700,
+                fontSize: 12.sp,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   Widget _buildTextComposer(BuildContext context, ChatController controller) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
@@ -352,6 +434,15 @@ class ChatView extends GetView<ChatController> {
         top: false,
         child: Column(
           children: [
+            Obx(() {
+              if (controller.selectedImagePath.isNotEmpty) {
+                return _buildSuggestionPhotoPrompts(context, controller);
+              } else if (controller.selectedFilePath.isNotEmpty) {
+                return _buildSuggestionDocumentPrompts(context, controller);
+              } else {
+                return const SizedBox.shrink();
+              }
+            }),
             Obx(() {
               if (controller.selectedImagePath.isNotEmpty) {
                 return _buildImagePreview(context);

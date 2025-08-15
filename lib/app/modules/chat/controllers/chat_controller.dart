@@ -63,6 +63,18 @@ class ChatController extends GetxController {
     "suggestion_3".tr,
   ];
 
+  final List<String> fotoSuggestionPrompts = [
+    "foto_suggestion_1".tr,
+    "foto_suggestion_2".tr,
+    "foto_suggestion_3".tr,
+  ];
+
+  final List<String> documentSuggestionPrompts = [
+    "document_suggestion_1".tr,
+    "document_suggestion_2".tr,
+    "document_suggestion_3".tr,
+  ];
+
   final String _apiKey = dotenv.env['GEMINI_API_KEY'] ?? 'NO_API_KEY';
   final String _fileApiUploadUrl =
       'https://generativelanguage.googleapis.com/upload/v1beta/files';

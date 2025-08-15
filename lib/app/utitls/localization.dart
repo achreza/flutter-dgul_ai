@@ -35,6 +35,15 @@ class AppTranslations extends Translations {
           'suggestion_2': 'Edukasi dan Pengembangan Karir',
           'suggestion_3': 'Inspirasi dan Motivasi',
 
+          'foto_suggestion_1': 'Jelaskan foto ini',
+          'foto_suggestion_2': 'Apa yang Anda lihat di foto ini?',
+          'foto_suggestion_3': 'Bagaimana perasaan Anda tentang foto ini?',
+
+          'document_suggestion_1': 'Jelaskan dokumen ini',
+          'document_suggestion_2': 'Apa yang Anda lihat di dokumen ini?',
+          'document_suggestion_3':
+              'Bagaimana perasaan Anda tentang dokumen ini?',
+
           'account_setting': 'Pengaturan Akun',
         },
         // --- BAHASA INGGRIS ---
