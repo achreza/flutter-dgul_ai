@@ -350,66 +350,161 @@ class ChatView extends GetView<ChatController> {
       color: Theme.of(context).scaffoldBackgroundColor,
       child: SafeArea(
         top: false,
-        child: Row(
+        child: Column(
           children: [
-            IconButton(
-              icon: const Icon(Icons.add_circle_outline),
-              color: Theme.of(context).colorScheme.primary,
-              onPressed: () => _showAttachmentSheet(controller),
-            ),
-            Expanded(
-              child: Container(
-                padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).cardColor,
-                  borderRadius: BorderRadius.circular(30.r),
-                  border: Border.all(color: Colors.grey.shade300),
-                ),
-                child: TextField(
-                  controller: controller.textController,
-                  onSubmitted: (_) => controller.sendMessage(),
-                  decoration: const InputDecoration.collapsed(
-                    hintText: "Chat D'Gul...",
-                  ),
-                  minLines: 1,
-                  maxLines: 5,
-                ),
-              ),
-            ),
-            SizedBox(width: 4.w),
             Obx(() {
-              if (controller.isListening.value) {
-                return RippleAnimation(
-                  color: Colors.red,
-                  delay: const Duration(milliseconds: 300),
-                  repeat: true,
-                  minRadius: 20.r,
-                  ripplesCount: 3,
-                  duration: const Duration(milliseconds: 6 * 300),
-                  child: InkWell(
-                    onTap: controller.toggleListening,
-                    child: CircleAvatar(
-                      minRadius: 20.r,
-                      backgroundColor: Colors.red,
-                      child: Icon(Icons.mic, color: Colors.white, size: 20.sp),
-                    ),
-                  ),
-                );
+              if (controller.selectedImagePath.isNotEmpty) {
+                return _buildImagePreview(context);
+              } else if (controller.selectedFilePath.isNotEmpty) {
+                return _buildFilePreview(context);
               } else {
-                return IconButton(
-                  icon: const Icon(Icons.mic_none_outlined),
-                  onPressed: controller.toggleListening,
-                  color: Theme.of(context).colorScheme.primary,
-                );
+                return const SizedBox.shrink();
               }
             }),
-            IconButton(
-              icon: const Icon(Icons.send_rounded),
-              onPressed: controller.sendMessage,
-              color: Theme.of(context).colorScheme.primary,
+            Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.add_circle_outline),
+                  color: Theme.of(context).colorScheme.primary,
+                  onPressed: () => _showAttachmentSheet(controller),
+                ),
+                Expanded(
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).cardColor,
+                      borderRadius: BorderRadius.circular(30.r),
+                      border: Border.all(color: Colors.grey.shade300),
+                    ),
+                    child: TextField(
+                      controller: controller.textController,
+                      onSubmitted: (_) => controller.sendMessage(),
+                      decoration: const InputDecoration.collapsed(
+                        hintText: "Chat D'Gul...",
+                      ),
+                      minLines: 1,
+                      maxLines: 5,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 4.w),
+                Obx(() {
+                  if (controller.isListening.value) {
+                    return RippleAnimation(
+                      color: Colors.red,
+                      delay: const Duration(milliseconds: 300),
+                      repeat: true,
+                      minRadius: 20.r,
+                      ripplesCount: 3,
+                      duration: const Duration(milliseconds: 6 * 300),
+                      child: InkWell(
+                        onTap: controller.toggleListening,
+                        child: CircleAvatar(
+                          minRadius: 20.r,
+                          backgroundColor: Colors.red,
+                          child:
+                              Icon(Icons.mic, color: Colors.white, size: 20.sp),
+                        ),
+                      ),
+                    );
+                  } else {
+                    return IconButton(
+                      icon: const Icon(Icons.mic_none_outlined),
+                      onPressed: controller.toggleListening,
+                      color: Theme.of(context).colorScheme.primary,
+                    );
+                  }
+                }),
+                IconButton(
+                  icon: const Icon(Icons.send_rounded),
+                  onPressed: controller.sendMessage,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ],
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildImagePreview(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8.h),
+      padding: EdgeInsets.all(8.w),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor.withOpacity(0.9),
+        borderRadius: BorderRadius.circular(15.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10.r),
+            child: Image.file(
+              File(controller.selectedImagePath.value),
+              width: 50.w,
+              height: 50.w,
+              fit: BoxFit.cover,
+            ),
+          ),
+          SizedBox(width: 10.w),
+          const Expanded(
+            child: Text(
+              "Gambar dipilih. Tambahkan teks...",
+              style: TextStyle(fontStyle: FontStyle.italic),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: controller.cancelImageSelection,
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFilePreview(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(bottom: 8.h),
+      padding: EdgeInsets.all(8.w),
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor.withOpacity(0.9),
+        borderRadius: BorderRadius.circular(15.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Icon(Icons.description, color: Theme.of(context).colorScheme.primary),
+          SizedBox(width: 10.w),
+          Expanded(
+            child: Text(
+              controller.selectedFileName.value,
+              style: const TextStyle(fontStyle: FontStyle.italic),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: controller.cancelFileSelection,
+          )
+        ],
       ),
     );
   }

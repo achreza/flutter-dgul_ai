@@ -35,7 +35,7 @@ class SubscriptionView extends GetView<ChatController> {
               children: [
                 // Header melengkung dengan tombol kembali
                 SizedBox(
-                  height: 160.h,
+                  height: 170.h,
                   child: Stack(
                     children: [
                       Container(
