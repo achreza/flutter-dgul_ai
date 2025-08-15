@@ -228,29 +228,24 @@ class ChatView extends GetView<ChatController> {
               Obx(() {
                 if (controller.isLoading.value) {
                   return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                            width: 20.w,
-                            height: 20.h,
-                            child: const CircularProgressIndicator(
-                                strokeWidth: 2)),
-                        SizedBox(width: 10.w),
-                        const Text("D'Gul AI is thinking..."),
-                      ],
-                    ),
-                  );
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: 70.w,
+                        height: 70.h,
+                        child: Image.asset(
+                          RAsset().loading,
+                          width: 70.w,
+                          height: 70.h,
+                        ),
+                      ));
                 } else {
                   return const SizedBox.shrink();
                 }
               }),
               // Tampilkan saran prompt hanya di awal
               Obx(() {
-                if (controller.messages.length <= 1 ||
-                    !controller.selectedImagePath.isNotEmpty ||
-                    !controller.selectedFilePath.isNotEmpty) {
+                if (controller.messages.length <= 1) {
                   return _buildSuggestionPrompts(context, controller);
                 }
                 return const SizedBox.shrink();
