@@ -1,3 +1,4 @@
+import 'package:dgul_ai/app/data/dto/responses/profile_response.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
@@ -12,6 +13,7 @@ class UserController extends GetxController {
   final RxBool isAuthenticated = false.obs;
   final RxBool isLoading = false.obs;
   final RxString errorMessage = ''.obs;
+  ProfileResponse profileData = ProfileResponse();
 
   void assignLoginData(
     String token,
@@ -25,6 +27,10 @@ class UserController extends GetxController {
     userEmail = email;
 
     isAuthenticated.value = true;
+  }
+
+  void assignProfileData(ProfileResponse profile) {
+    profileData = profile;
   }
 
   String getName() {

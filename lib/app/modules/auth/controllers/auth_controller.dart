@@ -68,12 +68,14 @@ class AuthController extends GetxController {
 
       // Gunakan Get.find() untuk mengakses instance UserController
       final userController = Get.find<UserController>();
+
       userController.assignLoginData(
         loginResponse.accessToken!,
         loginResponse.user!.id!.toString(),
         loginResponse.user!.name!,
         loginResponse.user!.email!,
       );
+      userController.assignProfileData(await authService.getProfileData());
 
       Get.offAllNamed('/chat');
       Get.put(ChatController());

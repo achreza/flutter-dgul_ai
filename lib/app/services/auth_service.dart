@@ -1,3 +1,4 @@
+import 'package:dgul_ai/app/data/dto/responses/profile_response.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/user_controller.dart';
 import 'package:dgul_ai/constants.dart';
 import 'package:get/get.dart';
@@ -28,6 +29,27 @@ class AuthService extends GetConnect {
         statusCode: 500,
         statusText: 'Error logging in',
       );
+    }
+  }
+
+  Future<ProfileResponse> getProfileData() async {
+    try {
+      final response = await get('$apiBaseUrl/profile', headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization':
+            'Bearer ${Get.find<UserController>().getBearerToken()}',
+      });
+
+      if (response.isOk) {
+        return ProfileResponse.fromJson(response.body);
+      } else {
+        Logger().e('Error fetching profile data: ${response.statusText}');
+        return ProfileResponse();
+      }
+    } catch (e) {
+      Logger().e('Error fetching profile data: $e');
+      return ProfileResponse();
     }
   }
 
