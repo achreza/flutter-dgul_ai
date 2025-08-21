@@ -356,11 +356,9 @@ class ChatView extends GetView<ChatController> {
           return OutlinedButton(
             onPressed: () => controller.sendSuggestion(prompt),
             style: OutlinedButton.styleFrom(
-              // add shadow
               elevation: 2,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               foregroundColor: RColor().primaryBlueColor,
-
               backgroundColor: Colors.white.withOpacity(0.8),
               side: BorderSide(color: Colors.grey.shade300),
               shape: RoundedRectangleBorder(

@@ -18,8 +18,6 @@ class RegisterView extends GetView<AuthController> {
   @override
   Widget build(BuildContext context) {
     // Controller sederhana untuk state UI
-    final RxString selectedRole = 'Seafarer'.obs;
-    final RxString selectedLanguage = 'Indonesia'.obs;
 
     return Scaffold(
       body: Stack(
@@ -94,11 +92,11 @@ class RegisterView extends GetView<AuthController> {
                               _buildRadioOption(
                                   title: "Seafarer",
                                   value: "Seafarer",
-                                  groupValue: selectedRole),
+                                  groupValue: controller.selectedRole),
                               _buildRadioOption(
                                   title: "Shore Base Maritime Worker",
                                   value: "Shore Base Maritime Worker",
-                                  groupValue: selectedRole),
+                                  groupValue: controller.selectedRole),
                             ],
                           ),
                         ),
@@ -112,9 +110,10 @@ class RegisterView extends GetView<AuthController> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               _buildLanguageButton(
-                                  "Indonesia", selectedLanguage),
+                                  "Indonesia", controller.selectedLanguage),
                               SizedBox(width: 15.w),
-                              _buildLanguageButton("English", selectedLanguage),
+                              _buildLanguageButton(
+                                  "English", controller.selectedLanguage),
                             ],
                           ),
                         ),

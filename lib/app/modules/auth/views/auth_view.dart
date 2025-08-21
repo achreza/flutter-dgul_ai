@@ -161,7 +161,7 @@ class AuthView extends GetView<AuthController> {
             children: [
               Text("Help", style: _footerTextStyle()),
               Text("About Us", style: _footerTextStyle()),
-              Text("Version 1.0 Beta", style: _footerTextStyle()),
+              Text("Version 1.0", style: _footerTextStyle()),
             ],
           )
         ],
@@ -172,7 +172,7 @@ class AuthView extends GetView<AuthController> {
   // Style untuk teks footer
   TextStyle _footerTextStyle() {
     return TextStyle(
-      fontSize: 12.sp,
+      fontSize: 14.sp,
       color: Colors.grey[600],
     );
   }

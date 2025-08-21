@@ -5,6 +5,11 @@ class AppTranslations extends Translations {
   Map<String, Map<String, String>> get keys => {
         // --- BAHASA INDONESIA ---
         'id_ID': {
+          //menu register
+          'register': 'Daftar',
+          'seafarer': 'Pelaut',
+          'shore_base_maritime_worker': 'Pekerja Darat Maritim',
+
           // Menu Popup
           'dark_mode': 'Mode Gelap',
           'light_mode': 'Mode Terang',
@@ -17,7 +22,7 @@ class AppTranslations extends Translations {
           'welcome_greeting': "Ahooy, D'Gul",
           'suggestion_info': 'Informasi dan Komunikasi',
           'suggestion_edu': 'Edukasi dan Pengembangan Karir',
-          'suggestion_inspire': 'Inspirasi dan Motivasi',
+          'suggestion_inspire': 'Ruang Komunikasi',
 
           // Input Composer
           'text_field_hint': "Chat D'Gul...",
@@ -33,7 +38,7 @@ class AppTranslations extends Translations {
           //List of Suggestions
           'suggestion_1': 'Informasi dan Komunikasi',
           'suggestion_2': 'Edukasi dan Pengembangan Karir',
-          'suggestion_3': 'Inspirasi dan Motivasi',
+          'suggestion_3': 'Ruang Komunikasi',
 
           'foto_suggestion_1': 'Jelaskan foto ini',
           'foto_suggestion_2': 'Apa yang Anda lihat di foto ini?',
@@ -48,6 +53,11 @@ class AppTranslations extends Translations {
         },
         // --- BAHASA INGGRIS ---
         'en_US': {
+          //menu register
+          'register': 'Register',
+          'seafarer': 'Seafarer',
+          'shore_base_maritime_worker': 'Shore Base Maritime Worker',
+
           // Popup Menu
           'dark_mode': 'Dark Mode',
           'light_mode': 'Light Mode',

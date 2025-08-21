@@ -1,5 +1,6 @@
 import 'package:dgul_ai/app/data/dto/responses/login_response.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/user_controller.dart';
+import 'package:dgul_ai/app/modules/chat/controllers/chat_controller.dart';
 import 'package:dgul_ai/app/services/auth_service.dart';
 import 'package:dgul_ai/app/utitls/rloaders.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,9 @@ class AuthController extends GetxController {
   final GetStorage _storage = GetStorage();
 
   final AuthService authService = AuthService();
+
+  final RxString selectedRole = 'Seafarer'.obs;
+  final RxString selectedLanguage = 'Indonesia'.obs;
   @override
   void onInit() {
     super.onInit();
@@ -72,6 +76,7 @@ class AuthController extends GetxController {
       );
 
       Get.offAllNamed('/chat');
+      Get.put(ChatController());
       RLoaders.showStatusDialog(
         context: Get.context!,
         status: DialogStatus.success,
@@ -95,6 +100,8 @@ class AuthController extends GetxController {
       nameController.text,
       emailController.text,
       passwordController.text,
+      selectedLanguage.value,
+      selectedRole.value,
     );
     isLoading.value = false;
 
