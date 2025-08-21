@@ -54,7 +54,8 @@ class User {
     position = json['position'] ?? '';
     language = json['language'] ?? '';
     role = json['role'] ?? '';
-    profilePhotoUrl = json['profile_photo_url'] ?? '';
+    profilePhotoUrl = json['profile_photo_url'] ??
+        'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png';
     emailVerifiedAt = json['email_verified_at'] ?? '';
     createdAt = json['created_at'] ?? '';
     updatedAt = json['updated_at'] ?? '';

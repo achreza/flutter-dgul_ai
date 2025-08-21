@@ -169,11 +169,11 @@ class AccountSettingView extends GetView<ChatController> {
             "Email", "${controller.userController.getEmail()}",
             isEditable: false),
         _buildEditableInfoRow("Telephone",
-            "${controller.userController.profileData.user?.phone ?? 'Not Set'}"),
+            "${controller.userController.profileData.user?.phone ?? ''}"),
         _buildEditableInfoRow("Type of Department",
-            "${controller.userController.profileData.user?.department ?? 'Not Set'}"),
+            "${controller.userController.profileData.user?.department ?? ''}"),
         _buildEditableInfoRow("Position",
-            "${controller.userController.profileData.user?.position ?? 'Not Set'}"),
+            "${controller.userController.profileData.user?.position ?? ''}"),
         _buildInfoRow("Subscription Status", "Active 360 Days"),
         _buildInfoRow("Token", "890.000 - 1.000.000"),
         SizedBox(height: 30.h),
@@ -233,7 +233,7 @@ class AccountSettingView extends GetView<ChatController> {
               child: CircleAvatar(
                 radius: 95.r,
                 backgroundImage: NetworkImage(
-                    "https://i.pravatar.cc/150?u=fahmi"), // Ganti dengan URL foto profil
+                    "${controller.userController.profileData.user?.profilePhotoUrl ?? 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png'}"), // Ganti dengan URL foto profil
               ),
             ),
           ),
