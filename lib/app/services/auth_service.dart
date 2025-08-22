@@ -57,11 +57,12 @@ class AuthService extends GetConnect {
   Future<Response> register(String name, String email, String password,
       String language, String role) async {
     try {
+      String langCode = language == 'Indonesia' ? 'id' : 'en';
       final response = await post('$apiBaseUrl/register', {
         'name': name,
         'email': email,
         'password': password,
-        'language': language,
+        'language': langCode,
         'role': role,
       }, headers: {
         'Accept': 'application/json',

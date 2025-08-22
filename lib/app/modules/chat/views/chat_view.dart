@@ -27,7 +27,7 @@ class ChatView extends GetView<ChatController> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(100.h), // Menyesuaikan tinggi total AppBar
+            Size.fromHeight(90.h), // Menyesuaikan tinggi total AppBar
         child: AppBar(
           automaticallyImplyLeading: false,
           flexibleSpace: Stack(
@@ -130,11 +130,11 @@ class ChatView extends GetView<ChatController> {
             ),
           ],
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(50.h),
+            preferredSize: Size.fromHeight(40.h),
             child: Center(
               child: Container(
                 // Container ini hanya untuk dekorasi, bukan untuk sizing
-                margin: EdgeInsets.only(bottom: 10.h),
+                margin: EdgeInsets.only(bottom: 20.h),
                 padding: EdgeInsets.symmetric(horizontal: 16.w),
                 decoration: BoxDecoration(
                   color: RColor().primaryBlueColor.withOpacity(0.7),
@@ -356,7 +356,7 @@ class ChatView extends GetView<ChatController> {
   Widget _buildSubSuggestionPrompts(
       BuildContext context, ChatController controller) {
     return Container(
-      height: 180.h, // Memberi tinggi tetap untuk area scroll
+      height: (56 * controller.subSuggestion1Prompts.length.toDouble()).h,
       padding: EdgeInsets.symmetric(vertical: 4.h),
       child: ListView.separated(
         scrollDirection: Axis.vertical,
