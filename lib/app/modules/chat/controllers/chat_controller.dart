@@ -27,6 +27,7 @@ class ChatController extends GetxController {
 
   // --- STATE BARU UNTUK DROPDOWN ---
   var selectedWorkType = 'Maritime Worker'.obs;
+  RxInt selectedSuggestion = 0.obs;
 
   var isListening = false.obs;
   final SpeechToText _speechToText = SpeechToText();
@@ -61,6 +62,24 @@ class ChatController extends GetxController {
     "suggestion_1".tr,
     "suggestion_2".tr,
     "suggestion_3".tr,
+  ];
+
+  final List<String> subSuggestion1Prompts = [
+    "sub_suggestion_1_1".tr,
+    "sub_suggestion_1_2".tr,
+    "sub_suggestion_1_3".tr,
+  ];
+
+  final List<String> subSuggestion2Prompts = [
+    "sub_suggestion_2_1".tr,
+    "sub_suggestion_2_2".tr,
+    "sub_suggestion_2_3".tr,
+  ];
+
+  final List<String> subSuggestion3Prompts = [
+    "sub_suggestion_3_1".tr,
+    "sub_suggestion_3_2".tr,
+    "sub_suggestion_3_3".tr,
   ];
 
   final List<String> fotoSuggestionPrompts = [

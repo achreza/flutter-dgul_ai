@@ -20,10 +20,36 @@ class AuthController extends GetxController {
 
   final RxString selectedRole = 'Seafarer'.obs;
   final RxString selectedLanguage = 'Indonesia'.obs;
+  var selectedLanguageCode = 'id_ID'.obs; // Menyimpan kode locale
+  final _langKey = 'selectedLanguage'; // Key baru untuk bahasa
+
   @override
   void onInit() {
     super.onInit();
     autoLogin();
+    _loadLanguage(); // Memuat preferensi bahasa
+  }
+
+  void _loadLanguage() {
+    String langCode = _storage.read(_langKey) ?? 'id_ID';
+    selectedLanguageCode.value = langCode;
+    var locale = langCode == 'id_ID'
+        ? const Locale('id', 'ID')
+        : const Locale('en', 'US');
+
+    // Tunda pembaruan locale ke frame berikutnya untuk menghindari error build
+    Future.delayed(Duration.zero, () {
+      Get.updateLocale(locale);
+    });
+  }
+
+  void changeLanguage(String langCode) {
+    selectedLanguageCode.value = langCode;
+    var locale = langCode == 'id_ID'
+        ? const Locale('id', 'ID')
+        : const Locale('en', 'US');
+    Get.updateLocale(locale);
+    _storage.write(_langKey, langCode);
   }
 
   void autoLogin() async {

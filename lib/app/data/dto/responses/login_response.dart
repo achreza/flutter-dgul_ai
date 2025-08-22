@@ -37,8 +37,8 @@ class User {
   int? id;
   String? name;
   String? email;
-  Null? language;
-  Null? role;
+  String? language;
+  String? role;
   String? emailVerifiedAt;
   String? createdAt;
   String? updatedAt;

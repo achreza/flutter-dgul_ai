@@ -244,6 +244,14 @@ class ChatView extends GetView<ChatController> {
                 }
               }),
               // Tampilkan saran prompt hanya di awal
+
+              Obx(() {
+                if (controller.messages.length <= 1 &&
+                    controller.selectedSuggestion.value != 0) {
+                  return _buildSubSuggestionPrompts(context, controller);
+                }
+                return const SizedBox.shrink();
+              }),
               Obx(() {
                 if (controller.messages.length <= 1) {
                   return _buildSuggestionPrompts(context, controller);
@@ -314,6 +322,58 @@ class ChatView extends GetView<ChatController> {
         itemBuilder: (context, index) {
           final prompt = controller.suggestionPrompts[index];
           return OutlinedButton(
+            onPressed: () {
+              controller.selectedSuggestion.value != index + 1
+                  ? controller.selectedSuggestion.value = index + 1
+                  : controller.selectedSuggestion.value = 0;
+            },
+            style: OutlinedButton.styleFrom(
+              // add shadow
+              elevation: 2,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+              foregroundColor: RColor().primaryBlueColor,
+
+              backgroundColor: Colors.white.withOpacity(0.8),
+              side: BorderSide(color: Colors.grey.shade300),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+            ),
+            child: Text(
+              prompt,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.grey.shade700,
+                fontSize: 15.sp,
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSubSuggestionPrompts(
+      BuildContext context, ChatController controller) {
+    return Container(
+      height: 180.h, // Memberi tinggi tetap untuk area scroll
+      padding: EdgeInsets.symmetric(vertical: 4.h),
+      child: ListView.separated(
+        scrollDirection: Axis.vertical,
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        itemCount: controller.selectedSuggestion.value == 1
+            ? controller.subSuggestion1Prompts.length
+            : controller.selectedSuggestion.value == 2
+                ? controller.subSuggestion2Prompts.length
+                : controller.subSuggestion3Prompts.length,
+        separatorBuilder: (context, index) => SizedBox(width: 8.w),
+        itemBuilder: (context, index) {
+          final prompt = controller.selectedSuggestion.value == 1
+              ? controller.subSuggestion1Prompts[index]
+              : controller.selectedSuggestion.value == 2
+                  ? controller.subSuggestion2Prompts[index]
+                  : controller.subSuggestion3Prompts[index];
+          return OutlinedButton(
             onPressed: () => controller.sendSuggestion(prompt),
             style: OutlinedButton.styleFrom(
               // add shadow
@@ -332,7 +392,7 @@ class ChatView extends GetView<ChatController> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.grey.shade700,
-                fontSize: 12.sp,
+                fontSize: 15.sp,
               ),
             ),
           );

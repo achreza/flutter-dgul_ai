@@ -37,7 +37,7 @@ class RegisterView extends GetView<AuthController> {
             children: [
               // Bagian Atas dengan Logo
               SizedBox(
-                height: 280.h, // Tinggi tetap untuk bagian atas
+                height: 230.h, // Tinggi tetap untuk bagian atas
                 child: Container(
                   width: double.infinity,
                   child: Center(
@@ -63,7 +63,7 @@ class RegisterView extends GetView<AuthController> {
                         SizedBox(height: 25.h),
                         Center(
                           child: Text(
-                            "Register",
+                            "register".tr,
                             style: subHeadline2TextStyle.copyWith(
                                 color: RColor().primaryBlueColor,
                                 fontWeight: FontWeight.bold),
@@ -71,37 +71,38 @@ class RegisterView extends GetView<AuthController> {
                         ),
                         SizedBox(height: 20.h),
                         BuildTextField(
-                            label: "Full Name",
+                            label: "full_name".tr,
                             controller: controller.nameController),
                         SizedBox(height: 15.h),
                         BuildTextField(
-                            label: "Email Address",
+                            label: "email_address".tr,
                             controller: controller.emailController),
                         SizedBox(height: 15.h),
                         BuildTextField(
-                            label: "Password",
+                            label: "password".tr,
                             isObscure: true,
                             controller: controller.passwordController),
                         SizedBox(height: 20.h),
-                        Text("Login As",
+                        Text("login_as".tr,
                             style: body1TextStyle.copyWith(
                                 color: RColor().secondaryGreyColor)),
                         Obx(
                           () => Column(
                             children: [
                               _buildRadioOption(
-                                  title: "Seafarer",
-                                  value: "Seafarer",
-                                  groupValue: controller.selectedRole),
+                                title: "seafarer".tr,
+                                value: "Seafarer",
+                                groupValue: controller.selectedRole,
+                              ),
                               _buildRadioOption(
-                                  title: "Shore Base Maritime Worker",
+                                  title: "shore_base_maritime_worker".tr,
                                   value: "Shore Base Maritime Worker",
                                   groupValue: controller.selectedRole),
                             ],
                           ),
                         ),
                         SizedBox(height: 15.h),
-                        Text("Language",
+                        Text("language".tr,
                             style: body1TextStyle.copyWith(
                                 color: RColor().primaryBlueColor)),
                         SizedBox(height: 8.h),
@@ -109,17 +110,17 @@ class RegisterView extends GetView<AuthController> {
                           () => Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              _buildLanguageButton(
-                                  "Indonesia", controller.selectedLanguage),
+                              _buildLanguageButton("Indonesia",
+                                  controller.selectedLanguage, 'id_ID'),
                               SizedBox(width: 15.w),
-                              _buildLanguageButton(
-                                  "English", controller.selectedLanguage),
+                              _buildLanguageButton("English",
+                                  controller.selectedLanguage, 'en_US'),
                             ],
                           ),
                         ),
                         SizedBox(height: 30.h),
                         buildButton(
-                          label: "Register",
+                          label: "register".tr,
                           onPressed: () {
                             controller.register();
                           },
@@ -141,10 +142,11 @@ class RegisterView extends GetView<AuthController> {
     );
   }
 
-  Widget _buildRadioOption(
-      {required String title,
-      required String value,
-      required RxString groupValue}) {
+  Widget _buildRadioOption({
+    required String title,
+    required String value,
+    required RxString groupValue,
+  }) {
     return Container(
       height: 50.h,
       child: RadioListTile<String>(
@@ -166,10 +168,14 @@ class RegisterView extends GetView<AuthController> {
     );
   }
 
-  Widget _buildLanguageButton(String language, RxString selectedLanguage) {
+  Widget _buildLanguageButton(
+      String language, RxString selectedLanguage, String languageCode) {
     bool isSelected = selectedLanguage.value == language;
     return OutlinedButton.icon(
-      onPressed: () => selectedLanguage.value = language,
+      onPressed: () {
+        selectedLanguage.value = language;
+        controller.changeLanguage(languageCode);
+      },
       icon: Image.asset(
         language == "Indonesia"
             ? "assets/images/flag_indonesia.png"
@@ -204,7 +210,7 @@ class RegisterView extends GetView<AuthController> {
           Get.to(() => GoogleRegisterView());
         },
         icon: Image.asset("assets/images/google_logo.png", height: 20.h),
-        label: Text("Register With Google",
+        label: Text("register_with_google".tr,
             style: buttonTextStyle.copyWith(color: Colors.white)),
         style: ElevatedButton.styleFrom(
           backgroundColor: RColor().primaryBlueColor,
