@@ -20,10 +20,15 @@ class AuthView extends GetView<AuthController> {
         children: [
           // Layer 1: Latar Belakang Biru Gelap Solid (untuk menutupi seluruh layar)
           Container(
-            color: const Color(0xFF0A183E),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(RAsset().bgStart),
+                fit: BoxFit.cover,
+                alignment: Alignment.topCenter,
+              ),
+            ),
           ),
-
-          // Layer 2: Konten Utama
           Column(
             children: [
               // Bagian Atas dengan Logo dan Latar Belakang Berpola
@@ -33,7 +38,7 @@ class AuthView extends GetView<AuthController> {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(RAsset().bgDgulBlue),
+                      image: AssetImage(RAsset().bgStart),
                       fit: BoxFit.cover,
                       // Rata atas agar bagian atas gambar tidak terpotong
                       alignment: Alignment.topCenter,
@@ -42,8 +47,6 @@ class AuthView extends GetView<AuthController> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Beri sedikit ruang dari status bar
-                      SizedBox(height: 60.h),
                       GestureDetector(
                         onTap: () {},
                         child: Image.asset(
@@ -61,19 +64,6 @@ class AuthView extends GetView<AuthController> {
                 flex: 4, // Porsi lebih kecil untuk kartu putih
                 child: Container(
                   width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    // Radius yang lebih besar untuk kurva yang lebih dalam
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(100.r),
-                      topRight: Radius.circular(100.r),
-                    ),
-                    image: DecorationImage(
-                      image: AssetImage(RAsset().bgSirkuitLight),
-                      fit: BoxFit.cover,
-                      opacity: 0.2, // Membuat pola sirkuit transparan
-                    ),
-                  ),
                   child: _buildAuthCard(),
                 ),
               ),
@@ -87,10 +77,11 @@ class AuthView extends GetView<AuthController> {
   // Widget untuk konten di dalam kartu putih
   Widget _buildAuthCard() {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 40.w),
+      padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 20.h),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          SizedBox(height: 40.h),
           Text(
             "Maritime\nSmart Assistant",
             textAlign: TextAlign.center,

@@ -157,22 +157,22 @@ class AuthController extends GetxController {
 
   Future<void> logout() async {
     isLoading.value = true;
-    final response = await authService.logout();
+    // final response = await authService.logout();
     isLoading.value = false;
 
-    if (response.isOk) {
-      // --- HAPUS DATA DARI STORAGE ---
-      _storage.remove('accessToken');
-      _storage.remove('userData');
+    // if (response.isOk) {
 
-      // Kosongkan data di UserController
-      Get.find<UserController>().clearUserData();
+    _storage.remove('accessToken');
+    _storage.remove('userData');
 
-      // Arahkan ke halaman login
-      Get.offAllNamed('/auth');
-    } else {
-      Get.snackbar('Logout Failed', response.statusText ?? 'Unknown error');
-    }
+    // Kosongkan data di UserController
+    Get.find<UserController>().clearUserData();
+
+    // Arahkan ke halaman login
+    Get.offAllNamed('/auth');
+    // } else {
+    //   Get.snackbar('Logout Failed', response.statusText ?? 'Unknown error');
+    // }
   }
 
   @override

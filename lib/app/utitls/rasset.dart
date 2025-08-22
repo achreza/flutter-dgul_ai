@@ -8,6 +8,7 @@ class RAsset {
   String flagIndonesia = "assets/images/flag_indonesia.png";
   String flagUK = "assets/images/flag_uk.png";
   String loading = "assets/gifs/Loading.gif";
+  String bgStart = "assets/images/bg_start.png";
 
   //pembayaran
   String bri = "assets/images/bri.png";
