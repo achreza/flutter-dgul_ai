@@ -22,6 +22,7 @@ class AppTranslations extends Translations {
           'clear_chat': 'Hapus Chat',
           'subscription': 'Langganan',
           'help_and_support': 'Bantuan dan Dukungan',
+          'terms_and_conditions': 'Syarat dan Ketentuan',
           'logout': 'Keluar',
 
           // Tampilan Awal
@@ -88,6 +89,7 @@ class AppTranslations extends Translations {
           'subscription': 'Subscription',
           'logout': 'Logout',
           'help_and_support': 'Help and Support',
+          'terms_and_conditions': 'Terms and Conditions',
 
           // Initial View
           'welcome_greeting': "Ahooy, D'Gul",

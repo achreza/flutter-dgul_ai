@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:dgul_ai/app/modules/chat/controllers/chat_controller.dart';
 import 'package:dgul_ai/app/modules/chat/views/account_setting_view.dart';
+import 'package:dgul_ai/app/modules/chat/views/help_and_support_view.dart';
 import 'package:dgul_ai/app/modules/chat/views/subscription_view.dart';
+import 'package:dgul_ai/app/modules/chat/views/terms_and_condition_view.dart';
 import 'package:dgul_ai/app/modules/home/controllers/theme_controller.dart';
 import 'package:dgul_ai/app/utitls/rasset.dart';
 import 'package:dgul_ai/app/utitls/rcolor.dart';
@@ -54,9 +56,11 @@ class ChatView extends GetView<ChatController> {
                 } else if (value == 'subscription') {
                   Get.to(() => SubscriptionView());
                 } else if (value == 'help') {
-                  TncDialogHelper.showTncDialog(context, () {});
+                  Get.to(() => HelpAndSupportView());
                 } else if (value == 'account_setting') {
                   Get.to(() => AccountSettingView());
+                } else if (value == 'terms_and_conditions') {
+                  Get.to(() => TermsAndConditionView());
                 }
               },
               color: themeController.isDarkMode.value
@@ -123,6 +127,10 @@ class ChatView extends GetView<ChatController> {
                     icon: Icons.help_outline,
                     text: 'help_and_support'.tr,
                     value: 'help'),
+                _buildPopupMenuItem(
+                    icon: Icons.article_outlined,
+                    text: 'terms_and_conditions'.tr,
+                    value: 'terms_and_conditions'),
                 const PopupMenuDivider(),
                 _buildPopupMenuItem(
                     icon: Icons.logout, text: 'logout'.tr, value: 'logout'),

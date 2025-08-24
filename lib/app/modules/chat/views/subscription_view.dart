@@ -17,7 +17,6 @@ class SubscriptionView extends GetView<ChatController> {
     return Scaffold(
       body: Stack(
         children: [
-          // Layer 1: Latar belakang biru solid
           Container(
             width: double.infinity,
             decoration: BoxDecoration(
