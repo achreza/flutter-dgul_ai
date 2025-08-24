@@ -5,9 +5,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class TncDialogHelper {
-  static void showTncDialog(BuildContext context) {
+  static void showTncDialog(BuildContext context, Function onAgree) {
     Get.dialog(
-      const _TncDialogWidget(),
+      _TncDialogWidget(onAgree: onAgree),
       barrierDismissible: false,
     );
   }
@@ -15,7 +15,9 @@ class TncDialogHelper {
 
 // Mengubah menjadi StatefulWidget untuk mengelola state checkbox
 class _TncDialogWidget extends StatefulWidget {
-  const _TncDialogWidget({Key? key}) : super(key: key);
+  const _TncDialogWidget({Key? key, required this.onAgree}) : super(key: key);
+
+  final Function onAgree;
 
   @override
   State<_TncDialogWidget> createState() => _TncDialogWidgetState();
@@ -165,6 +167,7 @@ class _TncDialogWidgetState extends State<_TncDialogWidget> {
           // Tombol selalu aktif, tetapi hanya menutup jika checkbox dicentang
 
           Get.back();
+          widget.onAgree();
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: RColor().primaryYellowColor,

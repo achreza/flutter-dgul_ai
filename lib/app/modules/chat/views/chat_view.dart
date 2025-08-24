@@ -54,7 +54,7 @@ class ChatView extends GetView<ChatController> {
                 } else if (value == 'subscription') {
                   Get.to(() => SubscriptionView());
                 } else if (value == 'help') {
-                  TncDialogHelper.showTncDialog(context);
+                  TncDialogHelper.showTncDialog(context, () {});
                 } else if (value == 'account_setting') {
                   Get.to(() => AccountSettingView());
                 }

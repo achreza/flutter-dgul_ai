@@ -4,6 +4,7 @@ import 'package:dgul_ai/app/utitls/rasset.dart';
 import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:dgul_ai/app/widgets/build_button.dart';
 import 'package:dgul_ai/app/widgets/build_text_field.dart';
+import 'package:dgul_ai/app/widgets/tnc_dialog.dart';
 import 'package:dgul_ai/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -64,9 +65,10 @@ class RegisterView extends GetView<AuthController> {
                         Center(
                           child: Text(
                             "register".tr,
-                            style: subHeadline2TextStyle.copyWith(
+                            style: subHeadline1TextStyle.copyWith(
                                 color: RColor().primaryBlueColor,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.normal,
+                                fontSize: 40.sp),
                           ),
                         ),
                         SizedBox(height: 20.h),
@@ -122,7 +124,9 @@ class RegisterView extends GetView<AuthController> {
                         buildButton(
                           label: "register".tr,
                           onPressed: () {
-                            controller.register();
+                            TncDialogHelper.showTncDialog(context, () {
+                              controller.register();
+                            });
                           },
                         ),
                         SizedBox(height: 15.h),
@@ -148,12 +152,13 @@ class RegisterView extends GetView<AuthController> {
     required RxString groupValue,
   }) {
     return Container(
-      height: 50.h,
+      height: 40.h,
       child: RadioListTile<String>(
         title: Text(title,
-            style: body2TextStyle.copyWith(
+            style: headlineTextStyle.copyWith(
               color: RColor().primaryBlueColor,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.normal,
+              fontSize: 22.sp,
             )),
         value: value,
         groupValue: groupValue.value,

@@ -123,34 +123,43 @@ class AuthController extends GetxController {
   }
 
   Future<void> register() async {
-    isLoading.value = true;
-    final response = await authService.register(
-      nameController.text,
-      emailController.text,
-      passwordController.text,
-      selectedLanguage.value,
-      selectedRole.value,
-    );
-    isLoading.value = false;
-
-    if (response.isOk) {
-      // Handle successful registration
-      final loginResponse = LoginResponse.fromJson(response.body);
-      UserController().bearerToken = loginResponse.accessToken!;
-      Get.back();
-      RLoaders.showStatusDialog(
-        context: Get.context!,
-        status: DialogStatus.success,
-        title: 'Registration Successful',
-        message: 'Check your email for verification.',
+    try {
+      isLoading.value = true;
+      final response = await authService.register(
+        nameController.text,
+        emailController.text,
+        passwordController.text,
+        selectedLanguage.value,
+        selectedRole.value,
       );
-    } else {
-      // Handle registration error
+      isLoading.value = false;
+
+      if (response.isOk) {
+        // Handle successful registration
+        final loginResponse = LoginResponse.fromJson(response.body);
+        UserController().bearerToken = loginResponse.accessToken!;
+        Get.back();
+        RLoaders.showStatusDialog(
+          context: Get.context!,
+          status: DialogStatus.success,
+          title: 'Registration Successful',
+          message: 'Check your email for verification.',
+        );
+      } else {
+        // Handle registration error
+        RLoaders.showStatusDialog(
+          context: Get.context!,
+          status: DialogStatus.failed,
+          title: 'Registration Failed',
+          message: response.body['message'] ?? 'Unknown error',
+        );
+      }
+    } catch (e) {
       RLoaders.showStatusDialog(
         context: Get.context!,
         status: DialogStatus.failed,
         title: 'Registration Failed',
-        message: response.statusText ?? 'Unknown error',
+        message: e.toString(),
       );
     }
   }
@@ -170,9 +179,6 @@ class AuthController extends GetxController {
 
     // Arahkan ke halaman login
     Get.offAllNamed('/auth');
-    // } else {
-    //   Get.snackbar('Logout Failed', response.statusText ?? 'Unknown error');
-    // }
   }
 
   @override

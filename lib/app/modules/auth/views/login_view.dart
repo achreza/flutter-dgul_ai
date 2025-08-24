@@ -40,7 +40,7 @@ class LoginView extends GetView<AuthController> {
             children: [
               // Bagian Atas dengan Logo
               SizedBox(
-                height: 280.h,
+                height: 260.h,
                 child: Container(
                   width: double.infinity,
                   child: Center(
@@ -67,9 +67,10 @@ class LoginView extends GetView<AuthController> {
                         Center(
                           child: Text(
                             "Login",
-                            style: subHeadline2TextStyle.copyWith(
+                            style: subHeadline1TextStyle.copyWith(
                                 color: RColor().primaryBlueColor,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.normal,
+                                fontSize: 40.sp),
                           ),
                         ),
                         SizedBox(height: 15.h),
