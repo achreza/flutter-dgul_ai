@@ -9,7 +9,7 @@ class WorkTypeDialog {
   static void showWorkTypeDialog(BuildContext context, Function onAgree) {
     Get.dialog(
       _WorkTypeDialogWidget(onAgree: onAgree),
-      barrierDismissible: false,
+      barrierDismissible: true,
     );
   }
 }

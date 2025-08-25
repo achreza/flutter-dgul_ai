@@ -153,7 +153,7 @@ class ChatView extends GetView<ChatController> {
                         EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                     decoration: BoxDecoration(
                       color: RColor().primaryBlueColor.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(20.r),
+                      borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
