@@ -11,6 +11,7 @@ import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:dgul_ai/app/widgets/language_button.dart';
 import 'package:dgul_ai/app/widgets/message_bubble.dart';
 import 'package:dgul_ai/app/widgets/tnc_dialog.dart';
+import 'package:dgul_ai/app/widgets/work_type_dialog.dart';
 import 'package:dgul_ai/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,7 +30,7 @@ class ChatView extends GetView<ChatController> {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize:
-            Size.fromHeight(90.h), // Menyesuaikan tinggi total AppBar
+            Size.fromHeight(80.h), // Menyesuaikan tinggi total AppBar
         child: AppBar(
           automaticallyImplyLeading: false,
           flexibleSpace: Stack(
@@ -138,66 +139,46 @@ class ChatView extends GetView<ChatController> {
             ),
           ],
           bottom: PreferredSize(
-            preferredSize: Size.fromHeight(40.h),
-            child: Center(
-              child: Container(
-                // Container ini hanya untuk dekorasi, bukan untuk sizing
-                margin: EdgeInsets.only(bottom: 20.h),
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                decoration: BoxDecoration(
-                  color: RColor().primaryBlueColor.withOpacity(0.7),
-                  borderRadius: BorderRadius.circular(30.r),
-                  border: Border.all(
-                      color: Colors.white.withOpacity(0.5), width: 1),
-                ),
-                child: Obx(
-                  () => DropdownButtonHideUnderline(
-                    child: DropdownButton<String>(
-                      value: controller.selectedWorkType.value,
-                      onChanged: (String? newValue) {
-                        if (newValue != null) {
-                          controller.selectWorkType(newValue);
-                        }
-                      },
-                      // Item untuk menu dropdown (bisa lebar)
-                      items: controller.maritimeWorkTypes
-                          .map<DropdownMenuItem<String>>((String value) {
-                        return DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
-                      // Builder untuk tampilan tombol (lebar tetap)
-                      selectedItemBuilder: (BuildContext context) {
-                        return controller.maritimeWorkTypes
-                            .map<Widget>((String item) {
-                          return Container(
-                            width: 200.w, // Lebar tetap untuk tombol
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              item,
-                              overflow: TextOverflow.ellipsis,
+              preferredSize: Size.fromHeight(40.h),
+              child: Center(
+                //backup disini
+                child: GestureDetector(
+                  onTap: () =>
+                      WorkTypeDialog.showWorkTypeDialog(context, () {}),
+                  child: Container(
+                    margin: EdgeInsets.only(bottom: 8.h),
+                    width: 200.w,
+                    alignment: Alignment.center,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                    decoration: BoxDecoration(
+                      color: RColor().primaryBlueColor.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Obx(
+                          () => Text(
+                            controller.selectedWorkType.value,
+                            style: body1TextStyle.copyWith(
+                              color: Colors.white,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
                             ),
-                          );
-                        }).toList();
-                      },
-                      icon: const Icon(Icons.keyboard_arrow_down,
-                          color: Colors.white),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14.sp,
-                      ),
-                      dropdownColor: RColor().primaryBlueColor.withOpacity(0.7),
-                      isDense: true,
-
-                      isExpanded: false, // Agar dropdown bisa lebih lebar
+                          ),
+                        ),
+                        SizedBox(width: 6.w),
+                        Icon(
+                          Icons.arrow_drop_down,
+                          color: Colors.white,
+                          size: 20.sp,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-            ),
-          ),
+              )),
         ),
       ),
       body: Stack(
