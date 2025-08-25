@@ -1,3 +1,4 @@
+import 'package:dgul_ai/app/utitls/rasset.dart';
 import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:dgul_ai/constants.dart';
 import 'package:flutter/material.dart';
@@ -41,10 +42,8 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              IconButton(
-                icon: Icon(Icons.close, color: RColor().secondaryGreyColor),
-                onPressed: () => Get.back(),
-              ),
+              GestureDetector(
+                  onTap: () => Get.back(), child: Image.asset(RAsset().silang))
             ],
           ),
           SizedBox(height: 20.h),
@@ -60,7 +59,7 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
               Get.to(() => SubscriptionView());
             },
             child: Text(
-              "See All Plan's",
+              "Lihat Semua Paket Berlangganan",
               style: body2TextStyle.copyWith(
                 color: RColor().primaryBlueColor,
                 decoration: TextDecoration.underline,
@@ -147,16 +146,9 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
         children: [
           Row(
             children: [
-              CircleAvatar(
-                backgroundColor: RColor().primaryYellowColor,
-                child: Icon(
-                  Icons.check,
-                  color: Colors.white,
-                  size: 18.sp,
-                ),
-              ),
+              Image.asset(RAsset().centang),
               Spacer(),
-              Text("1-Year",
+              Text("1-Month",
                   style: subHeadline2TextStyle.copyWith(
                       color: Colors.white, fontWeight: FontWeight.bold)),
               Spacer(),

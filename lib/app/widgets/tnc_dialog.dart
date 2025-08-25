@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:dgul_ai/constants.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +9,14 @@ import 'package:get/get.dart';
 class TncDialogHelper {
   static void showTncDialog(BuildContext context, Function onAgree) {
     Get.dialog(
-      _TncDialogWidget(onAgree: onAgree),
-      barrierDismissible: false,
+      Material(
+        // 🔑 biar transparan tapi tetap bisa render blur
+        type: MaterialType.transparency,
+        child: _TncDialogWidget(onAgree: onAgree),
+      ),
+      barrierColor:
+          Colors.black.withOpacity(0), // penting → jangan pakai warna solid
+      barrierDismissible: true,
     );
   }
 }
@@ -29,47 +37,51 @@ class _TncDialogWidgetState extends State<_TncDialogWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Dialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.r)),
-      backgroundColor: RColor().primaryBlueColor.withOpacity(0.7),
-      child: Container(
-        child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20.h),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // Judul
-              Text(
-                "Terms and Conditions",
-                style: subHeadline1TextStyle.copyWith(
-                  color: Colors.white,
-                  fontSize: 28.sp,
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 100, sigmaY: 10), // 🔑 blur background
+      child: Dialog(
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.r)),
+        backgroundColor: RColor().primaryBlueColor.withOpacity(0.7),
+        child: Container(
+          child: Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.h),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // Judul
+                Text(
+                  "Terms and Conditions",
+                  style: subHeadline1TextStyle.copyWith(
+                    color: Colors.white,
+                    fontSize: 28.sp,
+                  ),
                 ),
-              ),
-              SizedBox(height: 15.h),
+                SizedBox(height: 15.h),
 
-              // Konten T&C dalam container terpisah
-              Container(
-                height: 600.h,
-                margin: EdgeInsets.symmetric(horizontal: 20.w),
-                padding: EdgeInsets.all(16.w),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15.r),
+                // Konten T&C dalam container terpisah
+                Container(
+                  height: 600.h,
+                  margin: EdgeInsets.symmetric(horizontal: 20.w),
+                  padding: EdgeInsets.all(16.w),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                  child: SingleChildScrollView(
+                    child: _buildTncContent(),
+                  ),
                 ),
-                child: SingleChildScrollView(
-                  child: _buildTncContent(),
-                ),
-              ),
-              SizedBox(height: 15.h),
+                SizedBox(height: 15.h),
 
-              // Checkbox persetujuan
-              _buildAgreementCheckbox(),
-              SizedBox(height: 15.h),
+                // Checkbox persetujuan
+                _buildAgreementCheckbox(),
+                SizedBox(height: 15.h),
 
-              // Tombol Agree
-              _buildAgreeButton(),
-            ],
+                // Tombol Agree
+                _buildAgreeButton(),
+              ],
+            ),
           ),
         ),
       ),

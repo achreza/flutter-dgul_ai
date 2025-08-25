@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:simple_ripple_animation/simple_ripple_animation.dart';
 
@@ -44,7 +45,7 @@ class ChatView extends GetView<ChatController> {
           ),
           backgroundColor: Colors.transparent,
           elevation: 0,
-          title: Image.asset(RAsset().logoDgulAi, height: 35.h),
+          title: Image.asset(RAsset().logoDgulAiNoTagline, height: 35.h),
           centerTitle: true,
           actions: [
             PopupMenuButton<String>(
@@ -70,7 +71,15 @@ class ChatView extends GetView<ChatController> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.r),
               ),
-              icon: Icon(Icons.apps, color: RColor().primaryYellowColor),
+              child: Container(
+                margin: EdgeInsets.only(right: 16.w, top: 2.h),
+                child: Image.asset(
+                  RAsset().iconMenu,
+                  width: 24.w,
+                  height: 24.h,
+                  color: RColor().primaryYellowColor,
+                ),
+              ),
               itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
                 PopupMenuItem<String>(
                   value: 'theme',
@@ -143,41 +152,47 @@ class ChatView extends GetView<ChatController> {
               child: Center(
                 //backup disini
                 child: GestureDetector(
-                  onTap: () =>
-                      WorkTypeDialog.showWorkTypeDialog(context, () {}),
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 8.h),
-                    width: 200.w,
-                    alignment: Alignment.center,
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                    decoration: BoxDecoration(
-                      color: RColor().primaryBlueColor.withOpacity(0.5),
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Obx(
-                          () => Text(
-                            controller.selectedWorkType.value,
-                            style: body1TextStyle.copyWith(
-                              color: Colors.white,
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.bold,
+                    onTap: () =>
+                        WorkTypeDialog.showWorkTypeDialog(context, () {}),
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 8.h),
+                      width: 200.w,
+                      alignment: Alignment.center,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                      decoration: BoxDecoration(
+                        color: RColor().primaryBlueColor.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(10.r),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            // biar teks pakai sisa space
+                            child: Obx(
+                              () => Text(
+                                controller.selectedWorkType.value,
+                                style: body1TextStyle.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                maxLines: 1, // cuma 1 baris
+                                overflow: TextOverflow.ellipsis, // kasih ...
+                                softWrap: false, // jangan otomatis enter
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(width: 6.w),
-                        Icon(
-                          Icons.arrow_drop_down,
-                          color: Colors.white,
-                          size: 20.sp,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+                          SizedBox(width: 6.w),
+                          Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.white,
+                            size: 20.sp,
+                          ),
+                        ],
+                      ),
+                    )),
               )),
         ),
       ),
@@ -187,7 +202,9 @@ class ChatView extends GetView<ChatController> {
             decoration: BoxDecoration(
               color: Theme.of(context).scaffoldBackgroundColor,
               image: DecorationImage(
-                image: AssetImage(RAsset().bgSirkuitLight),
+                image: themeController.isDarkMode.value
+                    ? AssetImage(RAsset().bgSirkuitDark)
+                    : AssetImage(RAsset().bgSirkuitLight),
                 fit: BoxFit.cover,
               ),
             ),
@@ -220,12 +237,12 @@ class ChatView extends GetView<ChatController> {
                       padding: const EdgeInsets.symmetric(vertical: 8.0),
                       child: Container(
                         alignment: Alignment.center,
-                        width: 70.w,
-                        height: 70.h,
+                        width: 50.w,
+                        height: 50.h,
                         child: Image.asset(
                           RAsset().loading,
-                          width: 70.w,
-                          height: 70.h,
+                          width: 50.w,
+                          height: 50.h,
                         ),
                       ));
                 } else {
@@ -301,7 +318,8 @@ class ChatView extends GetView<ChatController> {
   Widget _buildSuggestionPrompts(
       BuildContext context, ChatController controller) {
     return Container(
-      height: 60.h, // Memberi tinggi tetap untuk area scroll
+      height: 90.h, // Memberi tinggi tetap untuk area scroll
+
       padding: EdgeInsets.symmetric(vertical: 4.h),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
@@ -323,22 +341,33 @@ class ChatView extends GetView<ChatController> {
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
                   foregroundColor: RColor().primaryBlueColor,
 
-                  backgroundColor: Colors.white.withOpacity(0.8),
+                  backgroundColor: themeController.isDarkMode.value
+                      ? HexColor("#045082")
+                      : Colors.white.withOpacity(0.8),
                   side: BorderSide(
                       width: 2,
-                      color: controller.selectedSuggestion.value == index + 1
-                          ? Colors.lightBlue
-                          : Colors.grey.shade300),
+                      color: themeController.isDarkMode.value
+                          ? controller.selectedSuggestion.value == index + 1
+                              ? Colors.lightBlue
+                              : Colors.transparent
+                          : controller.selectedSuggestion.value == index + 1
+                              ? Colors.lightBlue
+                              : Colors.grey.shade300),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.r),
                   ),
                 ),
-                child: Text(
-                  prompt,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.grey.shade700,
-                    fontSize: 15.sp,
+                child: Container(
+                  width: 94.w,
+                  child: Text(
+                    prompt,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      color: themeController.isDarkMode.value
+                          ? Colors.white
+                          : Colors.grey.shade700,
+                      fontSize: 15.sp,
+                    ),
                   ),
                 ),
               ));
@@ -375,8 +404,12 @@ class ChatView extends GetView<ChatController> {
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
               foregroundColor: RColor().primaryBlueColor,
 
-              backgroundColor: Colors.white.withOpacity(0.8),
-              side: BorderSide(color: Colors.grey.shade300),
+              backgroundColor: themeController.isDarkMode.value
+                  ? HexColor("#045082")
+                  : Colors.white.withOpacity(0.8),
+              side: themeController.isDarkMode.value
+                  ? BorderSide.none
+                  : BorderSide(color: Colors.grey.shade300),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12.r),
               ),
@@ -385,7 +418,9 @@ class ChatView extends GetView<ChatController> {
               prompt,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.grey.shade700,
+                color: themeController.isDarkMode.value
+                    ? Colors.white
+                    : Colors.grey.shade700,
                 fontSize: 15.sp,
               ),
             ),
@@ -475,8 +510,29 @@ class ChatView extends GetView<ChatController> {
 
   Widget _buildTextComposer(BuildContext context, ChatController controller) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-      color: Theme.of(context).scaffoldBackgroundColor,
+      margin: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h),
+      padding: EdgeInsets.symmetric(
+        horizontal: 12.w,
+      ),
+      decoration: BoxDecoration(
+        color: themeController.isDarkMode.value
+            ? HexColor("#0E3956")
+            : Colors.white.withOpacity(0.9),
+        border: Border.all(
+          color: themeController.isDarkMode.value
+              ? Colors.transparent
+              : Colors.grey.shade300,
+        ),
+        borderRadius: BorderRadius.circular(20.r),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            spreadRadius: 1,
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
       child: SafeArea(
         top: false,
         child: Column(
@@ -502,19 +558,19 @@ class ChatView extends GetView<ChatController> {
             Row(
               children: [
                 IconButton(
-                  icon: const Icon(Icons.add_circle_outline),
-                  color: Theme.of(context).colorScheme.primary,
+                  icon: const Icon(
+                    Icons.camera_alt_outlined,
+                  ),
+                  iconSize: 30.sp,
+                  color: themeController.isDarkMode.value
+                      ? HexColor("#43B2FC")
+                      : RColor().primaryBlueColor,
                   onPressed: () => _showAttachmentSheet(controller),
                 ),
                 Expanded(
                   child: Container(
                     padding:
                         EdgeInsets.symmetric(vertical: 10.h, horizontal: 16.w),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).cardColor,
-                      borderRadius: BorderRadius.circular(30.r),
-                      border: Border.all(color: Colors.grey.shade300),
-                    ),
                     child: TextField(
                       controller: controller.textController,
                       onSubmitted: (_) => controller.sendMessage(),
@@ -528,6 +584,7 @@ class ChatView extends GetView<ChatController> {
                 ),
                 SizedBox(width: 4.w),
                 Obx(() {
+                  // Kondisi 1: Sedang mendengarkan -> Tampilkan animasi
                   if (controller.isListening.value) {
                     return RippleAnimation(
                       color: Colors.red,
@@ -546,19 +603,39 @@ class ChatView extends GetView<ChatController> {
                         ),
                       ),
                     );
-                  } else {
+                  }
+                  // Kondisi 2: Tidak mendengarkan DAN teks tidak kosong -> Tampilkan tombol Kirim
+                  else if (!controller.isTextEmpty.value) {
                     return IconButton(
-                      icon: const Icon(Icons.mic_none_outlined),
-                      onPressed: controller.toggleListening,
+                      icon: const Icon(Icons.send_rounded),
+                      onPressed: controller.sendMessage,
                       color: Theme.of(context).colorScheme.primary,
                     );
                   }
+                  // Kondisi 3: Tidak mendengarkan DAN teks kosong -> Tampilkan tombol Mic & Add
+                  else {
+                    return Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.mic_none_outlined),
+                          iconSize: 30.sp,
+                          onPressed: controller.toggleListening,
+                          color: themeController.isDarkMode.value
+                              ? HexColor("#43B2FC")
+                              : RColor().primaryBlueColor,
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.add_circle_outline),
+                          iconSize: 30.sp,
+                          color: themeController.isDarkMode.value
+                              ? HexColor("#43B2FC")
+                              : RColor().primaryBlueColor,
+                          onPressed: () => _showAttachmentSheet(controller),
+                        ),
+                      ],
+                    );
+                  }
                 }),
-                IconButton(
-                  icon: const Icon(Icons.send_rounded),
-                  onPressed: controller.sendMessage,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
               ],
             ),
           ],

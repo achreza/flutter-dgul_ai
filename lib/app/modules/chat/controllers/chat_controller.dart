@@ -24,6 +24,7 @@ class ChatController extends GetxController {
   var selectedFileName = ''.obs;
   var selectedLanguage = 'id_ID'.obs; // Menyimpan kode locale
   var userController = Get.find<UserController>();
+  var isTextEmpty = true.obs;
 
   // --- STATE BARU UNTUK DROPDOWN ---
   var selectedWorkType = 'Maritime Worker'.obs;
@@ -109,6 +110,9 @@ class ChatController extends GetxController {
     _loadChatHistory();
     _initSpeech();
     _loadLanguage(); // Memuat preferensi bahasa
+    textController.addListener(() {
+      isTextEmpty.value = textController.text.isEmpty;
+    });
   }
 
   @override
@@ -195,12 +199,6 @@ class ChatController extends GetxController {
 
   void _addWelcomeMessage() {
     messages.clear();
-    messages.add(
-      ChatMessage(
-        text: "Ahooy, D'Gul!",
-        sender: Sender.ai,
-      ),
-    );
   }
 
   void clearChatHistory() {

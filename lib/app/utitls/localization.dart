@@ -43,7 +43,7 @@ class AppTranslations extends Translations {
           'cancel_button': 'Batal',
 
           //List of Suggestions
-          'suggestion_1': 'Informasi dan Komunikasi',
+          'suggestion_1': 'Informasi dan Berita Maritim',
           'suggestion_2': 'Edukasi dan Pengembangan Karir',
           'suggestion_3': 'Ruang Komunikasi',
 
@@ -109,7 +109,7 @@ class AppTranslations extends Translations {
           'cancel_button': 'Cancel',
 
           // List of Suggestions
-          'suggestion_1': 'Information and Communication',
+          'suggestion_1': 'Information and Maritime News',
           'suggestion_2': 'Education and Career Development',
           'suggestion_3': 'Inspiration and Motivation',
 

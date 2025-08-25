@@ -103,16 +103,16 @@ class AuthView extends GetView<AuthController> {
                     Get.to(() => RegisterView());
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF0D47A1), // Biru tua
-                    padding: EdgeInsets.symmetric(vertical: 14.h),
+                    backgroundColor: RColor().primaryBlueColor, // Biru tua
+                    padding: EdgeInsets.symmetric(vertical: 10.h),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.r),
+                      borderRadius: BorderRadius.circular(20.r),
                     ),
                   ),
                   child: Text(
                     "Register",
                     style: TextStyle(
-                      fontSize: 16.sp,
+                      fontSize: 24.sp,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -128,17 +128,17 @@ class AuthView extends GetView<AuthController> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFFC107), // Kuning
-                    padding: EdgeInsets.symmetric(vertical: 14.h),
+                    padding: EdgeInsets.symmetric(vertical: 10.h),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(30.r),
+                      borderRadius: BorderRadius.circular(20.r),
                     ),
                   ),
                   child: Text(
                     "Login",
                     style: TextStyle(
-                      fontSize: 16.sp,
+                      fontSize: 24.sp,
                       fontWeight: FontWeight.bold,
-                      color: const Color(0xFF0D47A1),
+                      color: Colors.black,
                     ),
                   ),
                 ),

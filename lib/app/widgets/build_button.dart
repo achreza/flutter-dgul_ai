@@ -12,11 +12,12 @@ Widget buildButton({required String label, required VoidCallback onPressed}) {
         backgroundColor: RColor().primaryYellowColor,
         padding: EdgeInsets.symmetric(vertical: 14.h),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30.r),
+          borderRadius: BorderRadius.circular(20.r),
         ),
       ),
       child: Text("$label",
-          style: buttonTextStyle.copyWith(color: RColor().primaryBlueColor)),
+          style: buttonTextStyle.copyWith(
+              color: RColor().primaryBlueColor, fontWeight: FontWeight.bold)),
     ),
   );
 }

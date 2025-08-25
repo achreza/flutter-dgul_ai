@@ -1,13 +1,21 @@
 import 'dart:io';
 import 'package:dgul_ai/app/data/models/chat_message_model.dart';
+import 'package:dgul_ai/app/modules/home/controllers/theme_controller.dart';
+import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:get/get.dart';
+import 'package:hexcolor/hexcolor.dart';
 
 class MessageBubble extends StatelessWidget {
   final ChatMessage message;
+  final FlutterTts flutterTts = FlutterTts();
+  final ThemeController themeController = Get.find<ThemeController>();
 
-  const MessageBubble({super.key, required this.message});
+  MessageBubble({super.key, required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +23,7 @@ class MessageBubble extends StatelessWidget {
     final isAi = message.sender == Sender.ai;
     final theme = Theme.of(context);
 
-    // --- PERBAIKAN DI SINI ---
-    // Memeriksa apakah imagePath tidak null DAN tidak kosong
     final hasImage = message.imagePath != null && message.imagePath!.isNotEmpty;
-
     final hasText = message.text.isNotEmpty;
     final hasToken = message.tokenCount != null;
 
@@ -47,7 +52,7 @@ class MessageBubble extends StatelessWidget {
     );
 
     return Align(
-      alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: isUser ? Alignment.centerRight : Alignment.center,
       child: Container(
         constraints: BoxConstraints(
           maxWidth: MediaQuery.of(context).size.width * 0.8,
@@ -56,14 +61,64 @@ class MessageBubble extends StatelessWidget {
         margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
         decoration: BoxDecoration(
           color: isUser
-              ? theme.colorScheme.primary
-              : theme.colorScheme.secondaryContainer,
-          borderRadius: BorderRadius.circular(16.r),
+              ? themeController.isDarkMode.value
+                  ? Colors.transparent
+                  : HexColor("#E8E8E8")
+              : Colors.transparent,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(18.r),
+            bottomLeft: Radius.circular(18.r),
+            bottomRight: Radius.circular(18.r),
+          ),
+          border: Border.all(
+            color: isUser
+                ? themeController.isDarkMode.value
+                    ? RColor().primaryYellowColor
+                    : Colors.transparent
+                : Colors.transparent,
+            width: 1,
+          ),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Hanya tampilkan gambar jika 'hasImage' bernilai true
+            // Icon action hanya untuk AI
+            if (isAi)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  GestureDetector(
+                    onTap: () async {
+                      await Clipboard.setData(
+                          ClipboardData(text: message.text));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text("Teks berhasil dicopy")),
+                      );
+                    },
+                    child: Icon(
+                      Icons.content_copy,
+                      color: themeController.isDarkMode.value
+                          ? RColor().primaryYellowColor
+                          : RColor().primaryBlueColor,
+                      size: 16.sp,
+                    ),
+                  ),
+                  SizedBox(width: 8.w),
+                  GestureDetector(
+                    onTap: () async {
+                      // await flutterTts.setLanguage("id-ID"); // atau "en-US"
+                      await flutterTts.speak(message.text);
+                    },
+                    child: Icon(
+                      Icons.volume_up,
+                      color: themeController.isDarkMode.value
+                          ? RColor().primaryYellowColor
+                          : RColor().primaryBlueColor,
+                      size: 20.sp,
+                    ),
+                  ),
+                ],
+              ),
             if (hasImage)
               Padding(
                 padding: EdgeInsets.only(bottom: 8.h),
@@ -84,8 +139,11 @@ class MessageBubble extends StatelessWidget {
                     )
                   : Text(
                       message.text,
+                      textAlign: isUser ? TextAlign.end : TextAlign.start,
                       style: TextStyle(
-                        color: theme.colorScheme.onPrimary,
+                        color: themeController.isDarkMode.value
+                            ? Colors.white
+                            : HexColor("#595959"),
                       ),
                     ),
             if (isAi && hasToken) ...[

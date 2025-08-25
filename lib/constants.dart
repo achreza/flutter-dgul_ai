@@ -27,7 +27,7 @@ var subHeadline3TextStyle = GoogleFonts.jaldi(
 );
 
 var buttonTextStyle = GoogleFonts.jaldi(
-  fontSize: 20.sp,
+  fontSize: 24.sp,
   fontWeight: FontWeight.w500,
 );
 

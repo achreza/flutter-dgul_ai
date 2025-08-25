@@ -1,6 +1,6 @@
 class RAsset {
-  String bgSirkuitLight = "assets/images/bg.png";
-  String bgSirkuitDark = "assets/images/bg.png";
+  String bgSirkuitLight = "assets/images/bgsirkuitv2.png";
+  String bgSirkuitDark = "assets/images/bg_dark.png";
   String appBarBg = "assets/images/chatheader.png";
   String logoDgulAi = "assets/images/dgulai_title.png";
   String bgDgulBlue = "assets/images/dgul_blue_bg.png";
@@ -9,6 +9,10 @@ class RAsset {
   String flagUK = "assets/images/flag_uk.png";
   String loading = "assets/gifs/Loading.gif";
   String bgStart = "assets/images/bg_start.png";
+  String centang = "assets/images/centang.png";
+  String silang = "assets/images/silang.png";
+  String logoDgulAiNoTagline = "assets/images/dgul_ai_notagline.png";
+  String iconMenu = "assets/images/icon_menu.png";
 
   //pembayaran
   String bri = "assets/images/bri.png";

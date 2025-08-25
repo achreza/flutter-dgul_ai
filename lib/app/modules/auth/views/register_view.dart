@@ -221,7 +221,7 @@ class RegisterView extends GetView<AuthController> {
           backgroundColor: RColor().primaryBlueColor,
           padding: EdgeInsets.symmetric(vertical: 14.h),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.r),
+            borderRadius: BorderRadius.circular(20.r),
           ),
         ),
       ),

@@ -177,10 +177,6 @@ class SubscriptionView extends GetView<ChatController> {
         decoration: BoxDecoration(
           color: RColor().primaryBlueColor,
           borderRadius: BorderRadius.circular(20.r),
-          border: isSelected
-              ? Border.all(color: RColor().primaryYellowColor, width: 3)
-              // Gunakan warna yang lebih soft untuk border yang tidak dipilih
-              : Border.all(color: Colors.white.withOpacity(0.3)),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.3),
@@ -191,9 +187,23 @@ class SubscriptionView extends GetView<ChatController> {
         ),
         child: Column(
           children: [
-            Text(title,
-                style: subHeadline2TextStyle.copyWith(
-                    color: Colors.white, fontWeight: FontWeight.bold)),
+            Row(
+              children: [
+                isSelected
+                    ? Image.asset(RAsset().centang, width: 50.w)
+                    : Container(),
+                Spacer(),
+                Text(title,
+                    style: subHeadline2TextStyle.copyWith(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+                Spacer(),
+                isSelected
+                    ? Container(
+                        width: 50.w,
+                      )
+                    : Container(),
+              ],
+            ),
             SizedBox(height: 8.h),
             Container(
               width: double.infinity,
