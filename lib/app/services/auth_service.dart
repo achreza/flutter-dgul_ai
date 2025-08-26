@@ -32,27 +32,6 @@ class AuthService extends GetConnect {
     }
   }
 
-  Future<ProfileResponse> getProfileData() async {
-    try {
-      final response = await get('$apiBaseUrl/profile', headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization':
-            'Bearer ${Get.find<UserController>().getBearerToken()}',
-      });
-
-      if (response.isOk) {
-        return ProfileResponse.fromJson(response.body);
-      } else {
-        Logger().e('Error fetching profile data: ${response.statusText}');
-        return ProfileResponse();
-      }
-    } catch (e) {
-      Logger().e('Error fetching profile data: $e');
-      return ProfileResponse();
-    }
-  }
-
   // Method to register a new user
   Future<Response> register(String name, String email, String password,
       String language, String role) async {

@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dgul_ai/app/data/dto/requests/update_profile_request.dart';
+import 'package:dgul_ai/app/data/dto/responses/update_profile_response.dart';
 import 'package:dgul_ai/app/data/models/chat_message_model.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/auth_controller.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/user_controller.dart';
+import 'package:dgul_ai/app/services/user_service.dart';
 import 'package:dgul_ai/app/widgets/subscription_promo_sheet.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +27,7 @@ class ChatController extends GetxController {
   var selectedFileName = ''.obs;
   var selectedLanguage = 'id_ID'.obs; // Menyimpan kode locale
   var userController = Get.find<UserController>();
+  var userService = UserService();
   var isTextEmpty = true.obs;
 
   // --- STATE BARU UNTUK DROPDOWN ---
@@ -40,6 +44,14 @@ class ChatController extends GetxController {
   final _historyKey = 'chatMessages';
   final _workTypeKey = 'selectedWorkType';
   final _langKey = 'selectedLanguage'; // Key baru untuk bahasa
+
+  //untuk update profile
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
+  TextEditingController departmentController = TextEditingController();
+  TextEditingController positionController = TextEditingController();
+  MultipartFile? profilePhoto;
 
   // --- DAFTAR OPSI BARU UNTUK DROPDOWN ---
   final List<String> maritimeWorkTypes = [
@@ -103,6 +115,42 @@ class ChatController extends GetxController {
 
   var selectedPlan = '1-Year'.obs;
   var isEditMode = false.obs;
+
+  void uploadImageFromGallery() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      selectedImagePath.value = pickedFile.path;
+      update();
+    }
+  }
+
+  void updateProfile() async {
+    if (isEditMode.value) {
+      // Ambil data dari controller
+      String name = nameController.text;
+      String email = emailController.text;
+      String phone = phoneController.text;
+      String department = departmentController.text;
+      String position = positionController.text;
+
+      // Buat request untuk update profile
+      var request = UpdateProfileRequest(
+        email: email,
+        phone: phone,
+        department: department,
+        position: position,
+        profilePhoto: profilePhoto,
+      );
+
+      // Panggil service untuk update profile
+      UpdateProfileResponse response = await userService.updateProfile(request);
+      if (response != null) {
+        // Jika berhasil, update data di UserController
+        userController.assignProfileDataAfterUpdate(response);
+        Get.back();
+      }
+    }
+  }
 
   @override
   void onInit() {

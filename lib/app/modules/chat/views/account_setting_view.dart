@@ -166,14 +166,22 @@ class AccountSettingView extends GetView<ChatController> {
                 color: RColor().primaryBlueColor)),
         SizedBox(height: 25.h),
         _buildEditableInfoRow(
-            "Email", "${controller.userController.getEmail()}",
+            "Email",
+            "${controller.userController.getEmail()}",
+            controller.emailController,
             isEditable: false),
-        _buildEditableInfoRow("Telephone",
-            "${controller.userController.profileData.user?.phone ?? ''}"),
-        _buildEditableInfoRow("Type of Department",
-            "${controller.userController.profileData.user?.department ?? ''}"),
-        _buildEditableInfoRow("Position",
-            "${controller.userController.profileData.user?.position ?? ''}"),
+        _buildEditableInfoRow(
+            "Telephone",
+            "${controller.userController.profileData.user?.phone ?? ''}",
+            controller.phoneController),
+        _buildEditableInfoRow(
+            "Type of Department",
+            "${controller.userController.profileData.user?.department ?? ''}",
+            controller.departmentController),
+        _buildEditableInfoRow(
+            "Position",
+            "${controller.userController.profileData.user?.position ?? ''}",
+            controller.positionController),
         _buildInfoRow("Subscription Status", "Active 360 Days"),
         _buildInfoRow("Token", "890.000 - 1.000.000"),
         SizedBox(height: 30.h),
@@ -279,7 +287,8 @@ class AccountSettingView extends GetView<ChatController> {
   }
 
   // Widget untuk baris info yang bisa diedit (Edit Mode)
-  Widget _buildEditableInfoRow(String label, String initialValue,
+  Widget _buildEditableInfoRow(
+      String label, String initialValue, TextEditingController textController,
       {bool isEditable = true}) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 2.h),
@@ -292,6 +301,7 @@ class AccountSettingView extends GetView<ChatController> {
           isEditable
               ? TextFormField(
                   initialValue: initialValue,
+                  controller: textController,
                   style: body1TextStyle.copyWith(
                       color: RColor().primaryBlueColor,
                       fontWeight: FontWeight.w600),

@@ -2,6 +2,7 @@ import 'package:dgul_ai/app/data/dto/responses/login_response.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/user_controller.dart';
 import 'package:dgul_ai/app/modules/chat/controllers/chat_controller.dart';
 import 'package:dgul_ai/app/services/auth_service.dart';
+import 'package:dgul_ai/app/services/user_service.dart';
 import 'package:dgul_ai/app/utitls/rloaders.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -17,6 +18,7 @@ class AuthController extends GetxController {
   final GetStorage _storage = GetStorage();
 
   final AuthService authService = AuthService();
+  final UserService userService = UserService();
 
   final RxString selectedRole = 'Seafarer'.obs;
   final RxString selectedLanguage = 'Indonesia'.obs;
@@ -101,7 +103,7 @@ class AuthController extends GetxController {
         loginResponse.user!.name!,
         loginResponse.user!.email!,
       );
-      userController.assignProfileData(await authService.getProfileData());
+      userController.assignProfileData(await userService.getProfileData());
 
       Get.offAllNamed('/chat');
       Get.put(ChatController());
