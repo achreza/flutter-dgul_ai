@@ -31,7 +31,6 @@ class UserService extends GetConnect {
         form,
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'multipart/form-data',
           'Authorization':
               'Bearer ${Get.find<UserController>().getBearerToken()}',
         },
