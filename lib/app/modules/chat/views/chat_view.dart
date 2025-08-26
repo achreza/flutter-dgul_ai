@@ -30,8 +30,7 @@ class ChatView extends GetView<ChatController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize:
-            Size.fromHeight(80.h), // Menyesuaikan tinggi total AppBar
+        preferredSize: Size.fromHeight(80.h),
         child: AppBar(
           automaticallyImplyLeading: false,
           flexibleSpace: Stack(
@@ -608,7 +607,7 @@ class ChatView extends GetView<ChatController> {
                   else if (!controller.isTextEmpty.value) {
                     return IconButton(
                       icon: const Icon(Icons.send_rounded),
-                      onPressed: controller.sendMessage,
+                      onPressed: controller.sendMessageToDGULAPI,
                       color: Theme.of(context).colorScheme.primary,
                     );
                   }

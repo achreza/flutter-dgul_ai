@@ -148,7 +148,6 @@ class ChatController extends GetxController {
       // Panggil service untuk update profile
       UpdateProfileResponse response = await userService.updateProfile(request);
       if (response != null) {
-        // Jika berhasil, update data di UserController
         userController.assignProfileDataAfterUpdate(response);
         Get.back();
       }
@@ -365,6 +364,7 @@ class ChatController extends GetxController {
       messages.add(ChatMessage(
         text: responseText,
         sender: Sender.ai,
+        tokenCount: aiResponse.metadata?.usage?.totalTokenCount,
       ));
     } catch (e) {
       _showError("Terjadi kesalahan: $e");
