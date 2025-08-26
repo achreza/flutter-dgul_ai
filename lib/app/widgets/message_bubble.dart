@@ -6,13 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_tts/flutter_tts.dart';
+
 import 'package:get/get.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class MessageBubble extends StatelessWidget {
   final ChatMessage message;
-  final FlutterTts flutterTts = FlutterTts();
+
   final ThemeController themeController = Get.find<ThemeController>();
 
   MessageBubble({super.key, required this.message});
@@ -105,10 +105,7 @@ class MessageBubble extends StatelessWidget {
                   ),
                   SizedBox(width: 8.w),
                   GestureDetector(
-                    onTap: () async {
-                      // await flutterTts.setLanguage("id-ID"); // atau "en-US"
-                      await flutterTts.speak(message.text);
-                    },
+                    onTap: () async {},
                     child: Icon(
                       Icons.volume_up,
                       color: themeController.isDarkMode.value

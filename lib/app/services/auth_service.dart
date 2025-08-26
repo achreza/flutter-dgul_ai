@@ -63,7 +63,7 @@ class AuthService extends GetConnect {
         'email': email,
         'password': password,
         'language': langCode,
-        'role': role,
+        'role': role.toLowerCase(),
       }, headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

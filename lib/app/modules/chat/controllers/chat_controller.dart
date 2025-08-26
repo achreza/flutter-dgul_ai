@@ -148,7 +148,14 @@ class ChatController extends GetxController {
 
   void logout() {
     try {
-      Get.put(AuthController()).logout();
+      _storage.remove('accessToken');
+      _storage.remove('userData');
+
+      // Kosongkan data di UserController
+      Get.find<UserController>().clearUserData();
+
+      // Arahkan ke halaman login
+      Get.offAllNamed('/auth');
     } catch (e) {
       print("Error logging out: $e");
     }
