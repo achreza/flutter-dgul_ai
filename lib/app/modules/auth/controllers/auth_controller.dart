@@ -71,6 +71,7 @@ class AuthController extends GetxController {
           user.name!,
           user.email!,
         );
+        userController.assignProfileData(await userService.getProfileData());
 
         Future.delayed(Duration.zero, () {
           Get.offAllNamed('/chat');

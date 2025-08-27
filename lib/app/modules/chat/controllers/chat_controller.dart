@@ -28,6 +28,7 @@ class ChatController extends GetxController {
   var selectedImagePath = ''.obs;
   var selectedFilePath = ''.obs;
   var selectedFileName = ''.obs;
+  var selectedPhotoProfilePath = ''.obs;
   var selectedLanguage = 'id_ID'.obs; // Menyimpan kode locale
   var userController = Get.find<UserController>();
   var userService = UserService();
@@ -50,12 +51,19 @@ class ChatController extends GetxController {
   final _langKey = 'selectedLanguage'; // Key baru untuk bahasa
 
   //untuk update profile
-  TextEditingController nameController = TextEditingController();
+
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController departmentController = TextEditingController();
   TextEditingController positionController = TextEditingController();
-  MultipartFile? profilePhoto;
+
+  void addInitialProfileData() {
+    emailController.text = UserController().profileData.user?.email ?? '';
+    phoneController.text = UserController().profileData.user?.phone ?? '';
+    departmentController.text =
+        UserController().profileData.user?.department?.name ?? '';
+    positionController.text = UserController().profileData.user?.position ?? '';
+  }
 
   // --- DAFTAR OPSI BARU UNTUK DROPDOWN ---
   final List<String> maritimeWorkTypes = [
@@ -128,30 +136,55 @@ class ChatController extends GetxController {
     }
   }
 
+  void selectProfilePhoto() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      selectedPhotoProfilePath.value = pickedFile.path;
+      update();
+    }
+  }
+
   void updateProfile() async {
-    if (isEditMode.value) {
-      // Ambil data dari controller
-      String name = nameController.text;
-      String email = emailController.text;
-      String phone = phoneController.text;
-      String department = departmentController.text;
-      String position = positionController.text;
+    try {
+      if (isEditMode.value) {
+        // Ambil data dari controller
 
-      // Buat request untuk update profile
-      var request = UpdateProfileRequest(
-        email: email,
-        phone: phone,
-        department: department,
-        position: position,
-        profilePhoto: profilePhoto,
-      );
+        String? email = UserController().profileData.user?.email;
+        String phone = phoneController.text;
+        String department = departmentController.text;
+        String position = positionController.text;
 
-      // Panggil service untuk update profile
-      UpdateProfileResponse response = await userService.updateProfile(request);
-      if (response != null) {
-        userController.assignProfileDataAfterUpdate(response);
-        Get.back();
+        MultipartFile? profilePhoto;
+        var request;
+
+        if (selectedPhotoProfilePath.value.isNotEmpty) {
+          profilePhoto = MultipartFile(File(selectedPhotoProfilePath.value),
+              filename: selectedPhotoProfilePath.value.split('/').last);
+          request = UpdateProfileRequest(
+            email: email,
+            phone: phone,
+            department: department,
+            position: position,
+            profilePhoto: profilePhoto,
+          );
+        } else {
+          request = UpdateProfileRequest(
+            email: email,
+            phone: phone,
+            department: department,
+            position: position,
+          );
+        }
+
+        // Panggil service untuk update profile
+        UpdateProfileResponse response =
+            await userService.updateProfile(request);
+        if (response != null) {
+          userController.assignProfileDataAfterUpdate(response);
+        }
       }
+    } catch (e) {
+      Logger().e("Error updating profile: $e");
     }
   }
 
@@ -159,6 +192,7 @@ class ChatController extends GetxController {
   void onInit() {
     super.onInit();
     _loadChatHistory();
+    addInitialProfileData();
     _initSpeech();
     _loadLanguage(); // Memuat preferensi bahasa
     textController.addListener(() {

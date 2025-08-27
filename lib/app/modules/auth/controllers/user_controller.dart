@@ -39,7 +39,7 @@ class UserController extends GetxController {
   void assignProfileDataAfterUpdate(UpdateProfileResponse profile) {
     profileData.user?.email = profile.user?.email;
     profileData.user?.phone = profile.user?.phone;
-    profileData.user?.department = profile.user?.departmentId;
+    profileData.user?.department?.name = profile.user?.department?.name;
     profileData.user?.position = profile.user?.position;
     userProfilePicture = profile.user?.profilePhoto.toString() ?? '';
   }
@@ -78,7 +78,7 @@ class UserController extends GetxController {
     UpdateProfileRequest req = UpdateProfileRequest(
       email: profile.user!.email,
       phone: profile.user!.phone,
-      department: profile.user!.department,
+      department: profile.user!.department?.name,
       position: profile.user!.position,
       profilePhoto: profilePhoto,
     );

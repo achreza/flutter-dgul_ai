@@ -12,17 +12,15 @@ import 'package:path/path.dart';
 class UserService extends GetConnect {
   Future<UpdateProfileResponse> updateProfile(
       UpdateProfileRequest request) async {
+    Logger().i(
+        'Updating profile with data: ${request.toMap()}, Profile Photo: ${request.profilePhoto?.filename}');
     try {
       final form = FormData(request.toMap());
-      final fileExtension = extension(request.profilePhoto!.filename);
+
       if (request.profilePhoto != null) {
         form.files.add(MapEntry(
           'profile_photo',
-          MultipartFile(
-            request.profilePhoto!,
-            filename:
-                '${Get.find<UserController>().userName}_${DateTime.now().millisecondsSinceEpoch}$fileExtension',
-          ),
+          request.profilePhoto!,
         ));
       }
 
@@ -35,6 +33,7 @@ class UserService extends GetConnect {
               'Bearer ${Get.find<UserController>().getBearerToken()}',
         },
       );
+      Logger().i('Profile update response: ${res.body}');
 
       return UpdateProfileResponse.fromJson(res.body);
     } catch (e) {

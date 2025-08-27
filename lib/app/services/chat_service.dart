@@ -46,7 +46,7 @@ class ChatService extends GetConnect {
       Logger().d("Response: ${response.body}");
 
       if (response.status.hasError) {
-        throw Exception('Failed to send message');
+        throw Exception('${response.body['message']}');
       }
 
       return SingleMessageResponse.fromJson(response.body);

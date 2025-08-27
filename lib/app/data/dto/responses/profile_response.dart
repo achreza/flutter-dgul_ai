@@ -4,13 +4,13 @@ class ProfileResponse {
   ProfileResponse({this.user});
 
   ProfileResponse.fromJson(Map<String, dynamic> json) {
-    user = json['user'] != null ? User.fromJson(json['user']) : null;
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (user != null) {
-      data['user'] = user!.toJson();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.user != null) {
+      data['user'] = this.user!.toJson();
     }
     return data;
   }
@@ -21,7 +21,8 @@ class User {
   String? name;
   String? email;
   String? phone;
-  String? department;
+  String? departmentId;
+  Department? department;
   String? position;
   String? language;
   String? role;
@@ -35,6 +36,7 @@ class User {
       this.name,
       this.email,
       this.phone,
+      this.departmentId,
       this.department,
       this.position,
       this.language,
@@ -45,36 +47,77 @@ class User {
       this.updatedAt});
 
   User.fromJson(Map<String, dynamic> json) {
-    // Memberikan nilai default jika data dari JSON null
-    id = json['id'] ?? 0;
-    name = json['name'] ?? '';
-    email = json['email'] ?? '';
-    phone = json['phone'] ?? '';
-    department = json['department'] ?? '';
-    position = json['position'] ?? '';
-    language = json['language'] ?? '';
-    role = json['role'] ?? '';
-    profilePhotoUrl = json['profile_photo_url'] ??
-        'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png';
-    emailVerifiedAt = json['email_verified_at'] ?? '';
-    createdAt = json['created_at'] ?? '';
-    updatedAt = json['updated_at'] ?? '';
+    id = json['id'];
+    name = json['name'];
+    email = json['email'];
+    phone = json['phone'];
+    departmentId = json['department_id'];
+    department = json['department'] != null
+        ? new Department.fromJson(json['department'])
+        : null;
+    position = json['position'];
+    language = json['language'];
+    role = json['role'];
+    profilePhotoUrl = json['profile_photo_url'];
+    emailVerifiedAt = json['email_verified_at'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['id'] = id;
-    data['name'] = name;
-    data['email'] = email;
-    data['phone'] = phone;
-    data['department'] = department;
-    data['position'] = position;
-    data['language'] = language;
-    data['role'] = role;
-    data['profile_photo_url'] = profilePhotoUrl;
-    data['email_verified_at'] = emailVerifiedAt;
-    data['created_at'] = createdAt;
-    data['updated_at'] = updatedAt;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['phone'] = this.phone;
+    data['department_id'] = this.departmentId;
+    if (this.department != null) {
+      data['department'] = this.department!.toJson();
+    }
+    data['position'] = this.position;
+    data['language'] = this.language;
+    data['role'] = this.role;
+    data['profile_photo_url'] = this.profilePhotoUrl;
+    data['email_verified_at'] = this.emailVerifiedAt;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
+    return data;
+  }
+}
+
+class Department {
+  int? id;
+  String? name;
+  String? description;
+  String? isActive;
+  String? createdAt;
+  String? updatedAt;
+
+  Department(
+      {this.id,
+      this.name,
+      this.description,
+      this.isActive,
+      this.createdAt,
+      this.updatedAt});
+
+  Department.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    description = json['description'];
+    isActive = json['is_active'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['description'] = this.description;
+    data['is_active'] = this.isActive;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }

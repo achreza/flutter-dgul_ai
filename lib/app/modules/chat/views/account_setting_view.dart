@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dgul_ai/app/modules/chat/controllers/chat_controller.dart';
 import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:dgul_ai/app/utitls/rasset.dart';
@@ -113,11 +115,12 @@ class AccountSettingView extends GetView<ChatController> {
             style: subHeadline1TextStyle.copyWith(
                 color: RColor().primaryBlueColor)),
         SizedBox(height: 25.h),
-        _buildInfoRow("Email", "${controller.userController.getEmail()}"),
+        _buildInfoRow("Email",
+            "${controller.userController.profileData.user?.email ?? 'Not Set'}"),
         _buildInfoRow("Telephone",
             "${controller.userController.profileData.user?.phone ?? 'Not Set'}"),
         _buildInfoRow("Type of Department",
-            "${controller.userController.profileData.user?.department ?? 'Not Set'}"),
+            "${controller.userController.profileData.user?.department?.name ?? 'Not Set'}"),
         _buildInfoRow("Position",
             "${controller.userController.profileData.user?.position ?? 'Not Set'}"),
         _buildInfoRow("Subscription Status", "Active 360 Days"),
@@ -165,18 +168,15 @@ class AccountSettingView extends GetView<ChatController> {
             style: subHeadline1TextStyle.copyWith(
                 color: RColor().primaryBlueColor)),
         SizedBox(height: 25.h),
-        _buildEditableInfoRow(
-            "Email",
-            "${controller.userController.getEmail()}",
-            controller.emailController,
-            isEditable: false),
+        _buildInfoRow("Email",
+            "${controller.userController.profileData.user?.email ?? ''}"),
         _buildEditableInfoRow(
             "Telephone",
             "${controller.userController.profileData.user?.phone ?? ''}",
             controller.phoneController),
         _buildEditableInfoRow(
             "Type of Department",
-            "${controller.userController.profileData.user?.department ?? ''}",
+            "${controller.userController.profileData.user?.department?.name ?? ''}",
             controller.departmentController),
         _buildEditableInfoRow(
             "Position",
@@ -204,8 +204,7 @@ class AccountSettingView extends GetView<ChatController> {
             Expanded(
               child: ElevatedButton(
                 onPressed: () {
-                  // TODO: Tambahkan logika simpan perubahan
-                  controller.toggleEditMode(); // Kembali ke view mode
+                  controller.updateProfile(); // Kembali ke view mode
                 },
                 child: Text("Save",
                     style: buttonTextStyle.copyWith(color: Colors.white)),
@@ -234,16 +233,20 @@ class AccountSettingView extends GetView<ChatController> {
               shape: BoxShape.circle,
               color: RColor().primaryYellowColor,
             ),
-            child: CircleAvatar(
-              radius: 100.r,
-              backgroundImage:
-                  AssetImage(RAsset().bgSirkuitLight), // Placeholder
-              child: CircleAvatar(
-                radius: 95.r,
-                backgroundImage: NetworkImage(
-                    "${controller.userController.profileData.user?.profilePhotoUrl ?? 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png'}"), // Ganti dengan URL foto profil
-              ),
-            ),
+            child: Obx(() => CircleAvatar(
+                  radius: 100.r,
+                  backgroundImage:
+                      AssetImage(RAsset().bgSirkuitLight), // Placeholder
+                  child: CircleAvatar(
+                    radius: 95.r,
+                    backgroundImage: controller
+                            .selectedPhotoProfilePath.value.isNotEmpty
+                        ? FileImage(
+                            File(controller.selectedPhotoProfilePath.value))
+                        : NetworkImage(
+                            "${controller.userController.profileData.user?.profilePhotoUrl ?? 'https://images.rawpixel.com/image_png_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDIzLTAxL3JtNjA5LXNvbGlkaWNvbi13LTAwMi1wLnBuZw.png'}"), // Placeholder
+                  ),
+                )),
           ),
           if (isEdit)
             Positioned(
@@ -251,7 +254,7 @@ class AccountSettingView extends GetView<ChatController> {
               right: 5.w,
               child: GestureDetector(
                 onTap: () {
-                  // TODO: Tambahkan logika ganti foto
+                  controller.selectProfilePhoto();
                 },
                 child: CircleAvatar(
                   radius: 18.r,
@@ -300,7 +303,6 @@ class AccountSettingView extends GetView<ChatController> {
                   body2TextStyle.copyWith(color: RColor().secondaryGreyColor)),
           isEditable
               ? TextFormField(
-                  initialValue: initialValue,
                   controller: textController,
                   style: body1TextStyle.copyWith(
                       color: RColor().primaryBlueColor,
