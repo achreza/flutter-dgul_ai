@@ -17,6 +17,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:logger/logger.dart';
 import 'package:mime/mime.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
@@ -282,7 +283,7 @@ class ChatController extends GetxController {
 
   void sendSuggestion(String suggestionText) {
     textController.text = suggestionText;
-    sendMessage();
+    sendMessageToDGULAPI();
   }
 
   void pickFile() async {
@@ -342,36 +343,76 @@ class ChatController extends GetxController {
 
   Future<void> sendMessageToDGULAPI() async {
     final text = textController.text.trim();
+    final imagePath = selectedImagePath.value;
+    final filePath = selectedFilePath.value;
+
     if (text.isEmpty) return;
 
     isLoading.value = true;
+    Map<String, dynamic>? fileData;
 
     messages.add(ChatMessage(
       text: text,
       sender: Sender.user,
+      imagePath: selectedImagePath.value,
+      fileName: selectedFileName.value,
     ));
 
     textController.clear();
     _scrollToBottom();
     _saveChatHistory();
 
-    try {
-      final SingleMessageResponse aiResponse =
-          await _chatService.sendSingleMessage(text);
-      final responseText =
-          aiResponse.message?.content ?? "Received an empty response.";
+    if (imagePath.isNotEmpty) {
+      try {
+        Logger().d("Mengirim pesan dengan file: $imagePath");
+        final SingleMessageResponse aiResponse =
+            await _chatService.sendSingleMessageWithImage(
+                text,
+                MultipartFile(selectedImagePath.value,
+                    filename: selectedImagePath.value.split('/').last));
+        final responseText =
+            aiResponse.message?.content ?? "Received an empty response.";
+        messages.add(ChatMessage(
+          text: responseText,
+          sender: Sender.ai,
+          tokenCount: aiResponse.metadata?.usage?.totalTokenCount,
+        ));
+      } catch (e) {
+        _showError("Gagal memproses file: $e");
+        isLoading.value = false;
+        return;
+      } finally {
+        isLoading.value = false;
+        textController.clear();
+        selectedImagePath.value = '';
+        cancelFileSelection();
+        _scrollToBottom();
+        _saveChatHistory();
+      }
+    } else {
+      try {
+        Logger().d("Mengirim pesan tanpa file");
+        final SingleMessageResponse aiResponse =
+            await _chatService.sendSingleMessage(text);
+        final responseText =
+            aiResponse.message?.content ?? "Received an empty response.";
 
-      messages.add(ChatMessage(
-        text: responseText,
-        sender: Sender.ai,
-        tokenCount: aiResponse.metadata?.usage?.totalTokenCount,
-      ));
-    } catch (e) {
-      _showError("Terjadi kesalahan: $e");
-    } finally {
-      isLoading.value = false;
-      _scrollToBottom();
-      _saveChatHistory();
+        messages.add(ChatMessage(
+          text: responseText,
+          sender: Sender.ai,
+          tokenCount: aiResponse.metadata?.usage?.totalTokenCount,
+        ));
+      } catch (e) {
+        _showError("Terjadi kesalahan: $e");
+        isLoading.value = false;
+      } finally {
+        isLoading.value = false;
+        textController.clear();
+        selectedImagePath.value = '';
+        cancelFileSelection();
+        _scrollToBottom();
+        _saveChatHistory();
+      }
     }
   }
 
