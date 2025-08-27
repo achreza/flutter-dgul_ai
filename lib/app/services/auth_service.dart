@@ -37,17 +37,18 @@ class AuthService extends GetConnect {
       String language, String role) async {
     try {
       String langCode = language == 'Indonesia' ? 'id' : 'en';
+      String roleCode = role == 'Seafarer' ? 'seafarer' : 'maritime_worker';
       final response = await post('$apiBaseUrl/register', {
         'name': name,
         'email': email,
         'password': password,
         'language': langCode,
-        'role': role.toLowerCase(),
+        'role': roleCode,
       }, headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       });
-      Logger().i('Response from register: ${response.body}');
+      Logger().i('Response from register: ${response}');
       return response;
     } catch (e) {
       Logger().e('Error registering user: $e');

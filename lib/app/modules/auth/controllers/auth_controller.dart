@@ -4,6 +4,7 @@ import 'package:dgul_ai/app/modules/chat/controllers/chat_controller.dart';
 import 'package:dgul_ai/app/services/auth_service.dart';
 import 'package:dgul_ai/app/services/user_service.dart';
 import 'package:dgul_ai/app/utitls/rloaders.dart';
+import 'package:dgul_ai/app/widgets/loading_popup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -28,8 +29,10 @@ class AuthController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    autoLogin();
-    _loadLanguage(); // Memuat preferensi bahasa
+    _loadLanguage();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      autoLogin();
+    });
   }
 
   void _loadLanguage() {
@@ -56,6 +59,7 @@ class AuthController extends GetxController {
 
   void autoLogin() async {
     final token = _storage.read('accessToken');
+    LoadingPopup.show(Get.context!);
 
     // Jika token ditemukan di storage
     if (token != null) {
@@ -72,6 +76,7 @@ class AuthController extends GetxController {
           user.email!,
         );
         userController.assignProfileData(await userService.getProfileData());
+        LoadingPopup.hide(Get.context!);
 
         Future.delayed(Duration.zero, () {
           Get.offAllNamed('/chat');
@@ -82,11 +87,13 @@ class AuthController extends GetxController {
 
   Future<void> login() async {
     isLoading.value = true;
+    LoadingPopup.show(Get.context!);
     final response = await authService.login(
       emailController.text,
       passwordController.text,
     );
     isLoading.value = false;
+    LoadingPopup.hide(Get.context!);
 
     if (response.isOk) {
       final loginResponse = LoginResponse.fromJson(response.body);
@@ -128,6 +135,7 @@ class AuthController extends GetxController {
   Future<void> register() async {
     try {
       isLoading.value = true;
+      LoadingPopup.show(Get.context!);
       final response = await authService.register(
         nameController.text,
         emailController.text,
@@ -136,6 +144,7 @@ class AuthController extends GetxController {
         selectedRole.value,
       );
       isLoading.value = false;
+      LoadingPopup.hide(Get.context!);
 
       if (response.isOk) {
         // Handle successful registration
