@@ -564,7 +564,7 @@ class ChatView extends GetView<ChatController> {
                   color: themeController.isDarkMode.value
                       ? HexColor("#43B2FC")
                       : RColor().primaryBlueColor,
-                  onPressed: () => _showAttachmentSheet(controller),
+                  onPressed: () => controller.pickImage(ImageSource.camera),
                 ),
                 Expanded(
                   child: Container(
