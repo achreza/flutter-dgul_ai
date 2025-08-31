@@ -120,7 +120,7 @@ class AccountSettingView extends GetView<ChatController> {
         _buildInfoRow("Telephone",
             "${controller.userController.profileData.user?.phone ?? 'Not Set'}"),
         _buildInfoRow("Type of Department",
-            "${controller.userController.profileData.user?.department?.name ?? 'Not Set'}"),
+            "${controller.userController.profileData.user?.department ?? 'Not Set'}"),
         _buildInfoRow("Position",
             "${controller.userController.profileData.user?.position ?? 'Not Set'}"),
         _buildInfoRow("Subscription Status", "Active 360 Days"),
@@ -176,7 +176,7 @@ class AccountSettingView extends GetView<ChatController> {
             controller.phoneController),
         _buildEditableInfoRow(
             "Type of Department",
-            "${controller.userController.profileData.user?.department?.name ?? ''}",
+            "${controller.userController.profileData.user?.department ?? ''}",
             controller.departmentController),
         _buildEditableInfoRow(
             "Position",

@@ -25,7 +25,7 @@ class User {
   String? email;
   String? phone;
   String? departmentId;
-  Department? department;
+  String? department;
   String? position;
   String? profilePhoto;
 
@@ -45,10 +45,8 @@ class User {
     email = json['email'];
     phone = json['phone'];
     departmentId = json['department_id'];
-    department = json['department'] != null
-        ? new Department.fromJson(json['department'])
-        : null;
-    position = json['position'];
+    department = json['department'] ?? '';
+    position = json['position'] ?? '';
     profilePhoto = json['profile_photo'];
   }
 
@@ -59,48 +57,9 @@ class User {
     data['email'] = this.email;
     data['phone'] = this.phone;
     data['department_id'] = this.departmentId;
-    if (this.department != null) {
-      data['department'] = this.department!.toJson();
-    }
+    data['department'] = this.department;
     data['position'] = this.position;
     data['profile_photo'] = this.profilePhoto;
-    return data;
-  }
-}
-
-class Department {
-  int? id;
-  String? name;
-  String? description;
-  String? isActive;
-  String? createdAt;
-  String? updatedAt;
-
-  Department(
-      {this.id,
-      this.name,
-      this.description,
-      this.isActive,
-      this.createdAt,
-      this.updatedAt});
-
-  Department.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    description = json['description'];
-    isActive = json['is_active'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['is_active'] = this.isActive;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     return data;
   }
 }

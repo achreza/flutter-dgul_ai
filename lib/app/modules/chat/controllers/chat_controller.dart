@@ -58,16 +58,15 @@ class ChatController extends GetxController {
   TextEditingController positionController = TextEditingController();
 
   void addInitialProfileData() {
-    emailController.text = UserController().profileData.user?.email ?? '';
-    phoneController.text = UserController().profileData.user?.phone ?? '';
+    emailController.text = userController.profileData.user?.email ?? '';
+    phoneController.text = userController.profileData.user?.phone ?? '';
     departmentController.text =
-        UserController().profileData.user?.department?.name ?? '';
-    positionController.text = UserController().profileData.user?.position ?? '';
+        userController.profileData.user?.department ?? '';
+    positionController.text = userController.profileData.user?.position ?? '';
   }
 
   // --- DAFTAR OPSI BARU UNTUK DROPDOWN ---
   final List<String> maritimeWorkTypes = [
-    "Maritime Worker",
     "Perusahaan Pelayaran",
     "Perusahaan Fasilitas Pelabuhan & Terminal",
     "Perusahaan Keagenan Kapal",
@@ -192,7 +191,7 @@ class ChatController extends GetxController {
   void onInit() {
     super.onInit();
     _loadChatHistory();
-    addInitialProfileData();
+
     _initSpeech();
     _loadLanguage(); // Memuat preferensi bahasa
     textController.addListener(() {
@@ -203,6 +202,7 @@ class ChatController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+    addInitialProfileData();
     SubscriptionPromoSheet.show();
   }
 
