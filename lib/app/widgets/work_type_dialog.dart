@@ -31,6 +31,7 @@ class _WorkTypeDialogWidget extends StatefulWidget {
 class _WorkTypeDialogWidgetState extends State<_WorkTypeDialogWidget> {
   // State untuk melacak status checkbox
   bool _isChecked = false;
+  ChatController controller = Get.find<ChatController>();
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +57,9 @@ class _WorkTypeDialogWidgetState extends State<_WorkTypeDialogWidget> {
                 children: [
                   // Konten T&C dalam container terpisah
                   Container(
-                    height: 600.h,
+                    height: controller.selectedRole.value == "Seafarer"
+                        ? 150.h
+                        : 600.h, // tinggi dinamis berdasarkan role
                     margin: EdgeInsets.symmetric(horizontal: 20.w),
                     padding: EdgeInsets.all(10.w),
                     child: SingleChildScrollView(
@@ -77,49 +80,96 @@ class _WorkTypeDialogWidgetState extends State<_WorkTypeDialogWidget> {
     ChatController controller = Get.find<ChatController>();
     // Menggunakan Column karena parent-nya sudah SingleChildScrollView
     return Column(
-      children: controller.maritimeWorkTypes.map((workType) {
-        return GestureDetector(
-            onTap: () {
-              controller.selectWorkType(workType);
-              Get.back();
-            },
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 8.h),
-              child: Row(
-                crossAxisAlignment:
-                    CrossAxisAlignment.start, // supaya tinggi row ikut teks
-                children: [
-                  Container(
-                    height: 23.h,
-                    width: 23.h,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: controller.selectedWorkType.value == workType
-                          ? RColor().primaryBlueColor
-                          : Colors.grey,
-                      border: Border.all(color: Colors.white, width: 2.w),
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  Expanded(
-                    // 🔑 supaya teks bisa wrap
-                    child: Text(
-                      workType,
-                      style: body1TextStyle.copyWith(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16.sp,
+        children: controller.selectedRole.value == "Seafarer"
+            ? controller.seafarerWorkTypes.map((workType) {
+                return GestureDetector(
+                    onTap: () {
+                      controller.selectWorkType(workType);
+                      Get.back();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 8.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment
+                            .start, // supaya tinggi row ikut teks
+                        children: [
+                          Container(
+                            height: 23.h,
+                            width: 23.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color:
+                                  controller.selectedWorkType.value == workType
+                                      ? RColor().primaryBlueColor
+                                      : Colors.grey,
+                              border:
+                                  Border.all(color: Colors.white, width: 2.w),
+                            ),
+                          ),
+                          SizedBox(width: 8.w),
+                          Expanded(
+                            // 🔑 supaya teks bisa wrap
+                            child: Text(
+                              workType,
+                              style: body1TextStyle.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16.sp,
+                              ),
+                              textAlign: TextAlign.start,
+                              softWrap: true,
+                              maxLines: null,
+                              overflow: TextOverflow.visible,
+                            ),
+                          ),
+                        ],
                       ),
-                      textAlign: TextAlign.start,
-                      softWrap: true,
-                      maxLines: null,
-                      overflow: TextOverflow.visible,
-                    ),
-                  ),
-                ],
-              ),
-            ));
-      }).toList(),
-    );
+                    ));
+              }).toList()
+            : controller.maritimeWorkTypes.map((workType) {
+                return GestureDetector(
+                    onTap: () {
+                      controller.selectWorkType(workType);
+                      Get.back();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 8.h),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment
+                            .start, // supaya tinggi row ikut teks
+                        children: [
+                          Container(
+                            height: 23.h,
+                            width: 23.h,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color:
+                                  controller.selectedWorkType.value == workType
+                                      ? RColor().primaryBlueColor
+                                      : Colors.grey,
+                              border:
+                                  Border.all(color: Colors.white, width: 2.w),
+                            ),
+                          ),
+                          SizedBox(width: 8.w),
+                          Expanded(
+                            // 🔑 supaya teks bisa wrap
+                            child: Text(
+                              workType,
+                              style: body1TextStyle.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 16.sp,
+                              ),
+                              textAlign: TextAlign.start,
+                              softWrap: true,
+                              maxLines: null,
+                              overflow: TextOverflow.visible,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ));
+              }).toList());
   }
 }

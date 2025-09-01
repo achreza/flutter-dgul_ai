@@ -37,6 +37,7 @@ class ChatController extends GetxController {
 
   // --- STATE BARU UNTUK DROPDOWN ---
   var selectedWorkType = 'Maritime Worker'.obs;
+  var selectedRole = 'Maritime Worker'.obs;
   RxInt selectedSuggestion = 0.obs;
 
   var isListening = false.obs;
@@ -63,6 +64,12 @@ class ChatController extends GetxController {
     departmentController.text =
         userController.profileData.user?.department ?? '';
     positionController.text = userController.profileData.user?.position ?? '';
+    selectedWorkType.value = userController.profileData.user?.role == 'seafarer'
+        ? 'Seafarer'
+        : 'Maritime Worker';
+    selectedRole.value = userController.profileData.user?.role == 'seafarer'
+        ? 'Seafarer'
+        : 'Maritime Worker';
   }
 
   // --- DAFTAR OPSI BARU UNTUK DROPDOWN ---
@@ -80,6 +87,12 @@ class ChatController extends GetxController {
     "Perusahaan Perbaikan dan Perawatan kapal",
     "Asosiasi / Organisasi Industri Maritim",
     "Masyarakat Maritim",
+  ];
+
+  final List<String> seafarerWorkTypes = [
+    "Deck Department",
+    "Engine Department",
+    "Catering Department",
   ];
 
   final List<String> suggestionPrompts = [
