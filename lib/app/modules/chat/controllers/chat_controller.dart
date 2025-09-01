@@ -9,6 +9,7 @@ import 'package:dgul_ai/app/modules/auth/controllers/auth_controller.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/user_controller.dart';
 import 'package:dgul_ai/app/services/chat_service.dart';
 import 'package:dgul_ai/app/services/user_service.dart';
+import 'package:dgul_ai/app/widgets/loading_popup.dart';
 import 'package:dgul_ai/app/widgets/subscription_promo_sheet.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -254,6 +255,7 @@ class ChatController extends GetxController {
 
       // Arahkan ke halaman login
       Get.offAllNamed('/auth');
+      LoadingPopup.hide(Get.overlayContext!);
     } catch (e) {
       print("Error logging out: $e");
     }

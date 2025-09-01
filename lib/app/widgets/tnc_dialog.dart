@@ -96,24 +96,25 @@ class _TncDialogWidgetState extends State<_TncDialogWidget> {
       children: [
         Text(
           "D'Gul AI – Maritime Artificial Intelligence\nEffective Date: [$effectiveDate]",
-          style: body2TextStyle.copyWith(fontWeight: FontWeight.bold),
+          style: body2TextStyle.copyWith(
+              fontWeight: FontWeight.bold, color: Colors.black),
         ),
         SizedBox(height: 8.h),
         Text(
           "Welcome to D'Gul AI! By accessing or using this application, you agree to the following terms and conditions. Please read them carefully.",
-          style: body2TextStyle,
+          style: body2TextStyle.copyWith(color: Colors.black),
         ),
         SizedBox(height: 16.h),
         _buildSectionTitle("1. General Use"),
         Text(
           "D'Gul AI is an AI-based maritime assistant designed to support seafarers in preparing for their careers. Users must be at least 17 years old or have parental consent.",
-          style: body2TextStyle,
+          style: body2TextStyle.copyWith(color: Colors.black),
         ),
         SizedBox(height: 16.h),
         _buildSectionTitle("2. Account Registration"),
         Text(
           "To use premium features, users must register and provide accurate information. You are responsible for maintaining the confidentiality of your account credentials.",
-          style: body2TextStyle,
+          style: body2TextStyle.copyWith(color: Colors.black),
         ),
         SizedBox(height: 16.h),
         _buildSectionTitle("3. Subscription and Payment"),
@@ -130,7 +131,8 @@ class _TncDialogWidgetState extends State<_TncDialogWidget> {
       padding: EdgeInsets.only(bottom: 4.h),
       child: Text(
         title,
-        style: body1TextStyle.copyWith(fontWeight: FontWeight.bold),
+        style: body1TextStyle.copyWith(
+            fontWeight: FontWeight.bold, color: Colors.black),
       ),
     );
   }
@@ -142,7 +144,9 @@ class _TncDialogWidgetState extends State<_TncDialogWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("• ", style: body2TextStyle),
-          Expanded(child: Text(text, style: body2TextStyle)),
+          Expanded(
+              child: Text(text,
+                  style: body2TextStyle.copyWith(color: Colors.black))),
         ],
       ),
     );

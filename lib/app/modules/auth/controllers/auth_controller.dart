@@ -59,10 +59,10 @@ class AuthController extends GetxController {
 
   void autoLogin() async {
     final token = _storage.read('accessToken');
-    LoadingPopup.show(Get.context!);
 
     // Jika token ditemukan di storage
     if (token != null) {
+      LoadingPopup.show(Get.context!);
       final userData = _storage.read<Map<String, dynamic>>('userData');
       if (userData != null) {
         final user = User.fromJson(userData);
