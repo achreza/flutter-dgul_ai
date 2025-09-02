@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "188510324480",
+    "project_id": "dgul-ai",
+    "storage_bucket": "dgul-ai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188510324480:android:c30d739b8bce519968d5e5",
+        "android_client_info": {
+          "package_name": "com.dgul.maritimeai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188510324480-dfo8qvdstmm1bb51phgkjhlabetb78hv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANbBEyAWgzhGm2LMnIyRM6YSG9FEt2BwM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188510324480-dfo8qvdstmm1bb51phgkjhlabetb78hv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

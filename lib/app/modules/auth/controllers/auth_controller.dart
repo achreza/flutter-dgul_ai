@@ -1,13 +1,16 @@
 import 'package:dgul_ai/app/data/dto/responses/login_response.dart';
+import 'package:dgul_ai/app/data/dto/responses/login_response.dart' as lr;
 import 'package:dgul_ai/app/modules/auth/controllers/user_controller.dart';
 import 'package:dgul_ai/app/modules/chat/controllers/chat_controller.dart';
 import 'package:dgul_ai/app/services/auth_service.dart';
 import 'package:dgul_ai/app/services/user_service.dart';
 import 'package:dgul_ai/app/utitls/rloaders.dart';
 import 'package:dgul_ai/app/widgets/loading_popup.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthController extends GetxController {
   //TODO: Implement AuthController
@@ -65,7 +68,7 @@ class AuthController extends GetxController {
       LoadingPopup.show(Get.context!);
       final userData = _storage.read<Map<String, dynamic>>('userData');
       if (userData != null) {
-        final user = User.fromJson(userData);
+        final user = lr.User.fromJson(userData);
 
         // Gunakan Get.find() untuk mengakses instance UserController yang sudah ada
         final userController = Get.find<UserController>();
@@ -128,6 +131,70 @@ class AuthController extends GetxController {
         status: DialogStatus.failed,
         title: 'Login Failed',
         message: response.statusText ?? 'Unknown error',
+      );
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    isLoading.value = true;
+    try {
+      // 1. Memicu alur autentikasi Google
+      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+      // Jika pengguna membatalkan login
+      if (googleUser == null) {
+        isLoading.value = false;
+        return;
+      }
+
+      // 2. Mendapatkan detail autentikasi dari request
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+
+      // 3. Membuat kredensial baru untuk Firebase
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // 4. Masuk ke Firebase dengan kredensial tersebut
+      final UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      // Jika berhasil, Anda memiliki userCredential.user
+      if (userCredential.user != null) {
+        // --- PROSES SETELAH LOGIN BERHASIL ---
+        // Di sini Anda bisa memanggil API backend Anda untuk mendaftarkan/login
+        // pengguna ini di database Anda dan mendapatkan access token dari server Anda.
+        // Untuk contoh ini, kita akan langsung menyimpan data dari Google
+        // dan menganggapnya sebagai login yang berhasil.
+
+        final user = userCredential.user!;
+        final token = await user.getIdToken(); // Token Firebase
+
+        // Simpan data ke GetStorage dan UserController
+        _storage.write('bearerToken', token);
+        _storage.write('userId', user.uid);
+        _storage.write('userName', user.displayName ?? 'No Name');
+        _storage.write('userEmail', user.email ?? 'No Email');
+
+        Get.find<UserController>().assignLoginData(
+          token ?? '',
+          user.uid,
+          user.displayName ?? 'No Name',
+          user.email ?? 'No Email',
+        );
+
+        isLoading.value = false;
+        Get.offAllNamed('/chat'); // Navigasi ke halaman chat
+      }
+    } catch (e) {
+      isLoading.value = false;
+      RLoaders.showStatusDialog(
+        context: Get.context!,
+        status: DialogStatus.failed,
+        title: 'Google Sign-In Failed',
+        message: e.toString(),
       );
     }
   }

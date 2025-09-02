@@ -163,10 +163,13 @@ class LoginView extends GetView<AuthController> {
   }
 
   Widget _buildGoogleLoginrButton() {
+    final AuthController controller = Get.find<AuthController>();
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: () {},
+        onPressed: () {
+          controller.signInWithGoogle();
+        },
         icon: Image.asset("assets/images/google_logo.png", height: 20.h),
         label: Text("Login With Google",
             style: buttonTextStyle.copyWith(color: Colors.white)),

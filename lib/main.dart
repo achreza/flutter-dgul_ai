@@ -1,6 +1,8 @@
 import 'package:dgul_ai/app/modules/auth/controllers/user_controller.dart';
 import 'package:dgul_ai/app/modules/home/controllers/theme_controller.dart';
 import 'package:dgul_ai/app/utitls/localization.dart';
+import 'package:dgul_ai/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -15,6 +17,10 @@ void main() async {
   await dotenv.load(fileName: ".env");
   await GetStorage.init();
   Get.put(UserController(), permanent: true);
+  //firebase
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(
     const MyApp(),
