@@ -263,13 +263,18 @@ class ChatController extends GetxController {
     }
   }
 
-  void changeLanguage(String langCode) {
+  void changeLanguage(String langCode) async {
+    //show loading
+    LoadingPopup.show(Get.overlayContext!);
     selectedLanguage.value = langCode;
     var locale = langCode == 'id_ID'
         ? const Locale('id', 'ID')
         : const Locale('en', 'US');
     Get.updateLocale(locale);
     _storage.write(_langKey, langCode);
+    var language = langCode == 'id_ID' ? 'id' : 'en';
+    await userService.updateLanguage(language);
+    LoadingPopup.hide(Get.overlayContext!);
   }
 
   void toggleListening() async {

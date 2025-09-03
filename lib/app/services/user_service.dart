@@ -1,5 +1,6 @@
 import 'package:dgul_ai/app/data/dto/responses/profile_response.dart';
 import 'package:dgul_ai/app/data/dto/responses/update_profile_response.dart';
+import 'package:dgul_ai/app/modules/auth/controllers/auth_controller.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/user_controller.dart';
 import 'package:dgul_ai/app/services/auth_service.dart';
 import 'package:dgul_ai/constants.dart';
@@ -39,6 +40,30 @@ class UserService extends GetConnect {
     } catch (e) {
       Logger().e('Error updating profile: $e');
       return UpdateProfileResponse();
+    }
+  }
+
+  Future<Response> updateLanguage(String lang) async {
+    try {
+      final response = await post(
+        '$apiBaseUrl/profile/language',
+        {'language': lang},
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization':
+              'Bearer ${Get.find<UserController>().getBearerToken()}',
+        },
+      );
+
+      if (response.status.hasError) {
+        throw Exception('Failed to update language');
+      }
+
+      return response;
+    } catch (e) {
+      Logger().e('Error updating language: $e');
+      rethrow;
     }
   }
 
