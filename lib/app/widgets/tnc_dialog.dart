@@ -34,6 +34,7 @@ class _TncDialogWidget extends StatefulWidget {
 class _TncDialogWidgetState extends State<_TncDialogWidget> {
   // State untuk melacak status checkbox
   bool _isChecked = false;
+  RxBool isAgreed = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -157,10 +158,19 @@ class _TncDialogWidgetState extends State<_TncDialogWidget> {
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Gunakan SizedBox untuk membuat Checkbox lebih kecil
-
+          SizedBox(
+            width: 20.w,
+            height: 20.h,
+            child: Obx(() => Checkbox(
+                  value: isAgreed.value,
+                  onChanged: (value) {
+                    isAgreed.value = value ?? false;
+                  },
+                  activeColor: Colors.white,
+                )),
+          ),
           SizedBox(width: 8.w),
           Expanded(
             child: Text(
@@ -176,46 +186,47 @@ class _TncDialogWidgetState extends State<_TncDialogWidget> {
   }
 
   Widget _buildAgreeButton() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.w),
-      child: ElevatedButton(
-        onPressed: () {
-          // Tombol selalu aktif, tetapi hanya menutup jika checkbox dicentang
+    return Obx(() => Padding(
+        padding: EdgeInsets.symmetric(horizontal: 20.w),
+        child: isAgreed.value
+            ? ElevatedButton(
+                onPressed: () {
+                  // Tombol selalu aktif, tetapi hanya menutup jika checkbox dicentang
 
-          Get.back();
-          widget.onAgree();
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: RColor().primaryYellowColor,
-          padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 12.w),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.r),
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min, // Membuat Row seukuran isinya
-          children: [
-            Container(
-              padding: EdgeInsets.all(5.w),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-              child: Icon(
-                Icons.check,
-                color: RColor().primaryBlueColor,
-                size: 20.sp,
-              ),
-            ),
-            SizedBox(width: 16.w),
-            // Teks "Agree"
-            Text("Agree",
-                style:
-                    buttonTextStyle.copyWith(color: RColor().primaryBlueColor)),
-            SizedBox(width: 12.w), // Beri sedikit ruang di kanan
-          ],
-        ),
-      ),
-    );
+                  Get.back();
+                  widget.onAgree();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: RColor().primaryYellowColor,
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.h, horizontal: 30.w),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                ),
+                child: Text("Agree",
+                    style: buttonTextStyle.copyWith(
+                        color: RColor().primaryBlueColor, fontSize: 22.sp)),
+              )
+            : ElevatedButton(
+                onPressed: () {
+                  Get.snackbar("Terms and Conditions",
+                      "Please agree to the Terms and Conditions to proceed.",
+                      snackPosition: SnackPosition.BOTTOM,
+                      backgroundColor: Colors.redAccent);
+                }, // Tombol non-aktif jika checkbox tidak dicentang
+                style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      Colors.grey, // Warna abu-abu untuk tombol non-aktif
+                  padding:
+                      EdgeInsets.symmetric(vertical: 10.h, horizontal: 30.w),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(15.r),
+                  ),
+                ),
+                child: Text("Agree",
+                    style: buttonTextStyle.copyWith(
+                        color: Colors.white, fontSize: 22.sp)),
+              )));
   }
 }

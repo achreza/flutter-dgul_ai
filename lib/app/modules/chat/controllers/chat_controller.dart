@@ -9,6 +9,7 @@ import 'package:dgul_ai/app/modules/auth/controllers/auth_controller.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/user_controller.dart';
 import 'package:dgul_ai/app/services/chat_service.dart';
 import 'package:dgul_ai/app/services/user_service.dart';
+import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:dgul_ai/app/widgets/loading_popup.dart';
 import 'package:dgul_ai/app/widgets/subscription_promo_sheet.dart';
 import 'package:file_picker/file_picker.dart';
@@ -16,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logger/logger.dart';
@@ -355,8 +357,33 @@ class ChatController extends GetxController {
   void pickImage(ImageSource source) async {
     final XFile? image =
         await _picker.pickImage(source: source, imageQuality: 85);
+
     if (image != null) {
-      selectedImagePath.value = image.path;
+      // Panggil fungsi crop setelah gambar dipilih
+      _cropImage(image.path);
+    }
+  }
+
+  Future<void> _cropImage(String filePath) async {
+    final croppedFile = await ImageCropper().cropImage(
+      sourcePath: filePath,
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Potong Gambar',
+            toolbarColor: RColor().primaryBlueColor, // Ganti dengan warna Anda
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        IOSUiSettings(
+          title: 'Potong Gambar',
+        ),
+      ],
+    );
+
+    // Jika pengguna menyelesaikan proses crop, gunakan gambar yang baru
+    if (croppedFile != null) {
+      selectedImagePath.value = croppedFile.path;
+      // Hapus pilihan file jika ada
       cancelFileSelection();
     }
   }

@@ -91,6 +91,10 @@ class AppTranslations extends Translations {
           'help_and_support': 'Help and Support',
           'terms_and_conditions': 'Terms and Conditions',
 
+          'foto_suggestion_1': 'Describe this photo',
+          'foto_suggestion_2': 'What do you see in this photo?',
+          'foto_suggestion_3': 'How do you feel about this photo?',
+
           // Initial View
           'welcome_greeting': "Ahooy, D'Gul",
           'suggestion_info': 'Information and Communication',

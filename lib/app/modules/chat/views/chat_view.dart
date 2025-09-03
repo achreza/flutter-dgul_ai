@@ -257,12 +257,13 @@ class ChatView extends GetView<ChatController> {
                 }
                 return const SizedBox.shrink();
               }),
-              Obx(() {
-                if (controller.messages.length <= 1) {
-                  return _buildSuggestionPrompts(context, controller);
-                }
-                return const SizedBox.shrink();
-              }),
+              //[SUGGESTION PROMPTS]
+              // Obx(() {
+              //   if (controller.messages.length <= 1) {
+              //     return _buildSuggestionPrompts(context, controller);
+              //   }
+              //   return const SizedBox.shrink();
+              // }),
               _buildTextComposer(context, controller),
             ],
           ),

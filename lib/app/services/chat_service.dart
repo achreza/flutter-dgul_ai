@@ -7,6 +7,12 @@ import 'package:logger/logger.dart';
 class ChatService extends GetConnect {
   // Your chat service methods and properties go here
 
+  @override
+  void onInit() {
+    httpClient.timeout = Duration(seconds: 30);
+    super.onInit();
+  }
+
   Future<SingleMessageResponse> sendSingleMessage(String message) async {
     // Implement your message sending logic here
     try {
