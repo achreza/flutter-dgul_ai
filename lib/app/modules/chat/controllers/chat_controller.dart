@@ -2,12 +2,14 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dgul_ai/app/data/dto/requests/update_profile_request.dart';
+import 'package:dgul_ai/app/data/dto/responses/all_package_response.dart';
 import 'package:dgul_ai/app/data/dto/responses/single_message_response.dart';
 import 'package:dgul_ai/app/data/dto/responses/update_profile_response.dart';
 import 'package:dgul_ai/app/data/models/chat_message_model.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/auth_controller.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/user_controller.dart';
 import 'package:dgul_ai/app/services/chat_service.dart';
+import 'package:dgul_ai/app/services/payment_service.dart';
 import 'package:dgul_ai/app/services/user_service.dart';
 import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:dgul_ai/app/widgets/loading_popup.dart';
@@ -36,6 +38,7 @@ class ChatController extends GetxController {
   var userController = Get.find<UserController>();
   var userService = UserService();
   var _chatService = ChatService();
+  var paymentService = PaymentService();
   var isTextEmpty = true.obs;
 
   // --- STATE BARU UNTUK DROPDOWN ---
@@ -53,6 +56,7 @@ class ChatController extends GetxController {
   final _historyKey = 'chatMessages';
   final _workTypeKey = 'selectedWorkType';
   final _langKey = 'selectedLanguage'; // Key baru untuk bahasa
+  var allPackage = AllPackageResponse();
 
   //untuk update profile
 
@@ -216,10 +220,23 @@ class ChatController extends GetxController {
   }
 
   @override
-  void onReady() {
+  void onReady() async {
     super.onReady();
+    await getAllPackages();
     addInitialProfileData();
-    SubscriptionPromoSheet.show();
+  }
+
+  Future<void> getAllPackages() async {
+    try {
+      LoadingPopup.show(Get.overlayContext!);
+      var packages = await paymentService.fetchAllPackages();
+      allPackage = packages;
+      LoadingPopup.hide(Get.overlayContext!);
+      SubscriptionPromoSheet.show();
+    } catch (e) {
+      LoadingPopup.hide(Get.overlayContext!);
+      Logger().e("Error fetching packages: $e");
+    }
   }
 
   void _initSpeech() async {

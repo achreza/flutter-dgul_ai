@@ -1,6 +1,8 @@
+import 'package:dgul_ai/app/data/dto/responses/all_package_response.dart';
 import 'package:dgul_ai/app/modules/chat/controllers/chat_controller.dart';
 import 'package:dgul_ai/app/utitls/rasset.dart';
 import 'package:dgul_ai/app/utitls/rcolor.dart';
+import 'package:dgul_ai/app/utitls/rformatter.dart';
 import 'package:dgul_ai/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +24,10 @@ class SubscriptionPromoSheet {
 }
 
 class _SubscriptionPromoSheetWidget extends StatelessWidget {
-  _SubscriptionPromoSheetWidget({Key? key}) : super(key: key);
+  _SubscriptionPromoSheetWidget({
+    Key? key,
+  }) : super(key: key);
+
   var controller = Get.find<ChatController>();
 
   @override
@@ -130,6 +135,7 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
   }
 
   Widget _buildSelectedPlanCard() {
+    var controller = Get.find<ChatController>();
     return Container(
       padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
@@ -149,7 +155,7 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
             children: [
               Image.asset(RAsset().centang),
               Spacer(),
-              Text("one_month".tr,
+              Text(controller.allPackage.pakets?[0].name ?? '',
                   style: subHeadline2TextStyle.copyWith(
                       color: Colors.white, fontWeight: FontWeight.bold)),
               Spacer(),
@@ -172,7 +178,7 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Text(
-              "save_50_percent".tr,
+              controller.allPackage.pakets?[0].description ?? '',
               textAlign: TextAlign.center,
               style: body2TextStyle.copyWith(
                   color: RColor().primaryBlueColor,
@@ -181,7 +187,7 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
           ),
           SizedBox(height: 8.h),
           Text(
-            "Rp. 500.000,-",
+            '${RFormatter.formatRupiah(controller.allPackage.pakets?[0].price)}/month',
             style: subHeadline2TextStyle.copyWith(
                 color: RColor().primaryYellowColor,
                 fontWeight: FontWeight.bold),

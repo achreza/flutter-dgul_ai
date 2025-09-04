@@ -2,6 +2,7 @@ import 'package:dgul_ai/app/modules/chat/controllers/chat_controller.dart';
 import 'package:dgul_ai/app/modules/chat/views/subscription_detail_view.dart';
 import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:dgul_ai/app/utitls/rasset.dart';
+import 'package:dgul_ai/app/utitls/rformatter.dart';
 import 'package:dgul_ai/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -90,32 +91,42 @@ class SubscriptionView extends GetView<ChatController> {
                         Obx(() => Column(
                               children: [
                                 _buildSubscriptionCard(
-                                  title: "1-Year",
+                                  title:
+                                      "${controller.allPackage.pakets?[0].name}",
                                   details:
-                                      "Save 50% | Full Access | 8.000.000 Token",
-                                  price: "Rp. 500.000,-",
-                                  isSelected:
-                                      controller.selectedPlan.value == "1-Year",
-                                  onTap: () => controller.selectPlan("1-Year"),
+                                      "${controller.allPackage.pakets?[0].description} ",
+                                  price:
+                                      "${RFormatter.formatRupiah(controller.allPackage.pakets?[0].price)}/month",
+                                  isSelected: controller.selectedPlan.value ==
+                                      "${controller.allPackage.pakets?[0].name}",
+                                  onTap: () => controller.selectPlan(
+                                      "${controller.allPackage.pakets?[0].name}"),
                                 ),
                                 SizedBox(height: 20.h),
                                 _buildSubscriptionCard(
-                                  title: "6-Month",
+                                  title:
+                                      "${controller.allPackage.pakets?[1].name}",
                                   details:
-                                      "Save 40% | Full Access | 3.000.000 Token",
-                                  price: "Rp. 300.000,-",
+                                      "${controller.allPackage.pakets?[1].description} ",
+                                  price:
+                                      "${RFormatter.formatRupiah(controller.allPackage.pakets?[1].price)}/month",
                                   isSelected: controller.selectedPlan.value ==
-                                      "6-Month",
-                                  onTap: () => controller.selectPlan("6-Month"),
+                                      "${controller.allPackage.pakets?[1].name}",
+                                  onTap: () => controller.selectPlan(
+                                      "${controller.allPackage.pakets?[1].name}"),
                                 ),
                                 SizedBox(height: 20.h),
                                 _buildSubscriptionCard(
-                                  title: "Monthly",
-                                  details: "Full Access | 1.000.000 Token",
-                                  price: "Rp. 100.000,-",
+                                  title:
+                                      "${controller.allPackage.pakets?[2].name}",
+                                  details:
+                                      "${controller.allPackage.pakets?[2].description} ",
+                                  price:
+                                      "${RFormatter.formatRupiah(controller.allPackage.pakets?[2].price)}/month",
                                   isSelected: controller.selectedPlan.value ==
-                                      "Monthly",
-                                  onTap: () => controller.selectPlan("Monthly"),
+                                      "${controller.allPackage.pakets?[2].name}",
+                                  onTap: () => controller.selectPlan(
+                                      "${controller.allPackage.pakets?[2].name}"),
                                 ),
                               ],
                             )),
