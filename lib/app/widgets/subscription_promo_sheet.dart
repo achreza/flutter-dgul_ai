@@ -1,3 +1,4 @@
+import 'package:dgul_ai/app/modules/chat/controllers/chat_controller.dart';
 import 'package:dgul_ai/app/utitls/rasset.dart';
 import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:dgul_ai/constants.dart';
@@ -10,18 +11,19 @@ import '../modules/chat/views/subscription_view.dart';
 class SubscriptionPromoSheet {
   static void show() {
     Get.bottomSheet(
-      const _SubscriptionPromoSheetWidget(),
+      _SubscriptionPromoSheetWidget(),
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
       ),
-      isScrollControlled: true, // Penting agar bisa menyesuaikan tinggi
+      isScrollControlled: true,
     );
   }
 }
 
 class _SubscriptionPromoSheetWidget extends StatelessWidget {
-  const _SubscriptionPromoSheetWidget({Key? key}) : super(key: key);
+  _SubscriptionPromoSheetWidget({Key? key}) : super(key: key);
+  var controller = Get.find<ChatController>();
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +38,11 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
             children: [
               const SizedBox(width: 40), // Spacer agar judul di tengah
               Text(
-                "Choose Subscription",
+                "choose_subscription".tr,
                 style: subHeadline2TextStyle.copyWith(
                   color: RColor().primaryBlueColor,
                   fontWeight: FontWeight.bold,
+                  fontSize: 24.sp,
                 ),
               ),
               GestureDetector(
@@ -59,7 +62,7 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
               Get.to(() => SubscriptionView());
             },
             child: Text(
-              "Lihat Semua Paket Berlangganan",
+              "see_all_subscription_plans".tr,
               style: body2TextStyle.copyWith(
                 color: RColor().primaryBlueColor,
                 decoration: TextDecoration.underline,
@@ -72,7 +75,7 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
 
           // Bagian Free Trial
           Text(
-            "Start Your Free Trial Now!",
+            "start_free_trial".tr,
             style: subHeadline2TextStyle.copyWith(
               color: RColor().primaryBlueColor,
               fontWeight: FontWeight.bold,
@@ -80,14 +83,14 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
           ),
           SizedBox(height: 8.h),
           Text(
-            "Get 10,000 FREE Tokens and limited access to D'Gul AI features.",
+            "get_10000_free_tokens".tr,
             textAlign: TextAlign.center,
             style: body2TextStyle.copyWith(
                 color: Colors.black, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 8.h),
           Text(
-            "Try it first and see the power of smart assistance before subscribing fully!",
+            "try_it_first".tr,
             textAlign: TextAlign.center,
             style: body2TextStyle.copyWith(
                 color: Colors.black, fontWeight: FontWeight.normal),
@@ -112,12 +115,10 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Start Free Trial",
+                    "start_free_trial".tr,
                     style: body2TextStyle.copyWith(
                         color: Colors.black, fontWeight: FontWeight.bold),
                   ),
-                  Text("— Get 10,000 Tokens!",
-                      style: buttonTextStyle.copyWith(color: Colors.black)),
                 ],
               ),
             ),
@@ -148,7 +149,7 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
             children: [
               Image.asset(RAsset().centang),
               Spacer(),
-              Text("1-Month",
+              Text("one_month".tr,
                   style: subHeadline2TextStyle.copyWith(
                       color: Colors.white, fontWeight: FontWeight.bold)),
               Spacer(),
@@ -171,7 +172,7 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.r),
             ),
             child: Text(
-              "Save 50% | Full Access | 8.000.000 Token",
+              "save_50_percent".tr,
               textAlign: TextAlign.center,
               style: body2TextStyle.copyWith(
                   color: RColor().primaryBlueColor,

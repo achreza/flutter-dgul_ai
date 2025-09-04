@@ -16,6 +16,20 @@ class AppTranslations extends Translations {
           'language': 'Bahasa',
           'register_with_google': 'Daftar dengan Google',
 
+          //promo sheet
+          'choose_subscription': 'Pilih Paket Berlangganan',
+          'see_all_subscription_plans': 'Lihat Semua Paket Berlangganan',
+          'most_popular': 'Paling Populer',
+          'per_month': 'per bulan',
+          'billed_annually': 'ditagih setiap tahun',
+          'start_free_trial': 'Mulai Uji Coba Gratis',
+          'get_10000_free_tokens':
+              'Dapatkan 10.000 Token GRATIS dan akses terbatas ke fitur D\'Gul AI.',
+          'try_it_first':
+              'Coba dulu dan rasakan kekuatan asisten pintar sebelum berlangganan penuh!',
+          'one_month': '1-Bulan',
+          'save_50_percent': 'Hemat 50% | Akses Penuh | 8.000.000 Token',
+
           // Menu Popup
           'dark_mode': 'Mode Gelap',
           'light_mode': 'Mode Terang',
@@ -82,6 +96,20 @@ class AppTranslations extends Translations {
           'language': 'Language',
           'register_with_google': 'Register with Google',
 
+          //promo sheet
+          'choose_subscription': 'Choose Subscription Plan',
+          'see_all_subscription_plans': 'See All Subscription Plans',
+          'most_popular': 'Most Popular',
+          'per_month': 'per month',
+          'billed_annually': 'billed annually',
+          'start_free_trial': 'Start Your Free Trial Now!',
+          'get_10000_free_tokens':
+              'Get 10,000 FREE Tokens and limited access to D\'Gul AI features.',
+          'try_it_first':
+              'Try it first and see the power of smart assistance before subscribing fully!',
+          'one_month': '1-Month',
+          'save_50_percent': 'Save 50% | Full Access | 8,000,000 Token',
+
           // Popup Menu
           'dark_mode': 'Dark Mode',
           'light_mode': 'Light Mode',
@@ -94,6 +122,8 @@ class AppTranslations extends Translations {
           'foto_suggestion_1': 'Describe this photo',
           'foto_suggestion_2': 'What do you see in this photo?',
           'foto_suggestion_3': 'How do you feel about this photo?',
+
+          //
 
           // Initial View
           'welcome_greeting': "Ahooy, D'Gul",
