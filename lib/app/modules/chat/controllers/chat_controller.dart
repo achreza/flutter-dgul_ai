@@ -3,7 +3,9 @@ import 'dart:io';
 
 import 'package:dgul_ai/app/data/dto/requests/update_profile_request.dart';
 import 'package:dgul_ai/app/data/dto/responses/all_package_response.dart';
+import 'package:dgul_ai/app/data/dto/responses/create_transaction_response.dart';
 import 'package:dgul_ai/app/data/dto/responses/single_message_response.dart';
+import 'package:dgul_ai/app/data/dto/responses/transaction_status_response.dart';
 import 'package:dgul_ai/app/data/dto/responses/update_profile_response.dart';
 import 'package:dgul_ai/app/data/models/chat_message_model.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/auth_controller.dart';
@@ -13,6 +15,7 @@ import 'package:dgul_ai/app/services/chat_service.dart';
 import 'package:dgul_ai/app/services/payment_service.dart';
 import 'package:dgul_ai/app/services/user_service.dart';
 import 'package:dgul_ai/app/utitls/rcolor.dart';
+import 'package:dgul_ai/app/utitls/rloaders.dart';
 import 'package:dgul_ai/app/widgets/loading_popup.dart';
 import 'package:dgul_ai/app/widgets/subscription_promo_sheet.dart';
 import 'package:file_picker/file_picker.dart';
@@ -252,8 +255,12 @@ class ChatController extends GetxController {
     try {
       LoadingPopup.show(Get.overlayContext!);
       Logger().i('⏳ Memanggil PaymentService().createTransaction...');
-      var paymentCreateTransactionResponse =
-          await PaymentService().createTransaction(paketId, voucherCode);
+      CreateTransactionResponse paymentCreateTransactionResponse =
+          await paymentService.createTransaction(paketId, voucherCode);
+
+      //save orders id to storage
+      _storage.write('orderId', paymentCreateTransactionResponse.data!.orderId);
+      Logger().i('✅ Transaction created successfully.');
 
       LoadingPopup.hide(Get.overlayContext!);
       Get.to(() => WebViewPage(
@@ -266,6 +273,46 @@ class ChatController extends GetxController {
           snackPosition: SnackPosition.BOTTOM);
     }
     update();
+  }
+
+  Future<void> checkStatusSubscription() async {
+    try {
+      LoadingPopup.show(Get.overlayContext!);
+      //check ordedr id from storage
+      int? orderId = _storage.read('orderId');
+      if (orderId == null) {
+        throw Exception('Order ID not found in storage.');
+      }
+      Logger().i('⏳ Checking subscription status for order ID: $orderId');
+      TransactionStatusResponse isSubscription =
+          await paymentService.checkTransactionStatus(orderId.toString());
+      if (isSubscription.data!.status == 'success') {
+        // userController.profileData.user?.isSubscription = 1;
+        userController.update();
+        Logger().i('✅ Subscription active.');
+        LoadingPopup.hide(Get.overlayContext!);
+        RLoaders.showStatusDialog(
+            context: Get.overlayContext!,
+            status: DialogStatus.success,
+            title: 'Subscription Status',
+            message: 'Your subscription is active.');
+      } else {
+        // userController.profileData.user?.isSubscription = 0;
+        userController.update();
+        Logger().i('❌ No active subscription.');
+        LoadingPopup.hide(Get.overlayContext!);
+        RLoaders.showStatusDialog(
+            context: Get.overlayContext!,
+            status: DialogStatus.failed,
+            title: 'Subscription Status',
+            message: 'No active subscription found.');
+      }
+    } catch (e) {
+      LoadingPopup.hide(Get.overlayContext!);
+      Logger().e("Error checking subscription: $e");
+      Get.snackbar('Error', 'Failed to check subscription. Please try again.',
+          snackPosition: SnackPosition.BOTTOM);
+    }
   }
 
   void toggleEditMode() {

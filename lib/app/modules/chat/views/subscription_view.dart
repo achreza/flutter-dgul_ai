@@ -99,9 +99,14 @@ class SubscriptionView extends GetView<ChatController> {
                                       "${RFormatter.formatRupiah(controller.allPackage.pakets?[0].price)}/month",
                                   isSelected: controller.selectedPlan.value ==
                                       "${controller.allPackage.pakets?[0].name}",
-                                  onTap: () => controller.createTransaction(
-                                      controller.allPackage.pakets?[0].id ?? 0,
-                                      null),
+                                  onTap: () {
+                                    controller.selectedPlan.value =
+                                        "${controller.allPackage.pakets?[0].name}";
+                                    controller.createTransaction(
+                                        controller.allPackage.pakets?[0].id ??
+                                            0,
+                                        null);
+                                  },
                                 ),
                                 SizedBox(height: 20.h),
                                 _buildSubscriptionCard(
@@ -113,9 +118,14 @@ class SubscriptionView extends GetView<ChatController> {
                                       "${RFormatter.formatRupiah(controller.allPackage.pakets?[1].price)}/month",
                                   isSelected: controller.selectedPlan.value ==
                                       "${controller.allPackage.pakets?[1].name}",
-                                  onTap: () => controller.createTransaction(
-                                      controller.allPackage.pakets?[1].id ?? 0,
-                                      null),
+                                  onTap: () {
+                                    controller.selectedPlan.value =
+                                        "${controller.allPackage.pakets?[1].name}";
+                                    controller.createTransaction(
+                                        controller.allPackage.pakets?[1].id ??
+                                            0,
+                                        null);
+                                  },
                                 ),
                                 SizedBox(height: 20.h),
                                 _buildSubscriptionCard(
@@ -127,9 +137,14 @@ class SubscriptionView extends GetView<ChatController> {
                                       "${RFormatter.formatRupiah(controller.allPackage.pakets?[2].price)}/month",
                                   isSelected: controller.selectedPlan.value ==
                                       "${controller.allPackage.pakets?[2].name}",
-                                  onTap: () => controller.createTransaction(
-                                      controller.allPackage.pakets?[2].id ?? 0,
-                                      null),
+                                  onTap: () {
+                                    controller.selectedPlan.value =
+                                        "${controller.allPackage.pakets?[2].name}";
+                                    controller.createTransaction(
+                                        controller.allPackage.pakets?[2].id ??
+                                            0,
+                                        null);
+                                  },
                                 ),
                               ],
                             )),
@@ -141,7 +156,8 @@ class SubscriptionView extends GetView<ChatController> {
                           child: ElevatedButton(
                             onPressed: () {
                               // Logika untuk melanjutkan ke pembayaran
-                              Get.to(() => SubscriptionDetailView());
+                              // Get.to(() => SubscriptionDetailView());
+                              controller.checkStatusSubscription();
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: RColor().primaryBlueColor,
@@ -152,7 +168,7 @@ class SubscriptionView extends GetView<ChatController> {
                               side: const BorderSide(
                                   color: Colors.white, width: 2),
                             ),
-                            child: Text("Continue to Purchase",
+                            child: Text("Check Status",
                                 style: buttonTextStyle.copyWith(
                                     color: Colors.white)),
                           ),

@@ -1,6 +1,7 @@
 import 'package:dgul_ai/app/data/dto/responses/all_package_response.dart';
 import 'package:dgul_ai/app/data/dto/responses/create_transaction_response.dart';
 import 'package:dgul_ai/app/data/dto/responses/get_package_by_id_response.dart';
+import 'package:dgul_ai/app/data/dto/responses/transaction_status_response.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/user_controller.dart';
 import 'package:dgul_ai/constants.dart';
 import 'package:get/get.dart';
@@ -68,6 +69,30 @@ class PaymentService extends GetConnect {
       }
     } catch (e) {
       throw Exception('Error creating transaction: $e');
+    }
+  }
+
+  Future<TransactionStatusResponse> checkTransactionStatus(
+      String orderId) async {
+    try {
+      final response = await get(
+        '$apiBaseUrl/payment/status?order_id=$orderId',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${Get.find<UserController>().bearerToken}',
+        },
+      );
+
+      Logger().d("Response: ${response.body}");
+
+      if (response.statusCode == 200) {
+        return TransactionStatusResponse.fromJson(response.body);
+      } else {
+        throw Exception('Failed to fetch transaction status');
+      }
+    } catch (e) {
+      throw Exception('Error checking transaction status: $e');
     }
   }
 }
