@@ -99,8 +99,9 @@ class SubscriptionView extends GetView<ChatController> {
                                       "${RFormatter.formatRupiah(controller.allPackage.pakets?[0].price)}/month",
                                   isSelected: controller.selectedPlan.value ==
                                       "${controller.allPackage.pakets?[0].name}",
-                                  onTap: () => controller.selectPlan(
-                                      "${controller.allPackage.pakets?[0].name}"),
+                                  onTap: () => controller.createTransaction(
+                                      controller.allPackage.pakets?[0].id ?? 0,
+                                      null),
                                 ),
                                 SizedBox(height: 20.h),
                                 _buildSubscriptionCard(
@@ -112,8 +113,9 @@ class SubscriptionView extends GetView<ChatController> {
                                       "${RFormatter.formatRupiah(controller.allPackage.pakets?[1].price)}/month",
                                   isSelected: controller.selectedPlan.value ==
                                       "${controller.allPackage.pakets?[1].name}",
-                                  onTap: () => controller.selectPlan(
-                                      "${controller.allPackage.pakets?[1].name}"),
+                                  onTap: () => controller.createTransaction(
+                                      controller.allPackage.pakets?[1].id ?? 0,
+                                      null),
                                 ),
                                 SizedBox(height: 20.h),
                                 _buildSubscriptionCard(
@@ -125,8 +127,9 @@ class SubscriptionView extends GetView<ChatController> {
                                       "${RFormatter.formatRupiah(controller.allPackage.pakets?[2].price)}/month",
                                   isSelected: controller.selectedPlan.value ==
                                       "${controller.allPackage.pakets?[2].name}",
-                                  onTap: () => controller.selectPlan(
-                                      "${controller.allPackage.pakets?[2].name}"),
+                                  onTap: () => controller.createTransaction(
+                                      controller.allPackage.pakets?[2].id ?? 0,
+                                      null),
                                 ),
                               ],
                             )),

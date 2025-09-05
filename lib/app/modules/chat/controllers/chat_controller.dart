@@ -8,6 +8,7 @@ import 'package:dgul_ai/app/data/dto/responses/update_profile_response.dart';
 import 'package:dgul_ai/app/data/models/chat_message_model.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/auth_controller.dart';
 import 'package:dgul_ai/app/modules/auth/controllers/user_controller.dart';
+import 'package:dgul_ai/app/modules/chat/views/web_view_page.dart';
 import 'package:dgul_ai/app/services/chat_service.dart';
 import 'package:dgul_ai/app/services/payment_service.dart';
 import 'package:dgul_ai/app/services/user_service.dart';
@@ -245,6 +246,26 @@ class ChatController extends GetxController {
 
   void selectPlan(String plan) {
     selectedPlan.value = plan;
+  }
+
+  Future<void> createTransaction(int paketId, String? voucherCode) async {
+    try {
+      LoadingPopup.show(Get.overlayContext!);
+      Logger().i('⏳ Memanggil PaymentService().createTransaction...');
+      var paymentCreateTransactionResponse =
+          await PaymentService().createTransaction(paketId, voucherCode);
+
+      LoadingPopup.hide(Get.overlayContext!);
+      Get.to(() => WebViewPage(
+            url: paymentCreateTransactionResponse.data!.paymentUrl!,
+          ));
+    } catch (e) {
+      LoadingPopup.hide(Get.overlayContext!);
+      Logger().e("Error creating transaction: $e");
+      Get.snackbar('Error', 'Failed to create transaction. Please try again.',
+          snackPosition: SnackPosition.BOTTOM);
+    }
+    update();
   }
 
   void toggleEditMode() {
