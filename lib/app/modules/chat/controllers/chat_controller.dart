@@ -286,7 +286,7 @@ class ChatController extends GetxController {
       Logger().i('⏳ Checking subscription status for order ID: $orderId');
       TransactionStatusResponse isSubscription =
           await paymentService.checkTransactionStatus(orderId.toString());
-      if (isSubscription.data!.status == 'success') {
+      if (isSubscription.data!.status == 'settlement') {
         // userController.profileData.user?.isSubscription = 1;
         userController.update();
         Logger().i('✅ Subscription active.');

@@ -18,6 +18,9 @@ class ProfileResponse {
 
 class User {
   int? id;
+  String? token;
+  String? isSubscription;
+  String? subscriptionUntil;
   String? name;
   String? email;
   String? phone;
@@ -32,6 +35,9 @@ class User {
 
   User(
       {this.id,
+      this.token,
+      this.isSubscription,
+      this.subscriptionUntil,
       this.name,
       this.email,
       this.phone,
@@ -46,6 +52,9 @@ class User {
 
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    token = json['token'];
+    isSubscription = json['is_subscription'];
+    subscriptionUntil = json['subscription_until'];
     name = json['name'];
     email = json['email'];
     phone = json['phone'];
@@ -62,6 +71,9 @@ class User {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['token'] = this.token;
+    data['is_subscription'] = this.isSubscription;
+    data['subscription_until'] = this.subscriptionUntil;
     data['name'] = this.name;
     data['email'] = this.email;
     data['phone'] = this.phone;
