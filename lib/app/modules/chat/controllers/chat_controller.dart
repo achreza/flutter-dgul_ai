@@ -167,6 +167,29 @@ class ChatController extends GetxController {
     }
   }
 
+  Future<void> refreshSubscriptionProfile() async {
+    try {
+      final userController = Get.find<UserController>();
+      LoadingPopup.show(Get.overlayContext!);
+
+      userController.assignProfileData(await userService.getProfileData());
+      // Lakukan sesuatu dengan status
+
+      LoadingPopup.hide(Get.overlayContext!);
+      RLoaders.showStatusDialog(
+          context: Get.overlayContext!,
+          status: userController.profileData.user?.isSubscription == "1"
+              ? DialogStatus.success
+              : DialogStatus.failed,
+          title: 'Subscription Status',
+          message:
+              'Subscription status is ${userController.profileData.user?.isSubscription == "1" ? 'Active' : 'Inactive'}.');
+    } catch (e) {
+      LoadingPopup.hide(Get.overlayContext!);
+      Logger().e("Error checking subscription status: $e");
+    }
+  }
+
   void updateProfile() async {
     try {
       if (isEditMode.value) {

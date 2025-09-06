@@ -124,7 +124,8 @@ class AccountSettingView extends GetView<ChatController> {
         _buildInfoRow("Position",
             "${controller.userController.profileData.user?.position ?? 'Not Set'}"),
         _buildInfoRow("Subscription Status", "Active 360 Days"),
-        _buildInfoRow("Token", "890.000 - 1.000.000"),
+        _buildInfoRow("Token",
+            "${controller.userController.profileData.user?.token ?? 'Not Set'}"),
         SizedBox(height: 30.h),
         Row(
           children: [
@@ -183,7 +184,8 @@ class AccountSettingView extends GetView<ChatController> {
             "${controller.userController.profileData.user?.position ?? ''}",
             controller.positionController),
         _buildInfoRow("Subscription Status", "Active 360 Days"),
-        _buildInfoRow("Token", "890.000 - 1.000.000"),
+        _buildInfoRow("Token",
+            "${controller.userController.profileData.user?.token ?? 'Not Set'}"),
         SizedBox(height: 30.h),
         Row(
           children: [

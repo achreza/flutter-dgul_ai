@@ -19,18 +19,7 @@ class WebViewPage extends GetView<ChatController> {
             // Update loading bar.
           },
           onPageStarted: (String url) {},
-          onPageFinished: (String url) async {
-            // int isSubscription = await controller.checkSubscription();
-            // if (isSubscription == 1) {
-            //   TLoaders.successSnackBar(
-            //       title: 'Berhasil berlangganan',
-            //       message: 'Anda telah berlangganan');
-            //   Get.to(() => HomeView());
-            // } else {
-            //   TLoaders.errorSnackBar(
-            //       title: 'Gagal berlangganan', message: 'Silahkan coba lagi');
-            // }
-          },
+          onPageFinished: (String url) async {},
           onHttpError: (HttpResponseError error) {
             // Handle HTTP error
           },
@@ -48,6 +37,7 @@ class WebViewPage extends GetView<ChatController> {
           onPressed: () async {
             if (await webController.canGoBack()) {
               webController.goBack();
+              controller.refreshSubscriptionProfile();
             } else {
               Get.back();
             }

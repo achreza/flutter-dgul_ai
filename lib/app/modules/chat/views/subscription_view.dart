@@ -157,7 +157,7 @@ class SubscriptionView extends GetView<ChatController> {
                             onPressed: () {
                               // Logika untuk melanjutkan ke pembayaran
                               // Get.to(() => SubscriptionDetailView());
-                              controller.checkStatusSubscription();
+                              controller.refreshSubscriptionProfile();
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: RColor().primaryBlueColor,
