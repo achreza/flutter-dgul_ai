@@ -136,63 +136,71 @@ class _SubscriptionPromoSheetWidget extends StatelessWidget {
 
   Widget _buildSelectedPlanCard() {
     var controller = Get.find<ChatController>();
-    return Container(
-      padding: EdgeInsets.all(16.w),
-      decoration: BoxDecoration(
-        color: RColor().primaryBlueColor,
-        borderRadius: BorderRadius.circular(20.r),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          )
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Image.asset(RAsset().centang),
-              Spacer(),
-              Text(controller.allPackage.pakets?[0].name ?? '',
-                  style: subHeadline2TextStyle.copyWith(
-                      color: Colors.white, fontWeight: FontWeight.bold)),
-              Spacer(),
-              CircleAvatar(
-                backgroundColor: RColor().primaryBlueColor,
-                child: Icon(
-                  Icons.check,
-                  color: RColor().primaryBlueColor,
-                  size: 18.sp,
+    return GestureDetector(
+      onTap: () {
+        controller.selectedPlan.value =
+            "${controller.allPackage.pakets?[0].name}";
+        controller.createTransaction(
+            controller.allPackage.pakets?[0].id ?? 0, null);
+      },
+      child: Container(
+        padding: EdgeInsets.all(16.w),
+        decoration: BoxDecoration(
+          color: RColor().primaryBlueColor,
+          borderRadius: BorderRadius.circular(20.r),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            )
+          ],
+        ),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Image.asset(RAsset().centang),
+                Spacer(),
+                Text(controller.allPackage.pakets?[0].name ?? '',
+                    style: subHeadline2TextStyle.copyWith(
+                        color: Colors.white, fontWeight: FontWeight.bold)),
+                Spacer(),
+                CircleAvatar(
+                  backgroundColor: RColor().primaryBlueColor,
+                  child: Icon(
+                    Icons.check,
+                    color: RColor().primaryBlueColor,
+                    size: 18.sp,
+                  ),
                 ),
+              ],
+            ),
+            SizedBox(height: 8.h),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(vertical: 8.h),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10.r),
               ),
-            ],
-          ),
-          SizedBox(height: 8.h),
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 8.h),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10.r),
+              child: Text(
+                controller.allPackage.pakets?[0].description ?? '',
+                textAlign: TextAlign.center,
+                style: body2TextStyle.copyWith(
+                    color: RColor().primaryBlueColor,
+                    fontWeight: FontWeight.w600),
+              ),
             ),
-            child: Text(
-              controller.allPackage.pakets?[0].description ?? '',
-              textAlign: TextAlign.center,
-              style: body2TextStyle.copyWith(
-                  color: RColor().primaryBlueColor,
-                  fontWeight: FontWeight.w600),
+            SizedBox(height: 8.h),
+            Text(
+              '${RFormatter.formatRupiah(controller.allPackage.pakets?[0].price)}/month',
+              style: subHeadline2TextStyle.copyWith(
+                  color: RColor().primaryYellowColor,
+                  fontWeight: FontWeight.bold),
             ),
-          ),
-          SizedBox(height: 8.h),
-          Text(
-            '${RFormatter.formatRupiah(controller.allPackage.pakets?[0].price)}/month',
-            style: subHeadline2TextStyle.copyWith(
-                color: RColor().primaryYellowColor,
-                fontWeight: FontWeight.bold),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

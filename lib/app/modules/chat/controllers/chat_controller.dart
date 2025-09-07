@@ -201,7 +201,7 @@ class ChatController extends GetxController {
         String position = positionController.text;
 
         MultipartFile? profilePhoto;
-        var request;
+        UpdateProfileRequest? request;
 
         if (selectedPhotoProfilePath.value.isNotEmpty) {
           profilePhoto = MultipartFile(File(selectedPhotoProfilePath.value),
@@ -221,6 +221,8 @@ class ChatController extends GetxController {
             position: position,
           );
         }
+
+        Logger().i("Updating profile with data: $request");
 
         // Panggil service untuk update profile
         UpdateProfileResponse response =

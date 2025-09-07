@@ -37,9 +37,9 @@ class WebViewPage extends GetView<ChatController> {
           onPressed: () async {
             if (await webController.canGoBack()) {
               webController.goBack();
-              controller.refreshSubscriptionProfile();
             } else {
               Get.back();
+              controller.refreshSubscriptionProfile();
             }
           },
         ),
