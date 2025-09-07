@@ -62,8 +62,9 @@ class AppTranslations extends Translations {
           'suggestion_3': 'Ruang Komunikasi',
 
           'foto_suggestion_1': 'Jelaskan foto ini',
-          'foto_suggestion_2': 'Apa yang Anda lihat di foto ini?',
-          'foto_suggestion_3': 'Bagaimana perasaan Anda tentang foto ini?',
+          'foto_suggestion_2': 'Jawablah soal di foto ini?',
+          'foto_suggestion_3': 'Apa yang Anda lihat di foto ini?',
+          'foto_suggestion_4': 'Bagaimana perasaan Anda tentang foto ini?',
 
           'document_suggestion_1': 'Jelaskan dokumen ini',
           'document_suggestion_2': 'Apa yang Anda lihat di dokumen ini?',
@@ -120,10 +121,9 @@ class AppTranslations extends Translations {
           'terms_and_conditions': 'Terms and Conditions',
 
           'foto_suggestion_1': 'Describe this photo',
-          'foto_suggestion_2': 'What do you see in this photo?',
-          'foto_suggestion_3': 'How do you feel about this photo?',
-
-          //
+          'foto_suggestion_2': 'Answer the question in this photo?',
+          'foto_suggestion_3': 'What do you see in this photo?',
+          'foto_suggestion_4': 'How do you feel about this photo?',
 
           // Initial View
           'welcome_greeting': "Ahooy, D'Gul",

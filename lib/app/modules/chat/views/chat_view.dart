@@ -747,14 +747,14 @@ class ChatView extends GetView<ChatController> {
                   controller.pickImage(ImageSource.gallery);
                 },
               ),
-              ListTile(
-                leading: const Icon(Icons.attach_file),
-                title: const Text('Lampirkan Dokumen'),
-                onTap: () {
-                  Get.back();
-                  controller.pickFile();
-                },
-              ),
+              // ListTile(
+              //   leading: const Icon(Icons.attach_file),
+              //   title: const Text('Lampirkan Dokumen'),
+              //   onTap: () {
+              //     Get.back();
+              //     controller.pickFile();
+              //   },
+              // ),
             ],
           ),
         ),

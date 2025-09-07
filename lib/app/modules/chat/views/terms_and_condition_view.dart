@@ -1,10 +1,10 @@
 import 'package:dgul_ai/app/modules/chat/controllers/chat_controller.dart';
-import 'package:dgul_ai/app/modules/chat/views/subscription_detail_view.dart';
 import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:dgul_ai/app/utitls/rasset.dart';
 import 'package:dgul_ai/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:get/get.dart';
 
 class TermsAndConditionView extends GetView<ChatController> {
@@ -25,13 +25,9 @@ class TermsAndConditionView extends GetView<ChatController> {
               ),
             ),
           ),
-
-          // Layer 2: Konten utama
           SafeArea(
             child: Column(
               children: [
-                // Header dengan tombol kembali
-
                 Padding(
                   padding:
                       EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
@@ -45,10 +41,7 @@ class TermsAndConditionView extends GetView<ChatController> {
                     ],
                   ),
                 ),
-                // Konten yang bisa di-scroll
-                SizedBox(
-                  height: 110.h,
-                ),
+                SizedBox(height: 110.h),
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.symmetric(horizontal: 40.w),
@@ -64,44 +57,69 @@ class TermsAndConditionView extends GetView<ChatController> {
                               fontSize: 36.sp),
                         ),
                         SizedBox(height: 16.h),
+
+                        // --- KONTEN BARU DARI DOKUMEN ---
                         Text(
-                          "By subscribing to D'Gul AI, you agree to the following:",
-                          style: body1TextStyle.copyWith(
+                          "Terakhir Diperbarui: 8 September 2025",
+                          style: body2TextStyle.copyWith(
+                              color: RColor().secondaryGreyColor,
+                              fontStyle: FontStyle.italic),
+                        ),
+                        SizedBox(height: 12.h),
+                        Text(
+                          "Dengan mengunduh, mendaftar, atau menggunakan Layanan kami, Anda menyatakan telah membaca, memahami, dan menyetujui untuk terikat pada seluruh Ketentuan ini serta Kebijakan Privasi kami.",
+                          style: body2TextStyle.copyWith(
                               color: RColor().secondaryGreyColor),
                         ),
-                        SizedBox(height: 8.h),
+                        SizedBox(height: 20.h),
 
-                        // Daftar Pertanyaan dan Jawaban (FAQ)
-                        _buildFaqItem(
-                          question: "1. Subscription Access",
-                          answer:
-                              "You will receive full access to D'Gul AI features for the duration of your chosen plan (30, 180, or 360 days)",
-                        ),
-                        _buildFaqItem(
-                          question: "2. Token Usage",
-                          answer:
-                              "Each plan includes a specific number of tokens. Token balance is non-transferable and valid only during the active subscription period.",
-                        ),
-                        _buildFaqItem(
-                          question: "3. Payments & Refunds",
-                          answer:
-                              "All payments are final. No refunds will be issued once access is granted.",
-                        ),
-                        _buildFaqItem(
-                          question: "4. Account Responsibility",
-                          answer:
-                              "You are responsible for keeping your login credentials secure. Misuse may result in account suspension.",
-                        ),
-                        _buildFaqItem(
-                          question: "5. Service Availability",
-                          answer:
-                              "We strive for uninterrupted service but do not guarantee 100% uptime due to possible maintenance or system issues.",
-                        ),
-                        _buildFaqItem(
-                          question: "6. Changes to Terms",
-                          answer:
-                              "We reserve the right to update these terms at any time. Continued use implies acceptance of the new terms",
-                        ),
+                        _buildSectionTitle("Pasal 1: Definisi"),
+                        _buildSectionContent(
+                            "Aplikasi: Perangkat lunak “D’Gul Maritime AI” beserta situs dan layanan terkait.\nPengguna: Setiap orang atau badan hukum yang menggunakan Aplikasi.\nLayanan: Fitur utama Aplikasi seperti Informasi, Edukasi, dan Komunikasi."),
+
+                        _buildSectionTitle(
+                            "Pasal 2: Kelayakan dan Akun Pengguna"),
+                        _buildSectionContent(
+                            "Anda menjamin bahwa informasi pendaftaran benar dan Anda cakap secara hukum (minimal 18 tahun). Anda bertanggung jawab penuh atas keamanan akun Anda."),
+
+                        _buildSectionTitle("Pasal 3: Hak Kekayaan Intelektual"),
+                        _buildSectionContent(
+                            "Seluruh hak atas Aplikasi adalah milik PT. Ruang Pelaut Indonesia. Dengan mengunggah konten, Anda memberikan kami lisensi untuk menggunakan konten tersebut dalam rangka penyediaan Layanan."),
+
+                        _buildSectionTitle("Pasal 4: Perilaku Pengguna"),
+                        _buildSectionContent(
+                            "Anda dilarang mengunggah konten yang melanggar hukum, SARA, pornografi, ujaran kebencian, atau mengandung malware."),
+
+                        _buildSectionTitle(
+                            "Pasal 5: SANGGAHAN PENTING TERKAIT KONTEN AI"),
+                        _buildSectionContent(
+                            "Konten yang dihasilkan AI HANYA UNTUK TUJUAN INFORMASI UMUM dan BUKAN NASIHAT PROFESIONAL. VERIFIKASI MANDIRI terhadap sumber resmi adalah WAJIB sebelum mengambil tindakan."),
+
+                        _buildSectionTitle("Pasal 6: Layanan Berbayar"),
+                        _buildSectionContent(
+                            "Aplikasi mungkin menawarkan fitur premium berbayar. Pembayaran diproses melalui pihak ketiga dan langganan dapat diperpanjang secara otomatis."),
+
+                        _buildSectionTitle(
+                            "Pasal 7: Privasi dan Pelindungan Data"),
+                        _buildSectionContent(
+                            "Penggunaan Layanan tunduk pada Kebijakan Privasi kami. Kami berkomitmen melindungi data Anda sesuai UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi (UU PDP)."),
+
+                        _buildSectionTitle("Pasal 8: Batasan Tanggung Jawab"),
+                        _buildSectionContent(
+                            "Layanan disediakan \"sebagaimana adanya\". Kami tidak bertanggung jawab atas kerugian tidak langsung yang timbul dari penggunaan atau ketidakmampuan menggunakan Layanan."),
+
+                        _buildSectionTitle("Pasal 9: Perubahan Ketentuan"),
+                        _buildSectionContent(
+                            "Kami berhak mengubah Ketentuan ini dari waktu ke waktu. Penggunaan berkelanjutan setelah perubahan merupakan bentuk persetujuan Anda."),
+
+                        _buildSectionTitle("Pasal 10: Hukum yang Berlaku"),
+                        _buildSectionContent(
+                            "Ketentuan ini diatur oleh hukum yang berlaku di Republik Indonesia. Sengketa akan diselesaikan melalui musyawarah, dan jika gagal, melalui Pengadilan Negeri yang kompeten."),
+
+                        _buildSectionTitle("Pasal 11: Kontak Kami"),
+                        _buildSectionContent(
+                            "Jika ada pertanyaan, silakan hubungi kami melalui email ke: legal@ruangpelaut.co.id"),
+                        // --- AKHIR KONTEN BARU ---
 
                         SizedBox(height: 40.h),
                         Center(
@@ -125,26 +143,25 @@ class TermsAndConditionView extends GetView<ChatController> {
     );
   }
 
-  Widget _buildFaqItem({required String question, required String answer}) {
+  // Widget helper untuk judul setiap pasal
+  Widget _buildSectionTitle(String title) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 6.h),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            question,
-            style: body1TextStyle.copyWith(
-              fontWeight: FontWeight.bold,
-              color: RColor().primaryBlueColor,
-            ),
-          ),
-          SizedBox(height: 4.h),
-          Text(
-            answer,
-            style: body2TextStyle.copyWith(color: RColor().secondaryGreyColor),
-          ),
-        ],
+      padding: EdgeInsets.only(bottom: 6.h, top: 10.h),
+      child: Text(
+        title,
+        style: body1TextStyle.copyWith(
+          fontWeight: FontWeight.bold,
+          color: RColor().primaryBlueColor,
+        ),
       ),
+    );
+  }
+
+  // Widget helper untuk isi setiap pasal
+  Widget _buildSectionContent(String content) {
+    return Text(
+      content,
+      style: body2TextStyle.copyWith(color: RColor().secondaryGreyColor),
     );
   }
 }

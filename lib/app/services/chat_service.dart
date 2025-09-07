@@ -25,12 +25,12 @@ class ChatService extends GetConnect {
       });
 
       if (response.status.hasError) {
-        throw Exception('Failed to send message');
+        throw '${response.body['message']}';
       }
 
       return SingleMessageResponse.fromJson(response.body);
     } catch (e) {
-      print('Error sending message: $e');
+      Logger().e('Error sending message: $e');
       rethrow; // Rethrow the exception to be handled by the caller
     }
   }
@@ -39,6 +39,7 @@ class ChatService extends GetConnect {
       String message, MultipartFile filePath) async {
     // Implement your message sending logic here
     try {
+      Logger().d('Sending message with image: $message');
       final response = await post(
           '${apiBaseUrl}/simple',
           headers: {
@@ -49,7 +50,6 @@ class ChatService extends GetConnect {
             'message': message,
             'image': filePath,
           }));
-      Logger().d("Response: ${response.body}");
 
       if (response.status.hasError) {
         throw Exception('${response.body['message']}');
@@ -57,7 +57,6 @@ class ChatService extends GetConnect {
 
       return SingleMessageResponse.fromJson(response.body);
     } catch (e) {
-      print('Error sending message: $e');
       rethrow; // Rethrow the exception to be handled by the caller
     }
   }

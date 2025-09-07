@@ -203,6 +203,8 @@ class ChatController extends GetxController {
         MultipartFile? profilePhoto;
         UpdateProfileRequest? request;
 
+        LoadingPopup.show(Get.overlayContext!);
+
         if (selectedPhotoProfilePath.value.isNotEmpty) {
           profilePhoto = MultipartFile(File(selectedPhotoProfilePath.value),
               filename: selectedPhotoProfilePath.value.split('/').last);
@@ -230,9 +232,11 @@ class ChatController extends GetxController {
         if (response != null) {
           userController.assignProfileDataAfterUpdate(response);
         }
+        LoadingPopup.hide(Get.overlayContext!);
       }
     } catch (e) {
       Logger().e("Error updating profile: $e");
+      LoadingPopup.hide(Get.overlayContext!);
     }
   }
 
@@ -261,7 +265,7 @@ class ChatController extends GetxController {
       var packages = await paymentService.fetchAllPackages();
       allPackage = packages;
       LoadingPopup.hide(Get.overlayContext!);
-      SubscriptionPromoSheet.show();
+      // SubscriptionPromoSheet.show();
     } catch (e) {
       LoadingPopup.hide(Get.overlayContext!);
       Logger().e("Error fetching packages: $e");
@@ -555,7 +559,7 @@ class ChatController extends GetxController {
 
     if (imagePath.isNotEmpty) {
       try {
-        Logger().d("Mengirim pesan dengan file: $imagePath");
+        Logger().d("Pesan user: $text");
         final SingleMessageResponse aiResponse =
             await _chatService.sendSingleMessageWithImage(
                 text,
@@ -563,11 +567,23 @@ class ChatController extends GetxController {
                     filename: selectedImagePath.value.split('/').last));
         final responseText =
             aiResponse.message?.content ?? "Received an empty response.";
+
         messages.add(ChatMessage(
           text: responseText,
           sender: Sender.ai,
           tokenCount: aiResponse.metadata?.usage?.totalTokenCount,
         ));
+
+        final String currentTokenString =
+            userController.profileData.user?.token ?? '0';
+
+        final int currentTokenInt = int.tryParse(currentTokenString) ?? 0;
+
+        final int tokenUsed = aiResponse.metadata?.usage?.totalTokenCount ?? 0;
+
+        final int newTotalToken = currentTokenInt - tokenUsed;
+
+        userController.profileData.user?.token = newTotalToken.toString();
       } catch (e) {
         _showError("Gagal memproses file: $e");
         isLoading.value = false;
@@ -594,7 +610,7 @@ class ChatController extends GetxController {
           tokenCount: aiResponse.metadata?.usage?.totalTokenCount,
         ));
       } catch (e) {
-        _showError("Terjadi kesalahan: $e");
+        _showError("$e");
         isLoading.value = false;
       } finally {
         isLoading.value = false;

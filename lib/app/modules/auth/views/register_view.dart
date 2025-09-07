@@ -130,7 +130,7 @@ class RegisterView extends GetView<AuthController> {
                           },
                         ),
                         SizedBox(height: 15.h),
-                        _buildGoogleRegisterButton(),
+                        // _buildGoogleRegisterButton(),
                         SizedBox(height: 20.h),
                         _buildFooter(),
                         SizedBox(height: 20.h),

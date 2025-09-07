@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:dgul_ai/app/modules/chat/controllers/chat_controller.dart';
 import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:dgul_ai/constants.dart';
 import 'package:flutter/material.dart';
@@ -10,18 +11,15 @@ class TncDialogHelper {
   static void showTncDialog(BuildContext context, Function onAgree) {
     Get.dialog(
       Material(
-        // 🔑 biar transparan tapi tetap bisa render blur
         type: MaterialType.transparency,
         child: _TncDialogWidget(onAgree: onAgree),
       ),
-      barrierColor:
-          Colors.black.withOpacity(0), // penting → jangan pakai warna solid
+      barrierColor: Colors.black.withOpacity(0.1),
       barrierDismissible: true,
     );
   }
 }
 
-// Mengubah menjadi StatefulWidget untuk mengelola state checkbox
 class _TncDialogWidget extends StatefulWidget {
   const _TncDialogWidget({Key? key, required this.onAgree}) : super(key: key);
 
@@ -32,25 +30,23 @@ class _TncDialogWidget extends StatefulWidget {
 }
 
 class _TncDialogWidgetState extends State<_TncDialogWidget> {
-  // State untuk melacak status checkbox
-  bool _isChecked = false;
-  RxBool isAgreed = false.obs;
+  final RxBool isAgreed = false.obs;
 
   @override
   Widget build(BuildContext context) {
     return BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 100, sigmaY: 10), // 🔑 blur background
+      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
       child: Dialog(
         shape:
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.r)),
-        backgroundColor: RColor().primaryBlueColor.withOpacity(0.7),
-        child: Container(
+        backgroundColor: RColor().primaryBlueColor.withOpacity(0.85),
+        child: SizedBox(
+          width: 340.w,
           child: Padding(
             padding: EdgeInsets.symmetric(vertical: 20.h),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Judul
                 Text(
                   "Terms and Conditions",
                   style: subHeadline1TextStyle.copyWith(
@@ -59,10 +55,8 @@ class _TncDialogWidgetState extends State<_TncDialogWidget> {
                   ),
                 ),
                 SizedBox(height: 15.h),
-
-                // Konten T&C dalam container terpisah
                 Container(
-                  height: 600.h,
+                  height: 550.h,
                   margin: EdgeInsets.symmetric(horizontal: 20.w),
                   padding: EdgeInsets.all(16.w),
                   decoration: BoxDecoration(
@@ -74,12 +68,8 @@ class _TncDialogWidgetState extends State<_TncDialogWidget> {
                   ),
                 ),
                 SizedBox(height: 15.h),
-
-                // Checkbox persetujuan
                 _buildAgreementCheckbox(),
                 SizedBox(height: 15.h),
-
-                // Tombol Agree
                 _buildAgreeButton(),
               ],
             ),
@@ -89,67 +79,76 @@ class _TncDialogWidgetState extends State<_TncDialogWidget> {
     );
   }
 
+  // --- KONTEN BARU DARI DOKUMEN ---
   Widget _buildTncContent() {
-    String effectiveDate = "24 Agustus 2025";
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "D'Gul AI – Maritime Artificial Intelligence\nEffective Date: [$effectiveDate]",
+          "Terakhir Diperbarui: 8 September 2025",
           style: body2TextStyle.copyWith(
-              fontWeight: FontWeight.bold, color: Colors.black),
+              color: RColor().secondaryGreyColor, fontStyle: FontStyle.italic),
         ),
-        SizedBox(height: 8.h),
+        SizedBox(height: 12.h),
         Text(
-          "Welcome to D'Gul AI! By accessing or using this application, you agree to the following terms and conditions. Please read them carefully.",
+          "Dengan mengunduh, mendaftar, atau menggunakan Layanan kami, Anda menyatakan telah membaca, memahami, dan menyetujui untuk terikat pada seluruh Ketentuan ini serta Kebijakan Privasi kami.",
           style: body2TextStyle.copyWith(color: Colors.black),
         ),
-        SizedBox(height: 16.h),
-        _buildSectionTitle("1. General Use"),
-        Text(
-          "D'Gul AI is an AI-based maritime assistant designed to support seafarers in preparing for their careers. Users must be at least 17 years old or have parental consent.",
-          style: body2TextStyle.copyWith(color: Colors.black),
-        ),
-        SizedBox(height: 16.h),
-        _buildSectionTitle("2. Account Registration"),
-        Text(
-          "To use premium features, users must register and provide accurate information. You are responsible for maintaining the confidentiality of your account credentials.",
-          style: body2TextStyle.copyWith(color: Colors.black),
-        ),
-        SizedBox(height: 16.h),
-        _buildSectionTitle("3. Subscription and Payment"),
-        _buildListItem(
-            "Subscription plans are available monthly, semi-annually, or annually."),
-        _buildListItem(
-            "Payment is required upfront and is non-refundable once activated."),
+        SizedBox(height: 20.h),
+        _buildSectionTitle("Pasal 1: Definisi"),
+        _buildSectionContent(
+            "Aplikasi: Perangkat lunak “D’Gul Maritime AI” beserta situs dan layanan terkait.\nPengguna: Setiap orang atau badan hukum yang menggunakan Aplikasi.\nLayanan: Fitur utama Aplikasi seperti Informasi, Edukasi, dan Komunikasi."),
+        _buildSectionTitle("Pasal 2: Kelayakan dan Akun Pengguna"),
+        _buildSectionContent(
+            "Anda menjamin bahwa informasi pendaftaran benar dan Anda cakap secara hukum (minimal 18 tahun). Anda bertanggung jawab penuh atas keamanan akun Anda."),
+        _buildSectionTitle("Pasal 3: Hak Kekayaan Intelektual"),
+        _buildSectionContent(
+            "Seluruh hak atas Aplikasi adalah milik PT. Ruang Pelaut Indonesia. Dengan mengunggah konten, Anda memberikan kami lisensi untuk menggunakan konten tersebut dalam rangka penyediaan Layanan."),
+        _buildSectionTitle("Pasal 4: Perilaku Pengguna"),
+        _buildSectionContent(
+            "Anda dilarang mengunggah konten yang melanggar hukum, SARA, pornografi, ujaran kebencian, atau mengandung malware."),
+        _buildSectionTitle("Pasal 5: SANGGAHAN PENTING TERKAIT KONTEN AI"),
+        _buildSectionContent(
+            "Konten yang dihasilkan AI HANYA UNTUK TUJUAN INFORMASI UMUM dan BUKAN NASIHAT PROFESIONAL. VERIFIKASI MANDIRI terhadap sumber resmi adalah WAJIB sebelum mengambil tindakan."),
+        _buildSectionTitle("Pasal 6: Layanan Berbayar"),
+        _buildSectionContent(
+            "Aplikasi mungkin menawarkan fitur premium berbayar. Pembayaran diproses melalui pihak ketiga dan langganan dapat diperpanjang secara otomatis."),
+        _buildSectionTitle("Pasal 7: Privasi dan Pelindungan Data"),
+        _buildSectionContent(
+            "Penggunaan Layanan tunduk pada Kebijakan Privasi kami. Kami berkomitmen melindungi data Anda sesuai UU No. 27 Tahun 2022 tentang Pelindungan Data Pribadi (UU PDP)."),
+        _buildSectionTitle("Pasal 8: Batasan Tanggung Jawab"),
+        _buildSectionContent(
+            "Layanan disediakan \"sebagaimana adanya\". Kami tidak bertanggung jawab atas kerugian tidak langsung yang timbul dari penggunaan atau ketidakmampuan menggunakan Layanan."),
+        _buildSectionTitle("Pasal 9: Perubahan Ketentuan"),
+        _buildSectionContent(
+            "Kami berhak mengubah Ketentuan ini dari waktu ke waktu. Penggunaan berkelanjutan setelah perubahan merupakan bentuk persetujuan Anda."),
+        _buildSectionTitle("Pasal 10: Hukum yang Berlaku"),
+        _buildSectionContent(
+            "Ketentuan ini diatur oleh hukum yang berlaku di Republik Indonesia. Sengketa akan diselesaikan melalui musyawarah, dan jika gagal, melalui Pengadilan Negeri yang kompeten."),
+        _buildSectionTitle("Pasal 11: Kontak Kami"),
+        _buildSectionContent(
+            "Jika ada pertanyaan, silakan hubungi kami melalui email ke: legal@ruangpelaut.co.id"),
       ],
     );
   }
 
   Widget _buildSectionTitle(String title) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 4.h),
+      padding: EdgeInsets.only(bottom: 6.h, top: 10.h),
       child: Text(
         title,
         style: body1TextStyle.copyWith(
-            fontWeight: FontWeight.bold, color: Colors.black),
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        ),
       ),
     );
   }
 
-  Widget _buildListItem(String text) {
-    return Padding(
-      padding: EdgeInsets.only(left: 8.w, bottom: 4.h),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text("• ", style: body2TextStyle),
-          Expanded(
-              child: Text(text,
-                  style: body2TextStyle.copyWith(color: Colors.black))),
-        ],
-      ),
+  Widget _buildSectionContent(String content) {
+    return Text(
+      content,
+      style: body2TextStyle.copyWith(color: Colors.black),
     );
   }
 
@@ -157,25 +156,25 @@ class _TncDialogWidgetState extends State<_TncDialogWidget> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.w),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(
-            width: 20.w,
-            height: 20.h,
+            width: 24.w,
+            height: 24.h,
             child: Obx(() => Checkbox(
                   value: isAgreed.value,
                   onChanged: (value) {
                     isAgreed.value = value ?? false;
                   },
                   activeColor: Colors.white,
+                  checkColor: RColor().primaryBlueColor,
+                  side: BorderSide(color: Colors.white),
                 )),
           ),
           SizedBox(width: 8.w),
           Expanded(
             child: Text(
               "By checking this box, you agree to the Terms and Conditions",
-              textAlign: TextAlign.center,
               style:
                   body2TextStyle.copyWith(color: Colors.white, fontSize: 14.sp),
             ),
@@ -186,47 +185,55 @@ class _TncDialogWidgetState extends State<_TncDialogWidget> {
   }
 
   Widget _buildAgreeButton() {
-    return Obx(() => Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: isAgreed.value
-            ? ElevatedButton(
-                onPressed: () {
-                  // Tombol selalu aktif, tetapi hanya menutup jika checkbox dicentang
-
-                  Get.back();
-                  widget.onAgree();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: RColor().primaryYellowColor,
-                  padding:
-                      EdgeInsets.symmetric(vertical: 10.h, horizontal: 30.w),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.r),
+    return Obx(() => ElevatedButton(
+          onPressed: () {
+            if (isAgreed.value) {
+              Get.back();
+              widget.onAgree();
+            } else {
+              Get.snackbar(
+                "Terms and Conditions",
+                "Please agree to the Terms and Conditions to proceed.",
+                snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: Colors.redAccent,
+                colorText: Colors.white,
+              );
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor:
+                isAgreed.value ? RColor().primaryYellowColor : Colors.grey,
+            padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.r),
+            ),
+          ),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  padding: EdgeInsets.all(4.w),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  child: Icon(
+                    Icons.check_rounded,
+                    color: RColor().primaryBlueColor,
+                    size: 20.sp,
                   ),
                 ),
-                child: Text("Agree",
-                    style: buttonTextStyle.copyWith(
-                        color: RColor().primaryBlueColor, fontSize: 22.sp)),
-              )
-            : ElevatedButton(
-                onPressed: () {
-                  Get.snackbar("Terms and Conditions",
-                      "Please agree to the Terms and Conditions to proceed.",
-                      snackPosition: SnackPosition.BOTTOM,
-                      backgroundColor: Colors.redAccent);
-                }, // Tombol non-aktif jika checkbox tidak dicentang
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      Colors.grey, // Warna abu-abu untuk tombol non-aktif
-                  padding:
-                      EdgeInsets.symmetric(vertical: 10.h, horizontal: 30.w),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15.r),
-                  ),
+                SizedBox(width: 10.w),
+                Text(
+                  "Agree",
+                  style: buttonTextStyle.copyWith(
+                      color: RColor().primaryBlueColor, fontSize: 22.sp),
                 ),
-                child: Text("Agree",
-                    style: buttonTextStyle.copyWith(
-                        color: Colors.white, fontSize: 22.sp)),
-              )));
+              ],
+            ),
+          ),
+        ));
   }
 }

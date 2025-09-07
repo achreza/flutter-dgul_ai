@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dgul_ai/app/modules/chat/controllers/chat_controller.dart';
 import 'package:dgul_ai/app/utitls/rcolor.dart';
 import 'package:dgul_ai/app/utitls/rasset.dart';
+import 'package:dgul_ai/app/utitls/rdatecounter.dart';
 import 'package:dgul_ai/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -123,7 +124,8 @@ class AccountSettingView extends GetView<ChatController> {
             "${controller.userController.profileData.user?.department ?? 'Not Set'}"),
         _buildInfoRow("Position",
             "${controller.userController.profileData.user?.position ?? 'Not Set'}"),
-        _buildInfoRow("Subscription Status", "Active 360 Days"),
+        _buildInfoRow("Subscription Status",
+            "${calculateDateDifferenceInDays(DateTime.now(), controller.userController.profileData.user?.subscriptionUntil ?? '${DateTime.now().toString()}')} Days"),
         _buildInfoRow("Token",
             "${controller.userController.profileData.user?.token ?? 'Not Set'}"),
         SizedBox(height: 30.h),
@@ -183,7 +185,8 @@ class AccountSettingView extends GetView<ChatController> {
             "Position",
             "${controller.userController.profileData.user?.position ?? ''}",
             controller.positionController),
-        _buildInfoRow("Subscription Status", "Active 360 Days"),
+        _buildInfoRow("Subscription Status",
+            "${calculateDateDifferenceInDays(DateTime.now(), controller.userController.profileData.user?.subscriptionUntil ?? '${DateTime.now().toString()}')} Days"),
         _buildInfoRow("Token",
             "${controller.userController.profileData.user?.token ?? 'Not Set'}"),
         SizedBox(height: 30.h),

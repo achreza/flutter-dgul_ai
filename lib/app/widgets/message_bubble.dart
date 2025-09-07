@@ -103,17 +103,17 @@ class MessageBubble extends StatelessWidget {
                       size: 16.sp,
                     ),
                   ),
-                  SizedBox(width: 8.w),
-                  GestureDetector(
-                    onTap: () async {},
-                    child: Icon(
-                      Icons.volume_up,
-                      color: themeController.isDarkMode.value
-                          ? RColor().primaryYellowColor
-                          : RColor().primaryBlueColor,
-                      size: 20.sp,
-                    ),
-                  ),
+                  SizedBox(width: 16.w),
+                  // GestureDetector(
+                  //   onTap: () async {},
+                  //   child: Icon(
+                  //     Icons.volume_up,
+                  //     color: themeController.isDarkMode.value
+                  //         ? RColor().primaryYellowColor
+                  //         : RColor().primaryBlueColor,
+                  //     size: 20.sp,
+                  //   ),
+                  // ),
                 ],
               ),
             if (hasImage)

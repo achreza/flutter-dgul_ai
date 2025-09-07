@@ -118,19 +118,13 @@ class AuthController extends GetxController {
 
       Get.offAllNamed('/chat');
       Get.put(ChatController());
-      RLoaders.showStatusDialog(
-        context: Get.context!,
-        status: DialogStatus.success,
-        title: 'Login Successful',
-        message: 'Welcome back!',
-      );
     } else {
       // Handle login error
       RLoaders.showStatusDialog(
         context: Get.context!,
         status: DialogStatus.failed,
         title: 'Login Failed',
-        message: response.statusText ?? 'Unknown error',
+        message: response.body['message'] ?? 'Unknown error',
       );
     }
   }

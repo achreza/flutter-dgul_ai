@@ -91,7 +91,7 @@ class LoginView extends GetView<AuthController> {
                           },
                         ),
                         SizedBox(height: 15.h),
-                        _buildGoogleLoginrButton(),
+                        // _buildGoogleLoginrButton(),
                         SizedBox(height: 20.h),
                         _buildFooter(),
                         SizedBox(height: 20.h),
