@@ -6,6 +6,7 @@ import 'package:dgul_ai/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HelpAndSupportView extends GetView<ChatController> {
   const HelpAndSupportView({Key? key}) : super(key: key);
@@ -109,26 +110,35 @@ class HelpAndSupportView extends GetView<ChatController> {
                         SizedBox(height: 20.h),
 
                         // Ikon Headset
-                        Center(
-                          child: Container(
-                            padding: EdgeInsets.all(20.w),
-                            decoration: BoxDecoration(
-                              color: RColor().primaryYellowColor,
-                              shape: BoxShape.circle,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: RColor()
-                                      .primaryYellowColor
-                                      .withOpacity(0.5),
-                                  blurRadius: 15,
-                                  spreadRadius: 3,
-                                )
-                              ],
-                            ),
-                            child: Icon(
-                              Icons.headset_mic,
-                              color: RColor().primaryBlueColor,
-                              size: 100.sp,
+                        GestureDetector(
+                          onTap: () async {
+                            //open wa.me
+                            final Uri whatsappUri = Uri.parse(
+                                "https://wa.me/+6281533331179?text=Halo,%20Saya%2C%20Butuh%20bantuan%20dengan%20aplikasi%20Dgul%20AI");
+                            await launchUrl(whatsappUri,
+                                mode: LaunchMode.externalApplication);
+                          },
+                          child: Center(
+                            child: Container(
+                              padding: EdgeInsets.all(20.w),
+                              decoration: BoxDecoration(
+                                color: RColor().primaryYellowColor,
+                                shape: BoxShape.circle,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: RColor()
+                                        .primaryYellowColor
+                                        .withOpacity(0.5),
+                                    blurRadius: 15,
+                                    spreadRadius: 3,
+                                  )
+                                ],
+                              ),
+                              child: Icon(
+                                Icons.headset_mic,
+                                color: RColor().primaryBlueColor,
+                                size: 100.sp,
+                              ),
                             ),
                           ),
                         ),
