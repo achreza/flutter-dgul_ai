@@ -160,10 +160,40 @@ class ChatController extends GetxController {
   }
 
   void selectProfilePhoto() async {
-    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 90, // Kualitas gambar yang lebih tinggi untuk di-crop
+    );
+
+    // Jika pengguna memilih sebuah file
     if (pickedFile != null) {
-      selectedPhotoProfilePath.value = pickedFile.path;
-      update();
+      // 2. Lanjutkan ke proses cropping
+      final croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedFile.path,
+        // Opsi cropStyle: CropStyle.circle sangat cocok untuk foto profil
+
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Crop Profile Photo',
+            toolbarColor: RColor().primaryBlueColor, // Ganti dengan warna Anda
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true, // Kunci rasio agar tetap persegi
+            activeControlsWidgetColor: RColor().primaryYellowColor,
+          ),
+          IOSUiSettings(
+            title: 'Crop Photo',
+            aspectRatioLockEnabled: true,
+            resetAspectRatioEnabled: false,
+          ),
+        ],
+      );
+
+      // 3. Jika pengguna menyelesaikan proses crop, perbarui path gambar
+      if (croppedFile != null) {
+        selectedPhotoProfilePath.value = croppedFile.path;
+        // update(); // Tidak perlu jika menggunakan .obs
+      }
     }
   }
 

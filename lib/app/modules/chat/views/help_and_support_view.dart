@@ -104,7 +104,7 @@ class HelpAndSupportView extends GetView<ChatController> {
                         _buildFaqItem(
                           question: "5. Who can I contact for support?",
                           answer:
-                              "Email us at: support@dgulai.com\nWhatsApp: +62 8XXXXXXXXXX (if available)",
+                              "Email us at: ruangpelaut@gmail.com\nWhatsApp: +6281533331179 ",
                         ),
 
                         SizedBox(height: 20.h),
