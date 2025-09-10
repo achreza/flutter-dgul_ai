@@ -5,7 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hexcolor/hexcolor.dart';
 
-final String apiBaseUrl = 'https://dgulai.linkantara.com/api';
+final String apiBaseUrlLawas = 'https://dgulai.linkantara.com/api';
+final String apiBaseUrl = 'https://dgul-ai.ruangpelaut.com/api';
 
 var headlineTextStyle = GoogleFonts.jaldi(
   fontSize: 55.sp,

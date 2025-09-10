@@ -48,7 +48,7 @@ class AuthService extends GetConnect {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       });
-      Logger().i('Response from register: ${response}');
+      Logger().i('Response from register: ${response.bodyString}');
       return response;
     } catch (e) {
       Logger().e('Error registering user: $e');

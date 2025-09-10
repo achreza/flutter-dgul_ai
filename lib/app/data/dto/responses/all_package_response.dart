@@ -24,8 +24,8 @@ class AllPackageResponse {
 class Pakets {
   int? id;
   String? name;
-  String? price;
-  String? duration;
+  int? price;
+  int? duration;
   String? description;
 
   Pakets({this.id, this.name, this.price, this.duration, this.description});

@@ -46,8 +46,8 @@ class ChatController extends GetxController {
   var isTextEmpty = true.obs;
 
   // --- STATE BARU UNTUK DROPDOWN ---
-  var selectedWorkType = 'Maritime Worker'.obs;
-  var selectedRole = 'Maritime Worker'.obs;
+  var selectedWorkType = 'Seafarer'.obs;
+  var selectedRole = 'Seafarer'.obs;
   RxInt selectedSuggestion = 0.obs;
 
   var isListening = false.obs;

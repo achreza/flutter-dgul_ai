@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:logger/logger.dart';
 
 class AuthController extends GetxController {
   //TODO: Implement AuthController
@@ -66,6 +67,7 @@ class AuthController extends GetxController {
     // Jika token ditemukan di storage
     if (token != null) {
       LoadingPopup.show(Get.context!);
+      Logger().d("Auto Login with token: $token");
       final userData = _storage.read<Map<String, dynamic>>('userData');
       if (userData != null) {
         final user = lr.User.fromJson(userData);

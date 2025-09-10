@@ -96,7 +96,7 @@ class SubscriptionView extends GetView<ChatController> {
                                   details:
                                       "${controller.allPackage.pakets?[0].description} ",
                                   price:
-                                      "${RFormatter.formatRupiah(controller.allPackage.pakets?[0].price)}/month",
+                                      "${RFormatter.formatRupiah(controller.allPackage.pakets?[0].price)}",
                                   isSelected: controller.selectedPlan.value ==
                                       "${controller.allPackage.pakets?[0].name}",
                                   onTap: () {
@@ -115,7 +115,7 @@ class SubscriptionView extends GetView<ChatController> {
                                   details:
                                       "${controller.allPackage.pakets?[1].description} ",
                                   price:
-                                      "${RFormatter.formatRupiah(controller.allPackage.pakets?[1].price)}/month",
+                                      "${RFormatter.formatRupiah(controller.allPackage.pakets?[1].price)}",
                                   isSelected: controller.selectedPlan.value ==
                                       "${controller.allPackage.pakets?[1].name}",
                                   onTap: () {
@@ -134,7 +134,7 @@ class SubscriptionView extends GetView<ChatController> {
                                   details:
                                       "${controller.allPackage.pakets?[2].description} ",
                                   price:
-                                      "${RFormatter.formatRupiah(controller.allPackage.pakets?[2].price)}/month",
+                                      "${RFormatter.formatRupiah(controller.allPackage.pakets?[2].price)}",
                                   isSelected: controller.selectedPlan.value ==
                                       "${controller.allPackage.pakets?[2].name}",
                                   onTap: () {

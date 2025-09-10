@@ -24,6 +24,9 @@ class ChatService extends GetConnect {
         'message': message
       });
 
+      Logger().i('Response from sendSingleMessage: ${response.body}');
+      Logger().i('Status code: ${response.statusCode}');
+
       if (response.status.hasError) {
         throw '${response.body['message']}';
       }
@@ -39,7 +42,6 @@ class ChatService extends GetConnect {
       String message, MultipartFile filePath) async {
     // Implement your message sending logic here
     try {
-      Logger().d('Sending message with image: $message');
       final response = await post(
           '${apiBaseUrl}/simple',
           headers: {
@@ -50,6 +52,9 @@ class ChatService extends GetConnect {
             'message': message,
             'image': filePath,
           }));
+
+      Logger().i('Response from sendSingleMessage: ${response.body}');
+      Logger().i('Status code: ${response.statusCode}');
 
       if (response.status.hasError) {
         throw Exception('${response.body['message']}');

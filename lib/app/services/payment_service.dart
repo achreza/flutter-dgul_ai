@@ -13,9 +13,10 @@ class PaymentService extends GetConnect {
       final response = await get('$apiBaseUrl/pakets', headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${Get.find<UserController>().bearerToken}',
       });
 
-      Logger().d("Response: ${response.body}");
+      print("Response Paket: ${response.bodyString}");
 
       if (response.statusCode == 200) {
         return AllPackageResponse.fromJson(response.body);

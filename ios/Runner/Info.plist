@@ -26,7 +26,7 @@
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
-	<string>6.0</string>
+	<string>D'Gul AI</string>
 	<key>CFBundleName</key>
 	<string>dgul_ai</string>
 	<key>CFBundlePackageType</key>

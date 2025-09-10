@@ -30,11 +30,18 @@ dependencies:
   intl: ^0.20.2
   webview_flutter: ^4.8.0
   url_launcher: ^6.3.1
+  flutter_app_name: ^0.1.1
+  flutter_launcher_icons: ^0.11.0
 
 dev_dependencies:
   flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/appicon.png"
 
 flutter:
   uses-material-design: true
@@ -43,3 +50,6 @@ flutter:
     - .env
     - assets/images/
     - assets/gifs/
+
+flutter_app_name:
+  name: "D'Gul AI"

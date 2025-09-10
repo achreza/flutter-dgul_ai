@@ -76,6 +76,8 @@ class UserService extends GetConnect {
             'Bearer ${Get.find<UserController>().getBearerToken()}',
       });
 
+      Logger().i('Profile data response: ${response.bodyString}');
+
       if (response.isOk) {
         return ProfileResponse.fromJson(response.body);
       } else {

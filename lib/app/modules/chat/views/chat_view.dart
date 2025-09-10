@@ -171,6 +171,7 @@ class ChatView extends GetView<ChatController> {
                             child: Obx(
                               () => Text(
                                 controller.selectedWorkType.value,
+
                                 style: body1TextStyle.copyWith(
                                   color: Colors.white,
                                   fontSize: 20.sp,
