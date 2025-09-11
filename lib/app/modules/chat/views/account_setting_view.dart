@@ -132,7 +132,22 @@ class AccountSettingView extends GetView<ChatController> {
         Row(
           children: [
             OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                //show dialog konfirmasi delete account
+                Get.defaultDialog(
+                  title: "Konfirmasi",
+                  middleText: "Apakah Anda yakin ingin menghapus akun ini?",
+                  onConfirm: () {
+                    //double check with alert dialog
+
+                    controller.deleteAccount();
+                    Get.back();
+                  },
+                  onCancel: () {
+                    Get.back();
+                  },
+                );
+              },
               child: Text("Delete Account",
                   style: buttonTextStyle.copyWith(color: Colors.red)),
               style: OutlinedButton.styleFrom(

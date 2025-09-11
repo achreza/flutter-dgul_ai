@@ -43,6 +43,29 @@ class UserService extends GetConnect {
     }
   }
 
+  Future<Response> deleteAccount() async {
+    try {
+      final response = await delete(
+        '$apiBaseUrl/profile/account',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization':
+              'Bearer ${Get.find<UserController>().getBearerToken()}',
+        },
+      );
+
+      if (response.status.hasError) {
+        throw Exception('Failed to delete account');
+      }
+
+      return response;
+    } catch (e) {
+      Logger().e('Error deleting account: $e');
+      rethrow;
+    }
+  }
+
   Future<Response> updateLanguage(String lang) async {
     try {
       final response = await post(

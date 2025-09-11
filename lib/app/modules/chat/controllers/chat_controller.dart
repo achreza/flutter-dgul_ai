@@ -652,6 +652,22 @@ class ChatController extends GetxController {
     }
   }
 
+  Future<void> deleteAccount() async {
+    try {
+      final authController = Get.find<AuthController>();
+      LoadingPopup.show(Get.overlayContext!);
+      await userService.deleteAccount();
+
+      LoadingPopup.hide(Get.overlayContext!);
+      logout();
+    } catch (e) {
+      LoadingPopup.hide(Get.overlayContext!);
+      Logger().e("Error deleting account: $e");
+      Get.snackbar('Error', 'Failed to delete account. Please try again.',
+          snackPosition: SnackPosition.BOTTOM);
+    }
+  }
+
   Future<void> sendMessage() async {
     final text = textController.text.trim();
     final imagePath = selectedImagePath.value;
