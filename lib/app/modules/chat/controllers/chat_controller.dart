@@ -596,7 +596,8 @@ class ChatController extends GetxController {
             await _chatService.sendSingleMessageWithImage(
                 text,
                 MultipartFile(selectedImagePath.value,
-                    filename: selectedImagePath.value.split('/').last));
+                    filename: selectedImagePath.value.split('/').last),
+                selectedWorkType.value);
         final responseText =
             aiResponse.message?.content ?? "Received an empty response.";
 
@@ -629,7 +630,7 @@ class ChatController extends GetxController {
       try {
         Logger().d("Mengirim pesan tanpa file");
         final SingleMessageResponse aiResponse =
-            await _chatService.sendSingleMessage(text);
+            await _chatService.sendSingleMessage(text, selectedWorkType.value);
         final responseText =
             aiResponse.message?.content ?? "Received an empty response.";
 

@@ -732,14 +732,14 @@ class ChatView extends GetView<ChatController> {
           child: Wrap(
             spacing: 20,
             children: [
-              ListTile(
-                leading: const Icon(Icons.camera_alt),
-                title: const Text('Ambil Foto dari Kamera'),
-                onTap: () {
-                  Get.back();
-                  controller.pickImage(ImageSource.camera);
-                },
-              ),
+              // ListTile(
+              //   leading: const Icon(Icons.camera_alt),
+              //   title: const Text('Ambil Foto dari Kamera'),
+              //   onTap: () {
+              //     Get.back();
+              //     controller.pickImage(ImageSource.camera);
+              //   },
+              // ),
               ListTile(
                 leading: const Icon(Icons.photo_library),
                 title: const Text('Pilih Gambar dari Galeri'),

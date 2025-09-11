@@ -210,28 +210,11 @@ class _TncDialogWidgetState extends State<_TncDialogWidget> {
           ),
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(4.w),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: Icon(
-                    Icons.check_rounded,
-                    color: RColor().primaryBlueColor,
-                    size: 20.sp,
-                  ),
-                ),
-                SizedBox(width: 10.w),
-                Text(
-                  "Agree",
-                  style: buttonTextStyle.copyWith(
-                      color: RColor().primaryBlueColor, fontSize: 22.sp),
-                ),
-              ],
+            child: Text(
+              "Agree",
+              textAlign: TextAlign.center,
+              style: buttonTextStyle.copyWith(
+                  color: RColor().primaryBlueColor, fontSize: 22.sp),
             ),
           ),
         ));

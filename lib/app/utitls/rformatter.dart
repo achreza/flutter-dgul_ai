@@ -26,4 +26,11 @@ class RFormatter {
 
     return formatCurrency.format(numericPrice);
   }
+
+  static String? formatToken(int? token) {
+    //format like 1000000 to 1,000,000
+    if (token == null) return null;
+    final formatter = NumberFormat('#,##0');
+    return formatter.format(token);
+  }
 }

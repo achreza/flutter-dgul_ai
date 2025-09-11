@@ -13,7 +13,8 @@ class ChatService extends GetConnect {
     super.onInit();
   }
 
-  Future<SingleMessageResponse> sendSingleMessage(String message) async {
+  Future<SingleMessageResponse> sendSingleMessage(
+      String message, String department) async {
     // Implement your message sending logic here
     try {
       final response = await post('${apiBaseUrl}/simple', headers: {
@@ -21,7 +22,8 @@ class ChatService extends GetConnect {
         'Authorization':
             'Bearer ${Get.find<UserController>().getBearerToken()}',
       }, {
-        'message': message
+        'message': message,
+        'department': department,
       });
 
       Logger().i('Response from sendSingleMessage: ${response.body}');
@@ -39,7 +41,7 @@ class ChatService extends GetConnect {
   }
 
   Future<SingleMessageResponse> sendSingleMessageWithImage(
-      String message, MultipartFile filePath) async {
+      String message, MultipartFile filePath, String department) async {
     // Implement your message sending logic here
     try {
       final response = await post(
@@ -51,6 +53,7 @@ class ChatService extends GetConnect {
           FormData({
             'message': message,
             'image': filePath,
+            'department': department,
           }));
 
       Logger().i('Response from sendSingleMessage: ${response.body}');
