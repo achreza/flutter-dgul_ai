@@ -263,6 +263,8 @@ class ChatController extends GetxController {
           userController.assignProfileDataAfterUpdate(response);
         }
         LoadingPopup.hide(Get.overlayContext!);
+        isEditMode.value = false;
+        update();
       }
     } catch (e) {
       Logger().e("Error updating profile: $e");

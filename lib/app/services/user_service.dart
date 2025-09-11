@@ -34,7 +34,7 @@ class UserService extends GetConnect {
               'Bearer ${Get.find<UserController>().getBearerToken()}',
         },
       );
-      Logger().i('Profile update response: ${res.body}');
+      Logger().i('Profile update response: ${res.bodyString}');
 
       return UpdateProfileResponse.fromJson(res.body);
     } catch (e) {
