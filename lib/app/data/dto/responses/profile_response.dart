@@ -18,9 +18,7 @@ class ProfileResponse {
 
 class User {
   int? id;
-  String? token;
-  String? isSubscription;
-  String? subscriptionUntil;
+  int? token;
   String? name;
   String? email;
   String? phone;
@@ -28,6 +26,8 @@ class User {
   String? position;
   String? language;
   String? role;
+  int? isSubscription;
+  String? subscriptionUntil;
   String? profilePhotoUrl;
   String? emailVerifiedAt;
   String? createdAt;
@@ -36,8 +36,6 @@ class User {
   User(
       {this.id,
       this.token,
-      this.isSubscription,
-      this.subscriptionUntil,
       this.name,
       this.email,
       this.phone,
@@ -45,6 +43,8 @@ class User {
       this.position,
       this.language,
       this.role,
+      this.isSubscription,
+      this.subscriptionUntil,
       this.profilePhotoUrl,
       this.emailVerifiedAt,
       this.createdAt,
@@ -53,8 +53,6 @@ class User {
   User.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     token = json['token'];
-    isSubscription = json['is_subscription'];
-    subscriptionUntil = json['subscription_until'];
     name = json['name'];
     email = json['email'];
     phone = json['phone'];
@@ -62,6 +60,8 @@ class User {
     position = json['position'];
     language = json['language'];
     role = json['role'];
+    isSubscription = json['is_subscription'];
+    subscriptionUntil = json['subscription_until'];
     profilePhotoUrl = json['profile_photo_url'];
     emailVerifiedAt = json['email_verified_at'];
     createdAt = json['created_at'];
@@ -72,8 +72,6 @@ class User {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['token'] = this.token;
-    data['is_subscription'] = this.isSubscription;
-    data['subscription_until'] = this.subscriptionUntil;
     data['name'] = this.name;
     data['email'] = this.email;
     data['phone'] = this.phone;
@@ -81,6 +79,8 @@ class User {
     data['position'] = this.position;
     data['language'] = this.language;
     data['role'] = this.role;
+    data['is_subscription'] = this.isSubscription;
+    data['subscription_until'] = this.subscriptionUntil;
     data['profile_photo_url'] = this.profilePhotoUrl;
     data['email_verified_at'] = this.emailVerifiedAt;
     data['created_at'] = this.createdAt;

@@ -208,12 +208,12 @@ class ChatController extends GetxController {
       LoadingPopup.hide(Get.overlayContext!);
       RLoaders.showStatusDialog(
           context: Get.overlayContext!,
-          status: userController.profileData.user?.isSubscription == "1"
+          status: userController.profileData.user?.isSubscription == 1
               ? DialogStatus.success
               : DialogStatus.failed,
           title: 'Subscription Status',
           message:
-              'Subscription status is ${userController.profileData.user?.isSubscription == "1" ? 'Active' : 'Inactive'}.');
+              'Subscription status is ${userController.profileData.user?.isSubscription == 1 ? 'Active' : 'Inactive'}.');
     } catch (e) {
       LoadingPopup.hide(Get.overlayContext!);
       Logger().e("Error checking subscription status: $e");
@@ -604,16 +604,13 @@ class ChatController extends GetxController {
           tokenCount: aiResponse.metadata?.usage?.totalTokenCount,
         ));
 
-        final String currentTokenString =
-            userController.profileData.user?.token ?? '0';
-
-        final int currentTokenInt = int.tryParse(currentTokenString) ?? 0;
+        final int currentTokenInt = userController.profileData.user?.token ?? 0;
 
         final int tokenUsed = aiResponse.metadata?.usage?.totalTokenCount ?? 0;
 
         final int newTotalToken = currentTokenInt - tokenUsed;
 
-        userController.profileData.user?.token = newTotalToken.toString();
+        userController.profileData.user?.token = newTotalToken;
       } catch (e) {
         _showError("Gagal memproses file: $e");
         isLoading.value = false;
