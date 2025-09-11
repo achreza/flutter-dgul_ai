@@ -59,44 +59,42 @@ class LoginView extends GetView<AuthController> {
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                   ),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(height: 25.h),
-                        Center(
-                          child: Text(
-                            "Login",
-                            style: subHeadline1TextStyle.copyWith(
-                                color: RColor().primaryBlueColor,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 40.sp),
-                          ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 25.h),
+                      Center(
+                        child: Text(
+                          "Login",
+                          style: subHeadline1TextStyle.copyWith(
+                              color: RColor().primaryBlueColor,
+                              fontWeight: FontWeight.normal,
+                              fontSize: 40.sp),
                         ),
-                        SizedBox(height: 15.h),
-                        BuildTextField(
-                            label: "Email Address",
-                            controller: controller.emailController),
-                        SizedBox(height: 15.h),
-                        BuildTextField(
-                            label: "Password",
-                            isObscure: true,
-                            controller: controller.passwordController),
-                        SizedBox(height: 20.h),
-                        SizedBox(height: 30.h),
-                        buildButton(
-                          label: "Login",
-                          onPressed: () {
-                            controller.login();
-                          },
-                        ),
-                        SizedBox(height: 15.h),
-                        // _buildGoogleLoginrButton(),
-                        SizedBox(height: 20.h),
-                        _buildFooter(),
-                        SizedBox(height: 20.h),
-                      ],
-                    ),
+                      ),
+                      SizedBox(height: 15.h),
+                      BuildTextField(
+                          label: "Email Address",
+                          controller: controller.emailController),
+                      SizedBox(height: 15.h),
+                      BuildTextField(
+                          label: "Password",
+                          isObscure: true,
+                          controller: controller.passwordController),
+                      SizedBox(height: 20.h),
+                      SizedBox(height: 30.h),
+                      buildButton(
+                        label: "Login",
+                        onPressed: () {
+                          controller.login();
+                        },
+                      ),
+                      SizedBox(height: 15.h),
+                      // _buildGoogleLoginrButton(),
+                      Spacer(),
+                      _buildFooter(),
+                      SizedBox(height: 20.h),
+                    ],
                   ),
                 ),
               ),
