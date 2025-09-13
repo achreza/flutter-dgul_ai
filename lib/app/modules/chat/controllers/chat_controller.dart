@@ -63,7 +63,6 @@ class ChatController extends GetxController {
   var allPackage = AllPackageResponse();
 
   //untuk update profile
-
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController departmentController = TextEditingController();
@@ -157,6 +156,34 @@ class ChatController extends GetxController {
       selectedImagePath.value = pickedFile.path;
       update();
     }
+  }
+
+  Future<bool> onWillPop() async {
+    final result = await Get.dialog<bool>(
+      AlertDialog(
+        title: const Text('Kembali ke awal?'),
+        content: const Text(
+            'Apakah Anda yakin, ini akan mengakhiri sesi chat Anda?'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Get.back(result: false), // Batal, jangan keluar
+            child: const Text('Tidak'),
+          ),
+          TextButton(
+            onPressed: () {
+              _storage.remove(_historyKey);
+              _addWelcomeMessage();
+              Get.back();
+            },
+            child: const Text('Ya'),
+          ),
+        ],
+      ),
+    );
+
+    // Jika pengguna menutup dialog (misalnya dengan menekan di luar), anggap batal.
+    // Jika mereka menekan 'Ya', result akan true.
+    return result ?? false;
   }
 
   void selectProfilePhoto() async {

@@ -28,247 +28,250 @@ class ChatView extends GetView<ChatController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80.h),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          flexibleSpace: Stack(
-            fit: StackFit.expand,
-            children: [
-              Image.asset(
-                RAsset().appBarBg,
-                fit: BoxFit.cover,
+    return WillPopScope(
+      onWillPop: () => controller.onWillPop(),
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(80.h),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            flexibleSpace: Stack(
+              fit: StackFit.expand,
+              children: [
+                Image.asset(
+                  RAsset().appBarBg,
+                  fit: BoxFit.cover,
+                ),
+              ],
+            ),
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            title: Image.asset(RAsset().logoDgulAiNoTagline, height: 35.h),
+            centerTitle: true,
+            actions: [
+              PopupMenuButton<String>(
+                onSelected: (value) {
+                  if (value == 'logout') {
+                    // Tambahkan logika logout
+                    controller.logout();
+                  } else if (value == 'clear_chat') {
+                    controller.clearChatHistory();
+                  } else if (value == 'subscription') {
+                    Get.to(() => SubscriptionView());
+                  } else if (value == 'help') {
+                    Get.to(() => HelpAndSupportView());
+                  } else if (value == 'account_setting') {
+                    Get.to(() => AccountSettingView());
+                  } else if (value == 'terms_and_conditions') {
+                    Get.to(() => TermsAndConditionView());
+                  }
+                },
+                color: themeController.isDarkMode.value
+                    ? Colors.black
+                    : Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.r),
+                ),
+                child: Container(
+                  margin: EdgeInsets.only(right: 16.w, top: 2.h),
+                  child: Image.asset(
+                    RAsset().iconMenu,
+                    width: 24.w,
+                    height: 24.h,
+                    color: RColor().primaryYellowColor,
+                  ),
+                ),
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    value: 'theme',
+                    enabled: false,
+                    child: Obx(() => SwitchListTile(
+                          title: Text(
+                            themeController.isDarkMode.value
+                                ? 'dark_mode'.tr
+                                : 'light_mode'.tr,
+                            style: TextStyle(
+                                fontSize: 14.sp,
+                                color: themeController.isDarkMode.value
+                                    ? Colors.white
+                                    : Colors.black),
+                          ),
+                          value: !themeController.isDarkMode.value,
+                          onChanged: (bool value) {
+                            themeController.switchTheme();
+                            Get.back();
+                          },
+                          secondary: Icon(
+                            themeController.isDarkMode.value
+                                ? Icons.nightlight_round
+                                : Icons.wb_sunny,
+                            color: RColor().primaryYellowColor,
+                          ),
+                        )),
+                  ),
+                  PopupMenuItem<String>(
+                      value: 'language',
+                      enabled: false,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          buildLanguageButton(context, "Indonesia", "id_ID",
+                              controller.selectedLanguage),
+                          buildLanguageButton(context, "English", "en_US",
+                              controller.selectedLanguage),
+                        ],
+                      )),
+                  const PopupMenuDivider(),
+                  _buildPopupMenuItem(
+                      icon: Icons.person_outline,
+                      text: 'account_setting'.tr,
+                      value: 'account_setting'),
+                  _buildPopupMenuItem(
+                      icon: Icons.delete_outline,
+                      text: 'clear_chat'.tr,
+                      value: 'clear_chat'),
+                  _buildPopupMenuItem(
+                      icon: Icons.subscriptions_outlined,
+                      text: 'subscription'.tr,
+                      value: 'subscription'),
+                  _buildPopupMenuItem(
+                      icon: Icons.help_outline,
+                      text: 'help_and_support'.tr,
+                      value: 'help'),
+                  _buildPopupMenuItem(
+                      icon: Icons.article_outlined,
+                      text: 'terms_and_conditions'.tr,
+                      value: 'terms_and_conditions'),
+                  const PopupMenuDivider(),
+                  _buildPopupMenuItem(
+                      icon: Icons.logout, text: 'logout'.tr, value: 'logout'),
+                ],
               ),
             ],
-          ),
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          title: Image.asset(RAsset().logoDgulAiNoTagline, height: 35.h),
-          centerTitle: true,
-          actions: [
-            PopupMenuButton<String>(
-              onSelected: (value) {
-                if (value == 'logout') {
-                  // Tambahkan logika logout
-                  controller.logout();
-                } else if (value == 'clear_chat') {
-                  controller.clearChatHistory();
-                } else if (value == 'subscription') {
-                  Get.to(() => SubscriptionView());
-                } else if (value == 'help') {
-                  Get.to(() => HelpAndSupportView());
-                } else if (value == 'account_setting') {
-                  Get.to(() => AccountSettingView());
-                } else if (value == 'terms_and_conditions') {
-                  Get.to(() => TermsAndConditionView());
-                }
-              },
-              color: themeController.isDarkMode.value
-                  ? Colors.black
-                  : Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.r),
-              ),
-              child: Container(
-                margin: EdgeInsets.only(right: 16.w, top: 2.h),
-                child: Image.asset(
-                  RAsset().iconMenu,
-                  width: 24.w,
-                  height: 24.h,
-                  color: RColor().primaryYellowColor,
-                ),
-              ),
-              itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-                PopupMenuItem<String>(
-                  value: 'theme',
-                  enabled: false,
-                  child: Obx(() => SwitchListTile(
-                        title: Text(
-                          themeController.isDarkMode.value
-                              ? 'dark_mode'.tr
-                              : 'light_mode'.tr,
-                          style: TextStyle(
-                              fontSize: 14.sp,
-                              color: themeController.isDarkMode.value
-                                  ? Colors.white
-                                  : Colors.black),
+            bottom: PreferredSize(
+                preferredSize: Size.fromHeight(40.h),
+                child: Center(
+                  //backup disini
+                  child: GestureDetector(
+                      onTap: () =>
+                          WorkTypeDialog.showWorkTypeDialog(context, () {}),
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 8.h),
+                        width: 200.w,
+                        alignment: Alignment.center,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 12.w, vertical: 6.h),
+                        decoration: BoxDecoration(
+                          color: RColor().primaryBlueColor.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(10.r),
                         ),
-                        value: !themeController.isDarkMode.value,
-                        onChanged: (bool value) {
-                          themeController.switchTheme();
-                          Get.back();
-                        },
-                        secondary: Icon(
-                          themeController.isDarkMode.value
-                              ? Icons.nightlight_round
-                              : Icons.wb_sunny,
-                          color: RColor().primaryYellowColor,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              // biar teks pakai sisa space
+                              child: Obx(
+                                () => Text(
+                                  controller.selectedWorkType.value,
+
+                                  style: body1TextStyle.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  maxLines: 1, // cuma 1 baris
+                                  overflow: TextOverflow.ellipsis, // kasih ...
+                                  softWrap: false, // jangan otomatis enter
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            SizedBox(width: 6.w),
+                            Icon(
+                              Icons.arrow_drop_down,
+                              color: Colors.white,
+                              size: 20.sp,
+                            ),
+                          ],
                         ),
                       )),
+                )),
+          ),
+        ),
+        body: Stack(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
+                image: DecorationImage(
+                  image: themeController.isDarkMode.value
+                      ? AssetImage(RAsset().bgSirkuitDark)
+                      : AssetImage(RAsset().bgSirkuitLight),
+                  fit: BoxFit.cover,
                 ),
-                PopupMenuItem<String>(
-                    value: 'language',
-                    enabled: false,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        buildLanguageButton(context, "Indonesia", "id_ID",
-                            controller.selectedLanguage),
-                        buildLanguageButton(context, "English", "en_US",
-                            controller.selectedLanguage),
-                      ],
-                    )),
-                const PopupMenuDivider(),
-                _buildPopupMenuItem(
-                    icon: Icons.person_outline,
-                    text: 'account_setting'.tr,
-                    value: 'account_setting'),
-                _buildPopupMenuItem(
-                    icon: Icons.delete_outline,
-                    text: 'clear_chat'.tr,
-                    value: 'clear_chat'),
-                _buildPopupMenuItem(
-                    icon: Icons.subscriptions_outlined,
-                    text: 'subscription'.tr,
-                    value: 'subscription'),
-                _buildPopupMenuItem(
-                    icon: Icons.help_outline,
-                    text: 'help_and_support'.tr,
-                    value: 'help'),
-                _buildPopupMenuItem(
-                    icon: Icons.article_outlined,
-                    text: 'terms_and_conditions'.tr,
-                    value: 'terms_and_conditions'),
-                const PopupMenuDivider(),
-                _buildPopupMenuItem(
-                    icon: Icons.logout, text: 'logout'.tr, value: 'logout'),
+              ),
+            ),
+            Column(
+              children: [
+                Expanded(
+                  child: Obx(() {
+                    // Tampilkan welcome screen jika hanya ada 1 pesan (sapaan awal)
+                    if (controller.messages.length <= 1) {
+                      return _buildInitialWelcomeUI(context, controller);
+                    }
+                    // Tampilkan chat jika sudah ada interaksi
+                    else {
+                      return ListView.builder(
+                        controller: controller.scrollController,
+                        padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
+                        itemCount: controller.messages.length,
+                        itemBuilder: (context, index) {
+                          final message = controller.messages[index];
+                          return MessageBubble(message: message);
+                        },
+                      );
+                    }
+                  }),
+                ),
+                Obx(() {
+                  if (controller.isLoading.value) {
+                    return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 50.w,
+                          height: 50.h,
+                          child: Image.asset(
+                            RAsset().loading,
+                            width: 50.w,
+                            height: 50.h,
+                          ),
+                        ));
+                  } else {
+                    return const SizedBox.shrink();
+                  }
+                }),
+                // Tampilkan saran prompt hanya di awal
+
+                Obx(() {
+                  if (controller.messages.length <= 1 &&
+                      controller.selectedSuggestion.value != 0) {
+                    return _buildSubSuggestionPrompts(context, controller);
+                  }
+                  return const SizedBox.shrink();
+                }),
+                //[SUGGESTION PROMPTS]
+                // Obx(() {
+                //   if (controller.messages.length <= 1) {
+                //     return _buildSuggestionPrompts(context, controller);
+                //   }
+                //   return const SizedBox.shrink();
+                // }),
+                _buildTextComposer(context, controller),
               ],
             ),
           ],
-          bottom: PreferredSize(
-              preferredSize: Size.fromHeight(40.h),
-              child: Center(
-                //backup disini
-                child: GestureDetector(
-                    onTap: () =>
-                        WorkTypeDialog.showWorkTypeDialog(context, () {}),
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 8.h),
-                      width: 200.w,
-                      alignment: Alignment.center,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
-                      decoration: BoxDecoration(
-                        color: RColor().primaryBlueColor.withOpacity(0.5),
-                        borderRadius: BorderRadius.circular(10.r),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            // biar teks pakai sisa space
-                            child: Obx(
-                              () => Text(
-                                controller.selectedWorkType.value,
-
-                                style: body1TextStyle.copyWith(
-                                  color: Colors.white,
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                maxLines: 1, // cuma 1 baris
-                                overflow: TextOverflow.ellipsis, // kasih ...
-                                softWrap: false, // jangan otomatis enter
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 6.w),
-                          Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.white,
-                            size: 20.sp,
-                          ),
-                        ],
-                      ),
-                    )),
-              )),
         ),
-      ),
-      body: Stack(
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Theme.of(context).scaffoldBackgroundColor,
-              image: DecorationImage(
-                image: themeController.isDarkMode.value
-                    ? AssetImage(RAsset().bgSirkuitDark)
-                    : AssetImage(RAsset().bgSirkuitLight),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          Column(
-            children: [
-              Expanded(
-                child: Obx(() {
-                  // Tampilkan welcome screen jika hanya ada 1 pesan (sapaan awal)
-                  if (controller.messages.length <= 1) {
-                    return _buildInitialWelcomeUI(context, controller);
-                  }
-                  // Tampilkan chat jika sudah ada interaksi
-                  else {
-                    return ListView.builder(
-                      controller: controller.scrollController,
-                      padding: EdgeInsets.only(top: 10.h, bottom: 10.h),
-                      itemCount: controller.messages.length,
-                      itemBuilder: (context, index) {
-                        final message = controller.messages[index];
-                        return MessageBubble(message: message);
-                      },
-                    );
-                  }
-                }),
-              ),
-              Obx(() {
-                if (controller.isLoading.value) {
-                  return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: 50.w,
-                        height: 50.h,
-                        child: Image.asset(
-                          RAsset().loading,
-                          width: 50.w,
-                          height: 50.h,
-                        ),
-                      ));
-                } else {
-                  return const SizedBox.shrink();
-                }
-              }),
-              // Tampilkan saran prompt hanya di awal
-
-              Obx(() {
-                if (controller.messages.length <= 1 &&
-                    controller.selectedSuggestion.value != 0) {
-                  return _buildSubSuggestionPrompts(context, controller);
-                }
-                return const SizedBox.shrink();
-              }),
-              //[SUGGESTION PROMPTS]
-              // Obx(() {
-              //   if (controller.messages.length <= 1) {
-              //     return _buildSuggestionPrompts(context, controller);
-              //   }
-              //   return const SizedBox.shrink();
-              // }),
-              _buildTextComposer(context, controller),
-            ],
-          ),
-        ],
       ),
     );
   }
