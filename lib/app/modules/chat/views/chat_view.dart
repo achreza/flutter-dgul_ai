@@ -446,6 +446,7 @@ class ChatView extends GetView<ChatController> {
         separatorBuilder: (context, index) => SizedBox(width: 8.w),
         itemBuilder: (context, index) {
           final prompt = controller.fotoSuggestionPrompts[index];
+          final viewPrompt = controller.viewFotoSuggestionPrompts[index];
           return OutlinedButton(
             onPressed: () => controller.sendSuggestion(prompt),
             style: OutlinedButton.styleFrom(
@@ -459,7 +460,7 @@ class ChatView extends GetView<ChatController> {
               ),
             ),
             child: Text(
-              prompt,
+              viewPrompt,
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.grey.shade700,

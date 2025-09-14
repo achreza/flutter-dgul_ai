@@ -61,6 +61,8 @@ class ChatController extends GetxController {
   final _workTypeKey = 'selectedWorkType';
   final _langKey = 'selectedLanguage'; // Key baru untuk bahasa
   var allPackage = AllPackageResponse();
+  List<ChatMessage> sessionChatHistory = [];
+  RxInt sessionChatIndex = 0.obs;
 
   //untuk update profile
   TextEditingController emailController = TextEditingController();
@@ -133,6 +135,12 @@ class ChatController extends GetxController {
     "foto_suggestion_1".tr,
     "foto_suggestion_2".tr,
     "foto_suggestion_3".tr,
+  ];
+
+  final List<String> viewFotoSuggestionPrompts = [
+    "view_foto_suggestion_1".tr,
+    "view_foto_suggestion_2".tr,
+    "view_foto_suggestion_3".tr,
   ];
 
   final List<String> documentSuggestionPrompts = [
@@ -595,6 +603,34 @@ class ChatController extends GetxController {
     }
   }
 
+  String getSessionChatHistory() {
+    if (sessionChatIndex.value == 4) {
+      sessionChatIndex.value = 0;
+
+      final lastMessages = messages
+          .where((msg) => msg.sender == Sender.user)
+          .toList()
+          .reversed
+          .take(1)
+          .toList()
+          .reversed
+          .toList();
+      return lastMessages.map((msg) => msg.text).join("\n");
+    } else {
+      //take session chat history based on index
+      sessionChatIndex.value += 1;
+      final lastMessages = messages
+          .toList()
+          .reversed
+          .take(sessionChatIndex.value)
+          .toList()
+          .reversed
+          .toList();
+      final lastMessagesString = lastMessages.map((msg) => msg.text).join("\n");
+      return lastMessagesString;
+    }
+  }
+
   Future<void> sendMessageToDGULAPI() async {
     final text = textController.text.trim();
     final imagePath = selectedImagePath.value;
@@ -604,6 +640,7 @@ class ChatController extends GetxController {
 
     isLoading.value = true;
     Map<String, dynamic>? fileData;
+    //send Last 5 messages from history and make it to String
 
     messages.add(ChatMessage(
       text: text,
@@ -616,12 +653,14 @@ class ChatController extends GetxController {
     _scrollToBottom();
     _saveChatHistory();
 
+    final String last5MessagesString = getSessionChatHistory();
+    Logger().i("index session: ${sessionChatIndex.value}");
+
     if (imagePath.isNotEmpty) {
       try {
-        Logger().d("Pesan user: $text");
         final SingleMessageResponse aiResponse =
             await _chatService.sendSingleMessageWithImage(
-                text,
+                last5MessagesString,
                 MultipartFile(selectedImagePath.value,
                     filename: selectedImagePath.value.split('/').last),
                 selectedWorkType.value);
@@ -643,6 +682,7 @@ class ChatController extends GetxController {
         userController.profileData.user?.token = newTotalToken;
       } catch (e) {
         _showError("Gagal memproses file: $e");
+        sessionChatIndex.value -= 1;
         isLoading.value = false;
         return;
       } finally {
@@ -655,9 +695,8 @@ class ChatController extends GetxController {
       }
     } else {
       try {
-        Logger().d("Mengirim pesan tanpa file");
-        final SingleMessageResponse aiResponse =
-            await _chatService.sendSingleMessage(text, selectedWorkType.value);
+        final SingleMessageResponse aiResponse = await _chatService
+            .sendSingleMessage(last5MessagesString, selectedWorkType.value);
         final responseText =
             aiResponse.message?.content ?? "Received an empty response.";
 
@@ -668,6 +707,7 @@ class ChatController extends GetxController {
         ));
       } catch (e) {
         _showError("$e");
+        sessionChatIndex.value -= 1;
         isLoading.value = false;
       } finally {
         isLoading.value = false;
@@ -812,8 +852,8 @@ class ChatController extends GetxController {
   }
 
   void _showError(String message) {
-    messages.add(
-        ChatMessage(text: "Terjadi kesalahan: $message", sender: Sender.ai));
+    messages.add(ChatMessage(
+        text: "Terjadi kesalahan Coba Ulangi Lagi", sender: Sender.ai));
   }
 
   void _scrollToBottom() {
