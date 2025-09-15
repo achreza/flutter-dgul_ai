@@ -17,6 +17,7 @@ class ChatService extends GetConnect {
       String message, String department) async {
     // Implement your message sending logic here
     try {
+      Logger().i('Sending message: $message ');
       final response = await post('${apiBaseUrl}/simple', headers: {
         'Content-Type': 'application/json',
         'Authorization':

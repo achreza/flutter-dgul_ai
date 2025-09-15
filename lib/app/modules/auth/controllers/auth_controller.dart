@@ -198,6 +198,19 @@ class AuthController extends GetxController {
   Future<void> register() async {
     try {
       isLoading.value = true;
+      //validate inputs
+      if (nameController.text.isEmpty ||
+          emailController.text.isEmpty ||
+          passwordController.text.isEmpty) {
+        isLoading.value = false;
+        RLoaders.showStatusDialog(
+          context: Get.context!,
+          status: DialogStatus.failed,
+          title: 'Registration Failed',
+          message: 'Please fill all fields',
+        );
+        return;
+      }
       LoadingPopup.show(Get.context!);
       final response = await authService.register(
         nameController.text,
