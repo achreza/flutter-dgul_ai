@@ -7,6 +7,8 @@
   	<string>sms</string>
 	<string>tel</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Aplikasi ini memerlukan akses ke kamera untuk mengambil foto profil dan melampirkan gambar dalam chat.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Aplikasi ini memerlukan akses ke pengenalan suara untuk mengubah ucapan Anda menjadi teks.</string>
 	<key>NSMicrophoneUsageDescription</key>

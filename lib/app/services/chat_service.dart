@@ -23,7 +23,7 @@ class ChatService extends GetConnect {
         'Authorization':
             'Bearer ${Get.find<UserController>().getBearerToken()}',
       }, {
-        'message': message,
+        'message': "${message}",
         'department': department,
       });
 

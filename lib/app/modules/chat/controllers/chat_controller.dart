@@ -28,6 +28,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:logger/logger.dart';
 import 'package:mime/mime.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 
 class ChatController extends GetxController {
@@ -159,6 +160,11 @@ class ChatController extends GetxController {
   var isEditMode = false.obs;
 
   void uploadImageFromGallery() async {
+    final bool hasPermission = await _handleGalleryPermission();
+    if (!hasPermission) {
+      // Jika tidak ada izin, hentikan fungsi
+      return;
+    }
     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       selectedImagePath.value = pickedFile.path;
@@ -195,6 +201,11 @@ class ChatController extends GetxController {
   }
 
   void selectProfilePhoto() async {
+    // final bool hasPermission = await _handleGalleryPermission();
+    // if (!hasPermission) {
+    //   // Jika tidak ada izin, hentikan fungsi
+    //   return;
+    // }
     final pickedFile = await _picker.pickImage(
       source: ImageSource.gallery,
       imageQuality: 90, // Kualitas gambar yang lebih tinggi untuk di-crop
@@ -345,6 +356,88 @@ class ChatController extends GetxController {
 
   void selectPlan(String plan) {
     selectedPlan.value = plan;
+  }
+
+  Future<bool> _handleGalleryPermission() async {
+    var status = await Permission.photos.status;
+    if (status.isGranted) {
+      return true;
+    }
+    if (status.isDenied) {
+      // Meminta izin untuk pertama kali
+      status = await Permission.photos.request();
+      if (status.isGranted) {
+        return true;
+      }
+    }
+
+    // Jika izin ditolak secara permanen, tampilkan dialog
+    if (status.isPermanentlyDenied) {
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Izin Galeri Diperlukan'),
+          content: const Text(
+              'Aplikasi ini memerlukan akses ke galeri untuk memilih foto. Silakan aktifkan izin di pengaturan aplikasi.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Batal'),
+              onPressed: () => Get.back(),
+            ),
+            TextButton(
+              child: const Text('Pengaturan'),
+              onPressed: () {
+                openAppSettings();
+                Get.back();
+              },
+            ),
+          ],
+        ),
+      );
+      return false;
+    }
+
+    return false;
+  }
+
+  Future<bool> _handleCameraPermission() async {
+    var status = await Permission.camera.status;
+    if (status.isGranted) {
+      return true;
+    }
+    if (status.isDenied) {
+      // Meminta izin untuk pertama kali
+      status = await Permission.camera.request();
+      if (status.isGranted) {
+        return true;
+      }
+    }
+
+    // Jika izin ditolak secara permanen, tampilkan dialog
+    if (status.isPermanentlyDenied) {
+      Get.dialog(
+        AlertDialog(
+          title: const Text('Izin Kamera Diperlukan'),
+          content: const Text(
+              'Aplikasi ini memerlukan akses ke kamera untuk mengambil foto. Silakan aktifkan izin di pengaturan aplikasi.'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Batal'),
+              onPressed: () => Get.back(),
+            ),
+            TextButton(
+              child: const Text('Pengaturan'),
+              onPressed: () {
+                openAppSettings();
+                Get.back();
+              },
+            ),
+          ],
+        ),
+      );
+      return false;
+    }
+
+    return false;
   }
 
   Future<void> createTransaction(int paketId, String? voucherCode) async {
@@ -541,6 +634,11 @@ class ChatController extends GetxController {
   }
 
   void pickImage(ImageSource source) async {
+    final bool hasPermission = await _handleCameraPermission();
+    if (!hasPermission) {
+      // Jika tidak ada izin, hentikan fungsi
+      return;
+    }
     final XFile? image =
         await _picker.pickImage(source: source, imageQuality: 85);
 
@@ -682,7 +780,7 @@ class ChatController extends GetxController {
         userController.profileData.user?.token = newTotalToken;
       } catch (e) {
         _showError("Gagal memproses file: $e");
-        sessionChatIndex.value -= 1;
+
         isLoading.value = false;
         return;
       } finally {
@@ -707,7 +805,7 @@ class ChatController extends GetxController {
         ));
       } catch (e) {
         _showError("$e");
-        sessionChatIndex.value -= 1;
+
         isLoading.value = false;
       } finally {
         isLoading.value = false;
