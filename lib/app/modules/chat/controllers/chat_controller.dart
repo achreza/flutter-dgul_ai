@@ -959,8 +959,13 @@ class ChatController extends GetxController {
   }
 
   void _showError(String message) {
-    messages.add(ChatMessage(
-        text: "Terjadi kesalahan Coba Ulangi Lagi", sender: Sender.ai));
+    messages.add(
+        ChatMessage(text: "Terjadi kesalahan: $message", sender: Sender.ai));
+    if (message.contains(
+        "Maaf, token Anda telah habis. Silakan isi ulang token untuk melanjutkan")) {
+      SubscriptionPromoSheet.show();
+      return;
+    }
   }
 
   void _scrollToBottom() {
