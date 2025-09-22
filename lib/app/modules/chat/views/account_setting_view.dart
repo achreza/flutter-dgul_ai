@@ -183,9 +183,16 @@ class AccountSettingView extends GetView<ChatController> {
       children: [
         _buildProfilePicture(isEdit: true),
         SizedBox(height: 10.h),
-        Text("${controller.userController.getName()}",
-            style: subHeadline1TextStyle.copyWith(
-                color: RColor().primaryBlueColor)),
+        //create text field for name with controller nameController from chat controller
+        TextFormField(
+          controller: controller.nameController,
+          textAlign: TextAlign.center,
+          style: subHeadline1TextStyle.copyWith(
+              color: RColor().primaryBlueColor, fontWeight: FontWeight.w600),
+          decoration: const InputDecoration(
+              isDense: true,
+              contentPadding: EdgeInsets.symmetric(vertical: 4.0)),
+        ),
         SizedBox(height: 25.h),
         _buildInfoRow("Email",
             "${controller.userController.profileData.user?.email ?? ''}"),

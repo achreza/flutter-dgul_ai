@@ -70,8 +70,10 @@ class ChatController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   TextEditingController departmentController = TextEditingController();
   TextEditingController positionController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
 
   void addInitialProfileData() {
+    nameController.text = userController.profileData.user?.name ?? '';
     emailController.text = userController.profileData.user?.email ?? '';
     phoneController.text = userController.profileData.user?.phone ?? '';
     departmentController.text =
@@ -108,43 +110,43 @@ class ChatController extends GetxController {
     "Catering Department",
   ];
 
-  final List<String> suggestionPrompts = [
-    "suggestion_1".tr,
-    "suggestion_2".tr,
-    "suggestion_3".tr,
-  ];
+  List<String> get suggestionPrompts => [
+        "suggestion_1".tr,
+        "suggestion_2".tr,
+        "suggestion_3".tr,
+      ];
 
-  final List<String> subSuggestion1Prompts = [
-    "sub_suggestion_1_1".tr,
-    "sub_suggestion_1_2".tr,
-    "sub_suggestion_1_3".tr,
-  ];
+  List<String> get subSuggestion1Prompts => [
+        "sub_suggestion_1_1".tr,
+        "sub_suggestion_1_2".tr,
+        "sub_suggestion_1_3".tr,
+      ];
 
-  final List<String> subSuggestion2Prompts = [
-    "sub_suggestion_2_1".tr,
-    "sub_suggestion_2_2".tr,
-    "sub_suggestion_2_3".tr,
-  ];
+  List<String> get subSuggestion2Prompts => [
+        "sub_suggestion_2_1".tr,
+        "sub_suggestion_2_2".tr,
+        "sub_suggestion_2_3".tr,
+      ];
 
-  final List<String> subSuggestion3Prompts = [
-    "sub_suggestion_3_1".tr,
-    "sub_suggestion_3_2".tr,
-    "sub_suggestion_3_3".tr,
-  ];
+  List<String> get subSuggestion3Prompts => [
+        "sub_suggestion_3_1".tr,
+        "sub_suggestion_3_2".tr,
+        "sub_suggestion_3_3".tr,
+      ];
 
-  final List<String> fotoSuggestionPrompts = [
-    "foto_suggestion_1".tr,
-    "foto_suggestion_2".tr,
-    "foto_suggestion_3".tr,
-  ];
+  List<String> get fotoSuggestionPrompts => [
+        "foto_suggestion_1".tr,
+        "foto_suggestion_2".tr,
+        "foto_suggestion_3".tr,
+      ];
 
-  final List<String> viewFotoSuggestionPrompts = [
-    "view_foto_suggestion_1".tr,
-    "view_foto_suggestion_2".tr,
-    "view_foto_suggestion_3".tr,
-  ];
+  List<String> get viewFotoSuggestionPrompts => [
+        "view_foto_suggestion_1".tr,
+        "view_foto_suggestion_2".tr,
+        "view_foto_suggestion_3".tr,
+      ];
 
-  final List<String> documentSuggestionPrompts = [
+  List<String> documentSuggestionPrompts = [
     "document_suggestion_1".tr,
     "document_suggestion_2".tr,
     "document_suggestion_3".tr,
@@ -171,6 +173,8 @@ class ChatController extends GetxController {
       update();
     }
   }
+
+  void refreshListSuggestions() {}
 
   Future<bool> onWillPop() async {
     final result = await Get.dialog<bool>(
@@ -275,6 +279,7 @@ class ChatController extends GetxController {
         String phone = phoneController.text;
         String department = departmentController.text;
         String position = positionController.text;
+        String name = nameController.text;
 
         MultipartFile? profilePhoto;
         UpdateProfileRequest? request;
@@ -285,6 +290,7 @@ class ChatController extends GetxController {
           profilePhoto = MultipartFile(File(selectedPhotoProfilePath.value),
               filename: selectedPhotoProfilePath.value.split('/').last);
           request = UpdateProfileRequest(
+            name: name,
             email: email,
             phone: phone,
             department: department,
@@ -293,6 +299,7 @@ class ChatController extends GetxController {
           );
         } else {
           request = UpdateProfileRequest(
+            name: name,
             email: email,
             phone: phone,
             department: department,
@@ -540,6 +547,7 @@ class ChatController extends GetxController {
   void changeLanguage(String langCode) async {
     //show loading
     LoadingPopup.show(Get.overlayContext!);
+
     selectedLanguage.value = langCode;
     var locale = langCode == 'id_ID'
         ? const Locale('id', 'ID')
@@ -548,6 +556,7 @@ class ChatController extends GetxController {
     _storage.write(_langKey, langCode);
     var language = langCode == 'id_ID' ? 'id' : 'en';
     await userService.updateLanguage(language);
+    Get.updateLocale(locale);
     LoadingPopup.hide(Get.overlayContext!);
   }
 

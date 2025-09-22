@@ -37,6 +37,7 @@ class UserController extends GetxController {
   }
 
   void assignProfileDataAfterUpdate(UpdateProfileResponse profile) {
+    profileData.user?.name = profile.user?.name;
     profileData.user?.email = profile.user?.email;
     profileData.user?.phone = profile.user?.phone;
     profileData.user?.department = profile.user!.department;
@@ -76,6 +77,7 @@ class UserController extends GetxController {
   void updateProfile(ProfileResponse profile) {
     profileData = profile;
     UpdateProfileRequest req = UpdateProfileRequest(
+      name: profile.user!.name,
       email: profile.user!.email,
       phone: profile.user!.phone,
       department: profile.user!.department,

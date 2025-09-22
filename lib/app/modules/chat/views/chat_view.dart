@@ -157,7 +157,7 @@ class ChatView extends GetView<ChatController> {
                           WorkTypeDialog.showWorkTypeDialog(context, () {}),
                       child: Container(
                         margin: EdgeInsets.only(bottom: 8.h),
-                        width: 200.w,
+                        width: 230.w,
                         alignment: Alignment.center,
                         padding: EdgeInsets.symmetric(
                             horizontal: 12.w, vertical: 6.h),
@@ -436,41 +436,47 @@ class ChatView extends GetView<ChatController> {
 
   Widget _buildSuggestionPhotoPrompts(
       BuildContext context, ChatController controller) {
-    return Container(
-      height: 60.h, // Memberi tinggi tetap untuk area scroll
-      padding: EdgeInsets.symmetric(vertical: 4.h),
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        itemCount: controller.fotoSuggestionPrompts.length,
-        separatorBuilder: (context, index) => SizedBox(width: 8.w),
-        itemBuilder: (context, index) {
-          final prompt = controller.fotoSuggestionPrompts[index];
-          final viewPrompt = controller.viewFotoSuggestionPrompts[index];
-          return OutlinedButton(
-            onPressed: () => controller.sendSuggestion(prompt),
-            style: OutlinedButton.styleFrom(
-              elevation: 2,
-              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
-              foregroundColor: RColor().primaryBlueColor,
-              backgroundColor: Colors.white.withOpacity(0.8),
-              side: BorderSide(color: Colors.grey.shade300),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-            ),
-            child: Text(
-              viewPrompt,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Colors.grey.shade700,
-                fontSize: 12.sp,
-              ),
-            ),
-          );
-        },
-      ),
-    );
+    return Obx(() => Container(
+          height: 60.h, // Memberi tinggi tetap untuk area scroll
+          padding: EdgeInsets.symmetric(
+              vertical: themeController.isDarkMode.value ? 4.h : 4.h),
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            itemCount: controller.fotoSuggestionPrompts.length,
+            separatorBuilder: (context, index) => SizedBox(width: 8.w),
+            itemBuilder: (context, index) {
+              final prompt = controller.fotoSuggestionPrompts[index];
+              final viewPrompt = controller.viewFotoSuggestionPrompts[index];
+              return Obx(() => OutlinedButton(
+                    onPressed: () => controller.sendSuggestion(prompt),
+                    style: OutlinedButton.styleFrom(
+                      elevation: 2,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                      foregroundColor: RColor().primaryBlueColor,
+                      backgroundColor: themeController.isDarkMode.value
+                          ? Theme.of(context).cardColor.withOpacity(0.9)
+                          : Colors.white.withOpacity(0.8),
+                      side: BorderSide(color: Colors.grey.shade300),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12.r),
+                      ),
+                    ),
+                    child: Text(
+                      viewPrompt,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: themeController.isDarkMode.value
+                            ? Colors.white
+                            : Colors.grey.shade700,
+                        fontSize: 14.sp,
+                      ),
+                    ),
+                  ));
+            },
+          ),
+        ));
   }
 
   Widget _buildSuggestionDocumentPrompts(
@@ -504,7 +510,7 @@ class ChatView extends GetView<ChatController> {
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.grey.shade700,
-                fontSize: 12.sp,
+                fontSize: 14.sp,
               ),
             ),
           );

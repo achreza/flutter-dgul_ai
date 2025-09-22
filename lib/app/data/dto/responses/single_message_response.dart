@@ -2,8 +2,10 @@ class SingleMessageResponse {
   bool? success;
   Message? message;
   Metadata? metadata;
+  int? tokenRemaining;
 
-  SingleMessageResponse({this.success, this.message, this.metadata});
+  SingleMessageResponse(
+      {this.success, this.message, this.metadata, this.tokenRemaining});
 
   SingleMessageResponse.fromJson(Map<String, dynamic> json) {
     success = json['success'];
@@ -12,6 +14,7 @@ class SingleMessageResponse {
     metadata = json['metadata'] != null
         ? new Metadata.fromJson(json['metadata'])
         : null;
+    tokenRemaining = json['token_remaining'];
   }
 
   Map<String, dynamic> toJson() {
@@ -23,6 +26,7 @@ class SingleMessageResponse {
     if (this.metadata != null) {
       data['metadata'] = this.metadata!.toJson();
     }
+    data['token_remaining'] = this.tokenRemaining;
     return data;
   }
 }

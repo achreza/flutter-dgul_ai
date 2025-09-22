@@ -55,10 +55,12 @@ class MessageBubble extends StatelessWidget {
       alignment: isUser ? Alignment.centerRight : Alignment.center,
       child: Container(
         constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.8,
+          maxWidth: MediaQuery.of(context).size.width * 0.9,
         ),
         padding: const EdgeInsets.all(12),
-        margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+        margin: isUser
+            ? EdgeInsets.fromLTRB(50.w, 8.h, 12.w, 8.h)
+            : EdgeInsets.fromLTRB(16.w, 8.h, 40.w, 8.h),
         decoration: BoxDecoration(
           color: isUser
               ? themeController.isDarkMode.value

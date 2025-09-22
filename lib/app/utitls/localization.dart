@@ -62,12 +62,14 @@ class AppTranslations extends Translations {
           'suggestion_3': 'Ruang Komunikasi',
 
           'view_foto_suggestion_1': 'Analisis Foto',
-          'view_foto_suggestion_2': 'Pertannyaan dan Jawaban',
+          'view_foto_suggestion_2': 'Pertanyaan dan Jawaban',
           'view_foto_suggestion_3': 'Ringkasan Foto',
+          'view_foto_suggestion_4': 'Menjawab Email',
 
           'foto_suggestion_1': 'Jelaskan foto ini',
           'foto_suggestion_2': 'Jawablah soal di foto ini?',
-          'foto_suggestion_3': 'Apa yang Anda lihat di foto ini?',
+          'foto_suggestion_3': 'Ringkasan di foto ini?',
+          'foto_suggestion_4': 'Balas email ini',
 
           'document_suggestion_1': 'Jelaskan dokumen ini',
           'document_suggestion_2': 'Apa yang Anda lihat di dokumen ini?',
@@ -126,10 +128,12 @@ class AppTranslations extends Translations {
           'view_foto_suggestion_1': 'Photo Analysis',
           'view_foto_suggestion_2': 'Question and Answer',
           'view_foto_suggestion_3': 'Photo Summary',
+          'view_foto_suggestion_4': 'Email Reply',
 
           'foto_suggestion_1': 'Describe this photo',
           'foto_suggestion_2': 'Answer the question in this photo?',
-          'foto_suggestion_3': 'What do you see in this photo?',
+          'foto_suggestion_3': 'Summarize in this photo?',
+          'foto_suggestion_4': 'Reply to this email',
 
           // Initial View
           'welcome_greeting': "Ahooy, D'Gul",
