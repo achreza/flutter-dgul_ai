@@ -83,3 +83,37 @@ android {
 flutter {
     source = "../.."
 }
+
+// Ganti skrip lama di akhir file android/app/build.gradle Anda dengan ini.
+// Skrip ini kompatibel dengan versi Android Gradle Plugin yang lebih baru.
+android.applicationVariants.all { variant ->
+    if (variant.buildType.name == 'release') {
+        variant.outputs.all { output ->
+            def packageTask = tasks.findByName("package${variant.name.capitalize()}")
+            if (packageTask != null) {
+                packageTask.doLast {
+                    def unalignedApk = output.outputFile
+                    if (unalignedApk != null && unalignedApk.name.endsWith('.apk')) {
+                        // Mendefinisikan path ke zipalign tool dari Android SDK
+                        def zipalignPath = new File(android.sdkDirectory, 'build-tools').listFiles().sort().last().absolutePath + File.separator + "zipalign"
+                        
+                        // Mendefinisikan path sementara untuk APK yang sudah di-align
+                        def alignedApkPath = unalignedApk.absolutePath.replace('.apk', '-aligned.apk')
+                        
+                        // Menjalankan perintah zipalign
+                        exec {
+                            executable zipalignPath
+                            args '-f', '-p', '16384', unalignedApk.absolutePath, alignedApkPath
+                        }
+                        
+                        // Hapus APK lama yang belum di-align, lalu ganti namanya dengan yang baru
+                        unalignedApk.delete()
+                        new File(alignedApkPath).renameTo(unalignedApk)
+                        println "Successfully zipalign'd APK with 16KB page alignment."
+                    }
+                }
+            }
+        }
+    }
+}
+
