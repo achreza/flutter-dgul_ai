@@ -123,8 +123,8 @@ class AccountSettingView extends GetView<ChatController> {
             "${controller.userController.profileData.user?.phone ?? 'Not Set'}"),
         _buildInfoRow(
             controller.selectedWorkType.value == "Seafarer"
-                ? "Department"
-                : "Instansi",
+                ? "Type of Department"
+                : "Type of Company",
             "${controller.userController.profileData.user?.department ?? 'Not Set'}"),
         _buildInfoRow("Position",
             "${controller.userController.profileData.user?.position ?? 'Not Set'}"),
@@ -205,8 +205,8 @@ class AccountSettingView extends GetView<ChatController> {
             controller.phoneController),
         _buildEditableInfoRow(
             controller.selectedWorkType.value == "Seafarer"
-                ? "Department"
-                : "Instansi",
+                ? "Type of Department"
+                : "Type of Company",
             "${controller.userController.profileData.user?.department ?? ''}",
             controller.departmentController),
         _buildEditableInfoRow(
